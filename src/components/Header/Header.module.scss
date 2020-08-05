@@ -1,0 +1,21 @@
+@import "../../scss/variables";
+
+.Header {
+  background-color: $blue;
+  text-align: center;
+  padding: 6rem 0;
+}
+
+.Title {
+  font-family: $font-heading;
+  font-size: $font-largest;
+  text-transform: uppercase;
+  color: $white;
+  font-weight: 700;
+}
+
+.Subtitle {
+  font-family: $font-heading;
+  font-size: $font-small;
+  color: $white;
+}
