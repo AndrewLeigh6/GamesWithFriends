@@ -4,5 +4,6 @@ import Header from "./Header";
 
 it("renders heading and subheading correctly", () => {
   const { getByText } = render(<Header />);
-  expect(getByText(/games with friends/i)).toBeInTheDocument();
+  const text = getByText(/games with friends/i);
+  expect(text).toBeInTheDocument();
 });

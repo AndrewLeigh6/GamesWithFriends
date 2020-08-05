@@ -1,0 +1,24 @@
+@import "../../../scss/variables";
+
+.LinkInput {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4rem;
+}
+
+.LinkInput label {
+  color: $blue;
+  font-size: $font-small;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.LinkInput input {
+  background-color: $grey;
+  border: none;
+  padding: 2rem;
+  border-radius: 8px;
+  font-size: $font-small;
+  min-width: 65rem;
+  display: block;
+}
