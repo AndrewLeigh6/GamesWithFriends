@@ -5,7 +5,7 @@ import classes from "./LinkInput.module.scss";
 const LinkInput = (props) => {
   return (
     <div className={classes.LinkInput}>
-      <label htmlFor="player-1">{props.label}</label>
+      <label htmlFor={props.name}>{props.label}</label>
       <input
         type="text"
         name={props.name}

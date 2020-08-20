@@ -10,6 +10,7 @@ const LinksGenerator = (props) => {
       <form>
         {renderUser()}
         {renderFriends()}
+        {renderAddFriend()}
       </form>
     </div>
   );
@@ -32,10 +33,22 @@ const LinksGenerator = (props) => {
           label={`Player ${i + 2}`}
           name={`player-${i + 2}`}
           placeholder="https://steamcommunity.com/id/friends-steam-profile/"
+          key={`Player ${i + 2}`}
         />
       );
     }
     return linkInputs;
+  }
+
+  function renderAddFriend() {
+    return (
+      <div
+        className={classes.AddFriend}
+        onClick={() => setFriends((prev) => prev + 1)}
+      >
+        + Add another friend
+      </div>
+    );
   }
 };
 
