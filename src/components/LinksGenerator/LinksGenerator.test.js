@@ -1,6 +1,5 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { screen } from "@testing-library/dom";
 import user from "@testing-library/user-event";
 import LinksGenerator from "./LinksGenerator";
 
@@ -34,4 +33,27 @@ it("removes the link input for player 3 when remove friend is clicked", () => {
   const button = getByText(/remove friend/i);
   user.click(button);
   expect(queryByLabelText(/player 3/i)).toBeNull();
+});
+
+it("prevents the number of friends from being below 1", () => {
+  const { getByLabelText, queryByLabelText, getByText } = render(
+    <LinksGenerator />
+  );
+
+  // make sure we've got our initial 3 inputs
+  getByLabelText(/player 1/i);
+  getByLabelText(/player 2/i);
+  getByLabelText(/player 3/i);
+
+  // remove one - we should now have 2 (user and 1 friend)
+  const button = getByText(/remove friend/i);
+  user.click(button);
+  getByLabelText(/player 1/i);
+  getByLabelText(/player 2/i);
+  expect(queryByLabelText(/player 3/i)).toBeNull();
+
+  // remove another - we shouldn't go below 2
+  user.click(button);
+  getByLabelText(/player 1/i);
+  getByLabelText(/player 2/i);
 });
