@@ -3,7 +3,7 @@
 .LinkInput {
   display: flex;
   flex-direction: column;
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
 }
 
 .LinkInput label {
@@ -17,7 +17,7 @@
   background-color: $grey;
   border: none;
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: $border-radius;
   font-size: $font-small;
   min-width: 65rem;
   display: block;

@@ -7,6 +7,41 @@
   padding: 6rem;
 }
 
+.LinksGenerator div[class^="Button"] {
+  margin-top: 3rem;
+}
+
+.SetFriends {
+  display: flex;
+  align-items: center;
+}
+
 .AddFriend {
   cursor: pointer;
+  font-size: 2.4rem;
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
+.AddFriend svg {
+  height: 4rem;
+  width: 4rem;
+  margin-right: 1rem;
+  color: $blue;
+}
+
+.RemoveFriend {
+  cursor: pointer;
+  font-size: 2.4rem;
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
+.RemoveFriend svg {
+  height: 4rem;
+  width: 4rem;
+  margin-right: 1rem;
+  color: darken($grey, 20);
 }

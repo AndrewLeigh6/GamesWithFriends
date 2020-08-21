@@ -2,18 +2,29 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import classes from "./LinksGenerator.module.scss";
 import LinkInput from "./LinkInput/LinkInput";
+import SVGIcon from "../SVGIcon/SVGIcon";
+import Button from "../Button/Button";
 
 const LinksGenerator = (props) => {
   const [friends, setFriends] = useState(2);
+
   return (
     <div className={classes.LinksGenerator}>
       <form>
         {renderUser()}
         {renderFriends()}
-        {renderAddFriend()}
+        <div className={classes.SetFriends}>
+          {renderAddFriend()}
+          {renderRemoveFriend()}
+        </div>
+        {renderButton()}
       </form>
     </div>
   );
+
+  function generateLinks() {
+    alert("lol");
+  }
 
   function renderUser() {
     return (
@@ -46,9 +57,24 @@ const LinksGenerator = (props) => {
         className={classes.AddFriend}
         onClick={() => setFriends((prev) => prev + 1)}
       >
-        + Add another friend
+        <SVGIcon icon="plus-circle" /> Add friend
       </div>
     );
+  }
+
+  function renderRemoveFriend() {
+    return (
+      <div
+        className={classes.RemoveFriend}
+        onClick={() => setFriends((prev) => prev - 1)}
+      >
+        <SVGIcon icon="minus-circle" /> Remove friend
+      </div>
+    );
+  }
+
+  function renderButton() {
+    return <Button clicked={generateLinks}>Generate Links</Button>;
   }
 };
 
