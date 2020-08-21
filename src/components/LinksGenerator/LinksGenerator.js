@@ -10,7 +10,7 @@ const LinksGenerator = (props) => {
 
   return (
     <div className={classes.LinksGenerator}>
-      <form>
+      <form onSubmit={generateLinks}>
         {renderUser()}
         {renderFriends()}
         <div className={classes.SetFriends}>
@@ -22,8 +22,10 @@ const LinksGenerator = (props) => {
     </div>
   );
 
-  function generateLinks() {
-    alert("lol");
+  function generateLinks(event) {
+    event.preventDefault();
+    event.persist();
+    console.log(event);
   }
 
   function renderUser() {
@@ -74,7 +76,7 @@ const LinksGenerator = (props) => {
   }
 
   function renderButton() {
-    return <Button clicked={generateLinks}>Generate Links</Button>;
+    return <Button form>Generate Links</Button>;
   }
 };
 
