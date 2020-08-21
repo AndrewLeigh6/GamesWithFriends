@@ -66,7 +66,7 @@ const LinksGenerator = (props) => {
     return (
       <div
         className={classes.RemoveFriend}
-        onClick={() => setFriends((prev) => prev - 1)}
+        onClick={() => setFriends((prev) => (prev >= 2 ? prev - 1 : 1))}
       >
         <SVGIcon icon="minus-circle" /> Remove friend
       </div>
