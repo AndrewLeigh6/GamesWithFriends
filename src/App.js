@@ -1,12 +1,12 @@
 import React from "react";
 import Header from "./components/Header/Header";
-import LinksGenerator from "./components/LinksGenerator/LinksGenerator";
+import Links from "./containers/Links/Links";
 
 function App() {
   return (
     <div className="App">
       <Header />
-      <LinksGenerator />
+      <Links />
     </div>
   );
 }

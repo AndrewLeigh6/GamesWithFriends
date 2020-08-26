@@ -11,6 +11,9 @@ const LinkInput = (props) => {
         name={props.name}
         id={props.name}
         placeholder={props.placeholder}
+        value={props.value}
+        readOnly={props.readOnly}
+        onChange={props.changed}
       />
     </div>
   );
@@ -19,7 +22,9 @@ const LinkInput = (props) => {
 LinkInput.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
+  value: PropTypes.string,
+  readOnly: PropTypes.bool,
 };
 
 export default LinkInput;

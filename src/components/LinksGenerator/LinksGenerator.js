@@ -1,18 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import classes from "./LinksGenerator.module.scss";
-import LinkInput from "./LinkInput/LinkInput";
+import LinkInput from "../LinkInput/LinkInput";
 import SVGIcon from "../SVGIcon/SVGIcon";
 import Button from "../Button/Button";
 
 const LinksGenerator = (props) => {
-  const [friends, setFriends] = useState(2);
-
   return (
     <div className={classes.LinksGenerator}>
-      <form onSubmit={generateLinks}>
-        {renderUser()}
-        {renderFriends()}
+      <form onSubmit={props.generateLinks}>
+        {renderInputLinks()}
         <div className={classes.SetFriends}>
           {renderAddFriend()}
           {renderRemoveFriend()}
@@ -22,43 +19,26 @@ const LinksGenerator = (props) => {
     </div>
   );
 
-  function generateLinks(event) {
-    event.preventDefault();
-    event.persist();
-    console.log(event);
-  }
-
-  function renderUser() {
-    return (
-      <LinkInput
-        label="Player 1 (that's you!)"
-        name="player-1"
-        placeholder="https://steamcommunity.com/id/your-steam-profile/"
-      />
-    );
-  }
-
-  function renderFriends() {
+  function renderInputLinks() {
     let linkInputs = [];
-    for (let i = 0; i < friends; i++) {
-      linkInputs.push(
+    linkInputs = props.users.map((user, i) => {
+      return (
         <LinkInput
-          label={`Player ${i + 2}`}
-          name={`player-${i + 2}`}
-          placeholder="https://steamcommunity.com/id/friends-steam-profile/"
-          key={`Player ${i + 2}`}
+          label={user.label}
+          name={user.name}
+          placeholder={user.placeholder}
+          value={user.value}
+          key={user.name}
+          changed={props.handleChange}
         />
       );
-    }
+    });
     return linkInputs;
   }
 
   function renderAddFriend() {
     return (
-      <div
-        className={classes.AddFriend}
-        onClick={() => setFriends((prev) => prev + 1)}
-      >
+      <div className={classes.AddFriend} onClick={props.handleAddFriend}>
         <SVGIcon icon="plus-circle" /> Add friend
       </div>
     );
@@ -66,10 +46,7 @@ const LinksGenerator = (props) => {
 
   function renderRemoveFriend() {
     return (
-      <div
-        className={classes.RemoveFriend}
-        onClick={() => setFriends((prev) => (prev >= 2 ? prev - 1 : 1))}
-      >
+      <div className={classes.RemoveFriend} onClick={props.handleRemoveFriend}>
         <SVGIcon icon="minus-circle" /> Remove friend
       </div>
     );
@@ -80,6 +57,13 @@ const LinksGenerator = (props) => {
   }
 };
 
-LinksGenerator.propTypes = {};
+LinksGenerator.propTypes = {
+  users: PropTypes.array,
+  setUsers: PropTypes.func,
+  handleAddFriend: PropTypes.func,
+  handleRemoveFriend: PropTypes.func,
+  setLinksGenerated: PropTypes.func,
+  handleChange: PropTypes.func,
+};
 
 export default LinksGenerator;
