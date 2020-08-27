@@ -8,7 +8,13 @@ const GeneratedLinks = (props) => {
     <div className={classes.GeneratedLinks}>
       <form>
         {props.users.map((user) => (
-          <LinkInput label={user} readOnly />
+          <LinkInput
+            label={user.value}
+            name={user.name}
+            value=""
+            key={user.name}
+            readOnly
+          />
         ))}
         <Button form>Choose games</Button>
       </form>

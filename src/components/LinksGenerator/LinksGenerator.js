@@ -8,7 +8,7 @@ import Button from "../Button/Button";
 const LinksGenerator = (props) => {
   return (
     <div className={classes.LinksGenerator}>
-      <form onSubmit={props.generateLinks}>
+      <form onSubmit={generateLinks}>
         {renderInputLinks()}
         <div className={classes.SetFriends}>
           {renderAddFriend()}
@@ -18,6 +18,11 @@ const LinksGenerator = (props) => {
       </form>
     </div>
   );
+
+  function generateLinks(event) {
+    event.preventDefault();
+    props.setLinksGenerated(true);
+  }
 
   function renderInputLinks() {
     let linkInputs = [];

@@ -18,5 +18,11 @@ it("generates 3 links for the user and 2 friends", () => {
   expect(player3).toHaveValue("Joey");
 
   const button = getByText(/generate links/i);
-  //user.click(button);
+  user.click(button);
+
+  getByLabelText("Andrew");
+  getByLabelText("Alex");
+  getByLabelText("Joey");
+
+  getByText(/choose games/i);
 });

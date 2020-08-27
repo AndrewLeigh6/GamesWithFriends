@@ -8,7 +8,7 @@ function Links() {
     {
       name: "player-1",
       label: "Player 1 (that's you!)",
-      value: "Andrew",
+      value: "",
       placeholder: "https://steamcommunity.com/id/your-steam-profile/",
     },
     {
