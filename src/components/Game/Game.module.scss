@@ -1,0 +1,32 @@
+@import "../../scss/variables";
+
+.Game {
+  display: flex;
+  height: calc(62rem * 0.6);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  align-items: flex-end;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+/* look here on steam db - https://steamdb.info/app/252950/info/
+under information, theres a property called logo_position/pinned_position
+lets grab this */
+.Logo {
+  display: flex;
+  position: relative;
+  bottom: 5rem;
+  left: 5rem;
+}
+
+.Info {
+  list-style-type: none;
+  font-family: $font-family-alt;
+  font-size: $font-small;
+  color: $white;
+  position: relative;
+  bottom: 5rem;
+  right: 5rem;
+}

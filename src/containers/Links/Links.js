@@ -36,6 +36,16 @@ function Links() {
     setUsers(tempUsers);
   }
 
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    // clean up fields left empty
+    let newUsers = users.filter((user) => user.value);
+    setUsers(newUsers);
+
+    setLinksGenerated(true);
+  }
+
   function addFriend() {
     let tempUsers = [...users];
     const nextUserNo = tempUsers.length + 1;
@@ -76,7 +86,7 @@ function Links() {
           handleAddFriend={addFriend}
           handleRemoveFriend={removeFriend}
           handleChange={handleChange}
-          setLinksGenerated={setLinksGenerated}
+          handleSubmit={handleSubmit}
         />
       )}
     </div>

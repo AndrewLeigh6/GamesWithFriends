@@ -8,7 +8,7 @@ import Button from "../Button/Button";
 const LinksGenerator = (props) => {
   return (
     <div className={classes.LinksGenerator}>
-      <form onSubmit={generateLinks}>
+      <form onSubmit={props.handleSubmit}>
         {renderInputLinks()}
         <div className={classes.SetFriends}>
           {renderAddFriend()}
@@ -18,11 +18,6 @@ const LinksGenerator = (props) => {
       </form>
     </div>
   );
-
-  function generateLinks(event) {
-    event.preventDefault();
-    props.setLinksGenerated(true);
-  }
 
   function renderInputLinks() {
     let linkInputs = [];
@@ -67,7 +62,7 @@ LinksGenerator.propTypes = {
   setUsers: PropTypes.func,
   handleAddFriend: PropTypes.func,
   handleRemoveFriend: PropTypes.func,
-  setLinksGenerated: PropTypes.func,
+  handleSubmit: PropTypes.func,
   handleChange: PropTypes.func,
 };
 
