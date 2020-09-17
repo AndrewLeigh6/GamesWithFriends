@@ -13,7 +13,7 @@ const Game = (props) => {
       </div>
       <ul className={classes.Info}>
         {props.info.map((text) => (
-          <li>{text}</li>
+          <li key={text}>{text}</li>
         ))}
       </ul>
     </div>
