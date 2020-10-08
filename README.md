@@ -59,5 +59,9 @@ Both the user and each friend should now see this page:
 
 ![Page 5](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/5.PNG)
 
+**Design Note**: Replace the tick icon with something better, because it looks awful.
+
+
+
 
 
