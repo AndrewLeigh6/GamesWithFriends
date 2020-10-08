@@ -56,7 +56,7 @@ Both the user and each friend should now see this page:
 
 - If the user clicks on a game banner, that will count as a vote, and the banner will be displayed as shown in the image below.
 - Users can vote for as many games as they want. 
-- Once users are finished voting, they can click "View Games" to be taken to the next page.
+- Once users are finished voting, they can click "View Games". This will flag them as being done voting, and they will be taken to the next page.
 
 ![Page 5](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/5.PNG)
 
@@ -64,8 +64,12 @@ Both the user and each friend should now see this page:
 
 ### Part 4
 
-![Page 5](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/6.PNG)
+![Page 6](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/6.PNG)
 
+If any users haven't finished voting yet, they will be publicly shamed on the screen above. Otherwise, the screen below will be displayed: 
 
+![Page 7](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/7.PNG)
+
+The games with the most votes will be displayed in order, with the first, second, and third most popular games featuring gold, silver, and bronze crowns, respectively. The users have decided on a game, and the process is complete.
 
 
