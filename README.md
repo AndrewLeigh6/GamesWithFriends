@@ -1,7 +1,8 @@
 # Games With Friends
 
-Written by Andrew Leigh. Contact me at andrewleigh6@gmail.com.
-Last updated 08/10/2020
+Written by Andrew Leigh. 
+Contact me at andrewleigh6@gmail.com.
+Last updated 08/10/2020.
 
 ## Overview
 
@@ -46,4 +47,14 @@ The user must then send each link to the associated friend. There will be a butt
 Both the user and each friend should now see this page:
 
 ![Page 4](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/4.PNG)
+
+**Design Note**: Fix the font of the text on the right hand side of each game image, and replace it with the font shown in part 5.
+**Technical Note**: Games with a maximum player cap lower than the number of friends + 1 should not be displayed. For example, if the user is voting with 4 other friends, that means that there would be 5 players total, and there's no point in displaying 2 player co-op games.
+
+- If the user clicks on a game banner, that will count as a vote, and the banner will be displayed as shown in the image below.
+- Users can vote for as many games as they want. 
+
+![Page 5](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/5.PNG)
+
+
 
