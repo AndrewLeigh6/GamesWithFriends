@@ -50,7 +50,7 @@ Both the user and each friend should now see this page:
 
 ![Page 4](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/4.PNG)
 
-**Design Note**: Fix the font of the text on the right hand side of each game image, and replace it with the font shown in part 5.
+**Design Note**: Fix the font of the text on the right hand side of each game image, and replace it with the font shown in part 4.
 
 **Technical Note**: Games with a maximum player cap lower than the number of friends + 1 should not be displayed. For example, if the user is voting with 4 other friends, that means that there would be 5 players total, and there's no point in displaying 2 player co-op games.
 
