@@ -24,6 +24,7 @@ Once users arrive on the site, they will see the home page:
 - If the user clicks "Add another friend", another input box will be added (just like the second input box shown)
 - If the user clicks "Generate links" without entering a valid Steam URL in both input boxes, an error message will display under the offending input box that will read "Please input a valid Steam URL".
 - If the user clicks "Generate links" and the Steam URLs entered are valid, the next page will be displayed.
+- If the user clicks "Generate links" and the user and at least one friend have a valid Steam URL, then any input boxes will be left blank will be ignored and the next page will be displayed with just the user and the valid friend.
 
 A valid page should look like this:
 
