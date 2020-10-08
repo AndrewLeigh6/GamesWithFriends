@@ -19,7 +19,7 @@ Games With Friends lets you enter the steam URLs of you and your friends, and sh
 
 Once users arrive on the site, they will see the home page:
 
-![Page 1](images/1.png)
+![Page 1](/images/1.png)
 
 - If the user clicks "Add another friend", another input box will be added (just like the second input box shown)
 - If the user clicks "Generate links" without entering a valid Steam URL in both input boxes, an error message will display under the offending input box that will read "Please input a valid Steam URL".
