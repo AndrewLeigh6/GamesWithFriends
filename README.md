@@ -70,6 +70,9 @@ If any users haven't finished voting yet, they will be publicly shamed on the sc
 
 ![Page 7](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/7.PNG)
 
-The games with the most votes will be displayed in order, with the first, second, and third most popular games featuring gold, silver, and bronze crowns, respectively. The users have decided on a game, and the process is complete.
+- The games with the most votes will be displayed in order, with the first, second, and third most popular games featuring gold, silver, and bronze crowns, respectively. The users have decided on a game, and the process is complete. 
+- Games that received 0 votes will not be displayed.
+- If multiple games receive the same number of votes, they will be treated as being equally popular, and both will get the same crown. They will be displayed in alphabetical order.
+
 
 
