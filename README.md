@@ -56,11 +56,15 @@ Both the user and each friend should now see this page:
 
 - If the user clicks on a game banner, that will count as a vote, and the banner will be displayed as shown in the image below.
 - Users can vote for as many games as they want. 
+- Once users are finished voting, they can click "View Games" to be taken to the next page.
 
 ![Page 5](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/5.PNG)
 
 **Design Note**: Replace the tick icon with something better, because it looks awful.
 
+### Part 4
+
+![Page 5](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/6.PNG)
 
 
 
