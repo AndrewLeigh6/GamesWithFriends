@@ -19,7 +19,7 @@ Games With Friends lets you enter the steam URLs of you and your friends, and sh
 
 Once users arrive on the site, they will see the home page:
 
-![Page 1](/images/1.png)
+![Page 1](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/1.PNG)
 
 - If the user clicks "Add another friend", another input box will be added (just like the second input box shown)
 - If the user clicks "Generate links" without entering a valid Steam URL in both input boxes, an error message will display under the offending input box that will read "Please input a valid Steam URL".
@@ -27,13 +27,13 @@ Once users arrive on the site, they will see the home page:
 
 A valid page should look like this:
 
-![Page 2](images/2.png)
+![Page 2](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/2.PNG)
 
 ### Part 2
 
 Once the links have been generated, the user should see this page:
 
-![Page 3](images/3.png)
+![Page 3](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/3.PNG)
 
 The user must then send each link to the associated friend. There will be a button within the input box to allow the user to easily copy the link to their clipboard. The input boxes should be read only.
 
@@ -44,5 +44,5 @@ The user must then send each link to the associated friend. There will be a butt
 
 Both the user and each friend should now see this page:
 
-![Page 4](images/4.png)
+![Page 4](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/4.PNG)
 
