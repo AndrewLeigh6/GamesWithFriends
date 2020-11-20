@@ -61,18 +61,11 @@ Both the user and each friend should now see this page:
 - The user may vote on up to 3 games.
 - Once the user has finished voting, they can click "Done" at the bottom of the screen. This will flag them as being finished. If other users are still voting, they will be taken to the page below. Otherwise, they will proceed directly to Part 4.
 
-
 ![Page 4](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/part%204.PNG)
-
-**Design Note**: Replace the tick icon with something better, because it looks awful.
 
 ### Part 4
 
-![Page 6](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/part%205.PNG)
-
-If any users haven't finished voting yet, they will be publicly shamed on the screen above. Otherwise, the screen below will be displayed: 
-
-![Page 7](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/7.PNG)
+![Page 5](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/part%204.PNG)
 
 - The games with the most votes will be displayed in order, with the first, second, and third most popular games featuring gold, silver, and bronze crowns, respectively. The users have decided on a game, and the process is complete. 
 - Games that received 0 votes will not be displayed.
