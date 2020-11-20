@@ -4,7 +4,7 @@ Written by Andrew Leigh.
 
 Contact me at andrewleigh6@gmail.com.
 
-Last updated 08/10/2020.
+Last updated 20/11/2020.
 
 ## Overview
 
@@ -15,6 +15,7 @@ Games With Friends lets you enter the steam URLs of you and your friends, and sh
 ## Non Goals
 
 - This won't support game libraries other than Steam (e.g. Origin, Epic Games Store, Gog Galaxy, etc)
+- This won't check to see if anyone has the same DLC
 
 ## Design
 
@@ -22,16 +23,16 @@ Games With Friends lets you enter the steam URLs of you and your friends, and sh
 
 Once users arrive on the site, they will see the home page:
 
-![Page 1](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/1.PNG)
+![Page 1](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/part 1.PNG)
 
-- If the user clicks "Add another friend", another input box will be added (just like the second input box shown)
+- If the user clicks "Add friend", another input box will be added (just like the second input box shown)
 - If the user clicks "Generate links" without entering a valid Steam URL in both input boxes, an error message will display under the offending input box that will read "Please input a valid Steam URL".
 - If the user clicks "Generate links" and the Steam URLs entered are valid, the next page will be displayed.
 - If the user clicks "Generate links" and the user and at least one friend have a valid Steam URL, then any input boxes will be left blank will be ignored and the next page will be displayed with just the user and the valid friends.
 
-A valid page should look like this:
+Invalid forms will look like this:
 
-![Page 2](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/2.PNG)
+![Page 2](https://github.com/AndrewLeigh6/GamesWithFriends/blob/master/images/part 1 - error.PNG)
 
 ### Part 2
 
