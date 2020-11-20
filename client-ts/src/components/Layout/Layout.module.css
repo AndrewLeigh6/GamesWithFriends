@@ -1,0 +1,12 @@
+.Layout {
+  background: linear-gradient(135deg, #66bfff 0%, #0095ff 100%);
+  width: 100vw;
+  height: 100vh;
+}
+
+.Title {
+  text-align: center;
+  font-size: 2.4rem;
+  color: #fff;
+  padding-top: 2rem;
+}
