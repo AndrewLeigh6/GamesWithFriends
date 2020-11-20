@@ -19,6 +19,8 @@ Games With Friends lets you enter the steam URLs of you and your friends, and sh
 
 ## Design
 
+Design can be found at https://www.figma.com/file/J9PAMQlLNlV9BXUpRgTJCF/GamesWithFriends
+
 ### Part 1
 
 Once users arrive on the site, they will see the home page:
