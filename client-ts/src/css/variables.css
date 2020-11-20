@@ -1,0 +1,23 @@
+:root {
+  /* Text */
+  --text-white-1: #fff;
+
+  --text-orange-light-1: #ffefe5;
+
+  --text-blue-light-1: #e5f4ff;
+  --text-blue-light-2: #cceaff;
+  --text-blue-light-3: #cce9ff;
+  --text-blue-light-4: #66bfff;
+  --text-blue-light-5: #37abff;
+
+  /* Background */
+  --bg-white-1: #fff;
+  --bg-orange-1: #ff8e4f;
+  --bg-dark-blue-1: #005d9f;
+  --bg-black-1: #1e1e24;
+
+  /* Crown */
+  --crown-gold: #f6df5b;
+  --crown-silver: #cecada;
+  --crown-bronze: #ffa451;
+}
