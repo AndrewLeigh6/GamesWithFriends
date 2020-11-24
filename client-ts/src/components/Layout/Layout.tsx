@@ -1,5 +1,5 @@
+import classes from "./Layout.module.scss";
 import React from "react";
-import classes from "./Layout.module.css";
 
 interface AppProps {
   children: React.ReactNode;

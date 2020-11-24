@@ -1,12 +1,16 @@
+@import "./../../scss/variables";
+
 .Layout {
   background: linear-gradient(135deg, #66bfff 0%, #0095ff 100%);
   width: 100vw;
   height: 100vh;
+  text-align: center;
+  padding: 0 2rem;
 }
 
 .Title {
   text-align: center;
   font-size: 2.4rem;
-  color: var(--text-white-1);
+  color: $text-white-1;
   padding-top: 2rem;
 }

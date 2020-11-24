@@ -1,0 +1,18 @@
+@import "./../../scss/variables";
+
+.InfoText {
+  font-size: 1.4rem;
+  text-align: left;
+  border-top: 1px solid $border-dark-blue-1;
+  padding-top: 2rem;
+  margin-top: 3rem;
+}
+
+.Title {
+  color: $text-white-1;
+  margin-bottom: 1rem;
+}
+
+.Body {
+  color: $text-blue-light-2;
+}

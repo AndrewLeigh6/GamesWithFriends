@@ -1,14 +1,25 @@
-// Colours
-$white: #fff;
-$blue: #2b6cb0;
-$grey: #dbdada;
+/* Text */
+$text-white-1: #fff;
 
-// Font sizes
-$font-small: 2.4rem;
-$font-largest: 7.2rem;
+$text-orange-light-1: #ffefe5;
 
-// Misc
-$border-radius: 8px;
+$text-blue-light-1: #e5f4ff;
+$text-blue-light-2: #cceaff;
+$text-blue-light-3: #cce9ff;
+$text-blue-light-4: #66bfff;
+$text-blue-light-5: #37abff;
 
-$font-family-main: "Open Sans", sans-serif;
-$font-family-alt: "Roboto Slab", sans-serif;
+/* Background */
+$bg-white-1: #fff;
+$bg-orange-1: #ff8e4f;
+$bg-dark-blue-1: #005d9f;
+$bg-dark-blue-2: #006cb9;
+$bg-black-1: #1e1e24;
+
+/* RGBA for reduced opacity */
+$border-dark-blue-1: rgba(0, 108, 185, 0.5);
+
+/* Crown */
+$crown-gold: #f6df5b;
+$crown-silver: #cecada;
+$crown-bronze: #ffa451;
