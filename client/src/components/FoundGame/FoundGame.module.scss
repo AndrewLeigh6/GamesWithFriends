@@ -1,0 +1,30 @@
+@import "./../../scss/variables";
+
+.FoundGame {
+  display: flex;
+  flex-direction: column;
+  max-width: 16rem;
+}
+
+.Image {
+  border-radius: 10px;
+  max-width: 80%;
+}
+
+.Title {
+  color: $text-white-1;
+  font-size: 1.4rem;
+  text-align: left;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.Features {
+  color: $text-blue-light-1;
+  font-size: 1.4rem;
+}
+
+.Features ul {
+  list-style-type: none;
+  text-align: left;
+}

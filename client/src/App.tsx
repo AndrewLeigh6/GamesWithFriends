@@ -1,16 +1,16 @@
 import React from "react";
+import FoundGame from "./components/FoundGame/FoundGame";
 import Layout from "./components/Layout/Layout";
-import InfoText from "./components/InfoText/InfoText";
-import WinningGame from "./components/WinningGame/WinningGame";
 
 function App() {
   return (
     <div className="App">
       <Layout>
-        <WinningGame
+        <FoundGame
           title="Fall Guys: Ultimate Knockout"
-          image="https://cdn.cloudflare.steamstatic.com/steam/apps/1097150/capsule_616x353.jpg?t=1592241545"
-          votes={3}
+          feature="Online Co-op"
+          icon="controller"
+          image="https://cdn.cloudflare.steamstatic.com/steam/apps/1097150/library_600x900.jpg?t=1595511208"
         />
       </Layout>
     </div>
