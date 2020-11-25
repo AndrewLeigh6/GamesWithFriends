@@ -1,0 +1,51 @@
+@import "./../../scss/variables";
+
+.WinningGame {
+  display: grid;
+  grid-template-areas:
+    "title ."
+    "image votes";
+  margin-top: 2rem;
+}
+
+.Title {
+  grid-area: title;
+  justify-self: start;
+  text-align: left;
+  font-size: 1.8rem;
+  color: $text-white-1;
+  margin-bottom: 1rem;
+}
+
+.Image {
+  grid-area: image;
+  max-width: 90%;
+  height: auto;
+  border-radius: $border-radius;
+}
+
+.Crown {
+  position: absolute;
+  top: -21px;
+  left: -3px;
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+.Gold {
+  color: $crown-gold;
+}
+
+.Votes {
+  grid-area: votes;
+  align-self: center;
+  justify-self: center;
+  color: $text-white-1;
+  font-size: 3.6rem;
+  position: relative;
+}
+
+.Votes span {
+  font-size: 1.4rem;
+  margin-left: -5px;
+}

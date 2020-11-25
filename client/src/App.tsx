@@ -1,17 +1,17 @@
 import React from "react";
-import "./App.css";
 import Layout from "./components/Layout/Layout";
 import InfoText from "./components/InfoText/InfoText";
+import WinningGame from "./components/WinningGame/WinningGame";
 
 function App() {
   return (
     <div className="App">
       <Layout>
-        <InfoText title="How does it work?">
-          Enter your Steam URL, and the URL of at least one friend. You’ll each
-          be shown a list of the games that you have in common, which you can
-          then vote on to decide which game you should play together.{" "}
-        </InfoText>
+        <WinningGame
+          title="Fall Guys: Ultimate Knockout"
+          image="https://cdn.cloudflare.steamstatic.com/steam/apps/1097150/capsule_616x353.jpg?t=1592241545"
+          votes={3}
+        />
       </Layout>
     </div>
   );
