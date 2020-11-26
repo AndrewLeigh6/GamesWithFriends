@@ -5,8 +5,7 @@ import Feature, { Icon } from "./Feature";
 it("renders feature correctly with props", () => {
   const component = <Feature icon={Icon.Coop} feature="Online Co-op" />;
 
-  const { getByText, getByRole } = render(component);
+  const { getByText } = render(component);
 
-  getByText(/Online Co-op/i);
-  getByRole(/img/i);
+  getByText(/online co-op/i);
 });

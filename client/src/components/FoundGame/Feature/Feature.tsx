@@ -19,14 +19,14 @@ const Feature = (props: AppProps) => {
   return (
     <li className={classes.Feature}>
       {renderIcon(props.icon)}
-      {props.feature}
+      <span className={classes.Text}>{props.feature}</span>
     </li>
   );
 };
 
 const renderIcon = (icon: Icon): JSX.Element => {
   const IconType = getIcon(icon);
-  return <IconType className={classes.Icon} />;
+  return <IconType className={classes.Icon} name={icon + " icon"} />;
 };
 
 const getIcon = (
