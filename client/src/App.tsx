@@ -1,12 +1,14 @@
 import React from "react";
-import Feature, { Icon } from "./components/FoundGame/Feature/Feature";
+import Button from "./components/Button/Button";
 import Layout from "./components/Layout/Layout";
 
 function App() {
   return (
     <div className="App">
       <Layout>
-        <Feature feature="Online Co-op" icon={Icon.Coop} />
+        <Button color="Primary">Select</Button>
+        <Button color="SecondaryLight">Select 2</Button>
+        <Button color="SecondaryDark">Select 3</Button>
       </Layout>
     </div>
   );
