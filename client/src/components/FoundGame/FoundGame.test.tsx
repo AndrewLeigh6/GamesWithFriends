@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import FoundGame from "./FoundGame";
 
-it("renders winning game correctly with props", () => {
+it("renders found game correctly with props", () => {
   const title = "Fall Guys: Ultimate Knockout";
   const image = "random image";
   const icon = "controller";

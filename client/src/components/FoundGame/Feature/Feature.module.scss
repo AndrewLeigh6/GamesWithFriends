@@ -1,0 +1,15 @@
+@import "./../../../scss/variables";
+
+.Feature {
+  color: $text-blue-light-1;
+  font-size: 1.4rem;
+}
+
+.Icon {
+  color: $text-white-1;
+  height: 1.5rem;
+  width: 1.5rem;
+  position: relative;
+  top: 3px;
+  margin-right: 0.8rem;
+}

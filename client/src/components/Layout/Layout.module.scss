@@ -3,7 +3,7 @@
 .Layout {
   background: linear-gradient(135deg, #66bfff 0%, #0095ff 100%);
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   text-align: center;
   padding: 0 2rem;
 }

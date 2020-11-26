@@ -1,10 +1,11 @@
 import React from "react";
+import Feature, { Icon } from "./Feature/Feature";
 import classes from "./FoundGame.module.scss";
 
 interface AppProps {
   title: string;
   image: string;
-  icon: string;
+  icon: Icon;
   feature: string;
 }
 
@@ -15,9 +16,9 @@ const FoundGame = (props: AppProps) => {
       <div className={classes.Title}>{props.title}</div>
       <div className={classes.Features}>
         <ul>
-          <li>Online Co-op</li>
-          <li>Online PvP</li>
-          <li>Controller support</li>
+          <Feature feature="Online Co-op" icon={Icon.Coop} />
+          <Feature feature="Online PvP" icon={Icon.PvP} />
+          <Feature feature="Controller support" icon={Icon.Controller} />
         </ul>
       </div>
     </div>
