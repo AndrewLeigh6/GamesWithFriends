@@ -1,0 +1,25 @@
+@import "./../../scss/variables";
+
+.GamesSelected {
+  background-color: $bg-dark-blue-1;
+  border-top-left-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+}
+
+.Numbers {
+  color: $text-blue-light-1;
+  font-size: 2.4rem;
+}
+
+.Text {
+  color: $text-blue-light-2;
+  font-size: 1.4rem;
+}

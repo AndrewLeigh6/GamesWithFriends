@@ -1,14 +1,12 @@
 import React from "react";
-import Button from "./components/Button/Button";
+import GamesSelected from "./components/GamesSelected/GamesSelected";
 import Layout from "./components/Layout/Layout";
 
 function App() {
   return (
     <div className="App">
       <Layout>
-        <Button color="Primary">Select</Button>
-        <Button color="SecondaryLight">Select 2</Button>
-        <Button color="SecondaryDark">Select 3</Button>
+        <GamesSelected gamesSelected={0} />
       </Layout>
     </div>
   );
