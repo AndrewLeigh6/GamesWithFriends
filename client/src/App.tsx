@@ -1,12 +1,18 @@
 import React from "react";
-import GamesSelected from "./components/GamesSelected/GamesSelected";
+import Input, { LeftIcon, RightIcon } from "./components/Input/Input";
 import Layout from "./components/Layout/Layout";
 
 function App() {
   return (
     <div className="App">
       <Layout>
-        <GamesSelected gamesSelected={0} />
+        <Input
+          label="Your Steam URL"
+          name="user"
+          placeholder="Enter your Steam URL"
+          leftIcon={LeftIcon.User}
+          rightIcon={RightIcon.Times}
+        />
       </Layout>
     </div>
   );
