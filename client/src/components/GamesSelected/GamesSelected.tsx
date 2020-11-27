@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../Button/Button";
+import GamesSelectedText from "../GamesSelectedText/GamesSelectedText";
 import classes from "./GamesSelected.module.scss";
 
 interface AppProps {
@@ -9,9 +10,7 @@ interface AppProps {
 const GamesSelected = (props: AppProps) => {
   return (
     <div className={classes.GamesSelected}>
-      <div className={classes.Numbers}>
-        {props.gamesSelected}/3 <span className={classes.Text}>selected</span>
-      </div>
+      <GamesSelectedText gamesSelected={0} />
       <Button color="Primary">Done</Button>
     </div>
   );
