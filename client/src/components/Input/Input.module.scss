@@ -3,9 +3,11 @@
 .InputContainer {
   display: grid;
   align-items: center;
+  grid-template-columns: auto 1fr;
   grid-template-areas:
-    ". label ."
-    "icon input button";
+    ". label"
+    "icon input";
+  margin-bottom: 2rem;
 }
 
 .Label {
@@ -60,9 +62,15 @@
   grid-area: button;
 }
 
-/* if we have a right icon, we want to remove the border radius
- from the right side of the input to connect the elements */
 .WithRightIcon {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+  grid-template-areas:
+    ". label ."
+    "icon input button";
+
+  /* if we have a right icon, we want to remove the border radius
+   from the right side of the input to connect the elements */
+  input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 }

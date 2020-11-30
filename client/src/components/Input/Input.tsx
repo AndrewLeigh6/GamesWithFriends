@@ -24,21 +24,21 @@ interface AppProps {
 }
 
 const Input = (props: AppProps) => {
-  const inputClasses = [classes.Input];
+  const inputContainerClasses = [classes.InputContainer];
 
   if (props.rightIcon) {
-    inputClasses.push(classes.WithRightIcon);
+    inputContainerClasses.push(classes.WithRightIcon);
   }
 
   return (
-    <div className={classes.InputContainer}>
+    <div className={inputContainerClasses.join(" ")}>
       <label htmlFor={props.name} className={classes.Label}>
         {props.label}
       </label>
       {renderLeftIcon(props.leftIcon)}
       <input
         type="text"
-        className={inputClasses.join(" ")}
+        className={classes.Input}
         name={props.name}
         id={props.name}
         placeholder={props.placeholder}
@@ -56,7 +56,7 @@ const renderLeftIcon = (icon: LeftIcon): JSX.Element => {
 const renderRightIcon = (icon: RightIcon): JSX.Element => {
   const IconType = getRightIcon(icon);
   const iconComponent = (
-    <button type="button" className={classes.Button} title={icon}>
+    <button type="button" className={classes.Button} title={icon + " button"}>
       <IconType className={classes.RightIcon} name={icon + " icon"} />
     </button>
   );
