@@ -9,6 +9,10 @@
   padding: 1rem 3rem;
 }
 
+.Button:focus {
+  outline: none;
+}
+
 .Primary {
   color: $text-orange-light-1;
   background-color: $bg-orange-1;
