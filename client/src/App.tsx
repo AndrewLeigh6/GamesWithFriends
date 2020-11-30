@@ -1,12 +1,12 @@
 import React from "react";
+import InputError from "./components/Input/InputError/InputError";
 import Layout from "./components/Layout/Layout";
-import GenerateLinks from "./containers/GenerateLinks/GenerateLinks";
 
 function App() {
   return (
     <div className="App">
       <Layout>
-        <GenerateLinks />
+        <InputError message="Error - URL is invalid" />
       </Layout>
     </div>
   );

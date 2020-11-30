@@ -1,0 +1,24 @@
+@import "./../../../scss/variables";
+
+.InputError {
+  font-size: 1.4rem;
+  color: $text-white-1;
+  background-color: $bg-black-1;
+  padding: 1rem 2rem;
+  border-radius: $border-radius;
+  position: relative;
+  z-index: 1;
+}
+
+.InputError::after {
+  content: "";
+  height: 1.5rem;
+  width: 1.5rem;
+  background-color: $bg-black-1;
+  position: absolute;
+  top: -0.5rem;
+  left: 2.3rem;
+  transform: rotate(45deg);
+  border-radius: 2px;
+  z-index: -1;
+}
