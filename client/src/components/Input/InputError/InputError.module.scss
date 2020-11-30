@@ -2,12 +2,15 @@
 
 .InputError {
   font-size: 1.4rem;
+  text-align: left;
   color: $text-white-1;
   background-color: $bg-black-1;
   padding: 1rem 2rem;
   border-radius: $border-radius;
   position: relative;
   z-index: 1;
+  top: -1rem;
+  margin-bottom: 2rem;
 }
 
 .InputError::after {
@@ -17,7 +20,7 @@
   background-color: $bg-black-1;
   position: absolute;
   top: -0.5rem;
-  left: 2.3rem;
+  left: 2.2rem;
   transform: rotate(45deg);
   border-radius: 2px;
   z-index: -1;

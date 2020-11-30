@@ -2,6 +2,7 @@ import React from "react";
 import Button from "../../components/Button/Button";
 import InfoText from "../../components/InfoText/InfoText";
 import Input, { LeftIcon, RightIcon } from "../../components/Input/Input";
+import InputError from "../../components/Input/InputError/InputError";
 import classes from "./GenerateLinks.module.scss";
 
 const GenerateLinks = () => {
