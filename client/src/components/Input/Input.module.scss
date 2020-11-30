@@ -23,7 +23,7 @@
   outline: none;
   border: none;
   border-radius: $border-radius;
-  padding: 1rem 5rem 1rem 2rem;
+  padding: 1rem 2rem;
   grid-area: input;
 }
 
@@ -72,5 +72,6 @@
   input {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    padding-right: 0;
   }
 }

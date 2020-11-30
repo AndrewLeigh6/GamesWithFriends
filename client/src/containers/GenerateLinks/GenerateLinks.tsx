@@ -2,7 +2,6 @@ import React from "react";
 import Button from "../../components/Button/Button";
 import InfoText from "../../components/InfoText/InfoText";
 import Input, { LeftIcon, RightIcon } from "../../components/Input/Input";
-import InputError from "../../components/Input/InputError/InputError";
 import classes from "./GenerateLinks.module.scss";
 
 const GenerateLinks = () => {
@@ -32,10 +31,14 @@ const GenerateLinks = () => {
           then vote on to decide which game you should play together.
         </InfoText>
         <InfoText title="How do I get my Steam URL?">
-          Click on your username in the top right corner of the Steam interface,
-          and then select ‘View my profile’. Next, right click anywhere on the
-          page, and choose ‘Copy Page URL’. Paste it into the first text box at
-          the top of this page.
+          <p>
+            Click on your username in the top right corner of the Steam
+            interface, and then select ‘View my profile’.
+          </p>
+          <p>
+            Next, right click anywhere on the page, and choose ‘Copy Page URL’.
+            Paste it into the first text box at the top of this page.
+          </p>
         </InfoText>
       </div>
     </div>

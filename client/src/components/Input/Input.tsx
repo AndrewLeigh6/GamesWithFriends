@@ -17,10 +17,12 @@ export enum RightIcon {
 
 interface AppProps {
   label: string;
-  placeholder: string;
+  placeholder?: string;
   name: string;
+  value?: string;
   leftIcon: LeftIcon;
   rightIcon?: RightIcon;
+  readonly?: boolean;
 }
 
 const Input = (props: AppProps) => {
@@ -42,6 +44,8 @@ const Input = (props: AppProps) => {
         name={props.name}
         id={props.name}
         placeholder={props.placeholder}
+        value={props.value}
+        readOnly={props.readonly}
       />
       {props.rightIcon ? renderRightIcon(props.rightIcon) : null}
     </div>
