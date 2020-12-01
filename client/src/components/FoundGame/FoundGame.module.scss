@@ -17,9 +17,15 @@
   text-align: left;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  flex: 1;
+}
+
+.Features li {
+  margin-bottom: 0.5rem;
 }
 
 .Features ul {
   list-style-type: none;
   text-align: left;
+  margin-bottom: 1.5rem;
 }

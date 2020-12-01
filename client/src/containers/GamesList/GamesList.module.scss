@@ -1,0 +1,11 @@
+@import "./../../scss/variables";
+
+.GamesList {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  grid-auto-rows: 1fr;
+  row-gap: 5rem;
+  padding-bottom: 10rem;
+}
