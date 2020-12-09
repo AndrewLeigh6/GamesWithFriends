@@ -1,0 +1,21 @@
+@import "./../../scss/variables";
+
+.Waiting {
+  align-self: flex-start;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.Waiting p {
+  color: $text-blue-light-1;
+  font-size: 1.4rem;
+  text-align: left;
+}
+
+.WaitingBubbles {
+  margin-top: 2rem;
+}
+
+.WaitingBubbles > div {
+  margin-bottom: 2rem;
+}
