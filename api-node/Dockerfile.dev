@@ -1,0 +1,11 @@
+FROM node:14-slim
+WORKDIR "/app"
+COPY package.json ./
+RUN npm install nodemon -g
+RUN npm install knex -g
+RUN npm install
+COPY . .
+RUN npm run db:up
+RUN npm run db:seed
+CMD ["npm", "run", "start"]
+EXPOSE 3001

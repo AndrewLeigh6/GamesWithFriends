@@ -8,6 +8,15 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./api-node
+    volumes:
+      - ./api-node:/app
+      - /app/node_modules
+    ports:
+      - "3001:3001"
   nginx:
     restart: always
     build:
@@ -15,3 +24,14 @@ services:
       context: ./nginx
     ports:
       - "3000:80"
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: gameswithfriends
+      POSTGRES_PASSWORD: password
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
