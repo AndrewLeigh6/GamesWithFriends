@@ -9,7 +9,7 @@ const Layout = (props: AppProps) => {
   return (
     <div className={classes.Layout}>
       <h1 className={classes.Title}> Games With Friends </h1>
-      {props.children}
+      <div className={classes.Content}>{props.children}</div>
     </div>
   );
 };
