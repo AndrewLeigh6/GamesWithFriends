@@ -69,6 +69,19 @@ export async function seed(knex: Knex): Promise<void> {
       },
     ]);
 
+  // sessions
+  const sessionIds = await knex("sessions")
+    .returning("id")
+    .insert([{ host_id: userIds[0] }]);
+
+  // sessions_users
+  const sessionsUsers = await knex("sessions_users").insert([
+    { session_id: sessionIds[0], user_id: userIds[0] },
+    { session_id: sessionIds[0], user_id: userIds[1] },
+    { session_id: sessionIds[0], user_id: userIds[2] },
+    { session_id: sessionIds[0], user_id: userIds[3] },
+  ]);
+
   // categories_games
   const categoriesGames = [
     { game_id: gameIds[0], category_id: categoryIds[0] },
