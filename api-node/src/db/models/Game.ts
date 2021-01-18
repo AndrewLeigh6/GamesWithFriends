@@ -4,6 +4,12 @@ import { User } from "./User";
 import path from "path";
 
 export class Game extends Model {
+  id?: number;
+  app_id?: string;
+  name?: string;
+  image_vertical_url?: string;
+  image_horizontal_url?: string;
+
   static get tableName() {
     return "games";
   }

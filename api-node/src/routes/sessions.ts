@@ -1,3 +1,4 @@
+import { GameModule } from "./../modules/GameModule";
 import { SessionModule } from "./../modules/SessionModule";
 import { resolveVanityUrl, getOwnedGames } from "./../services/steamapi";
 import express, { Request, Response } from "express";
@@ -34,6 +35,9 @@ sessionsRouter.get("/test", async function (req: Request, res: Response) {
   // const user = new UserHelper();
   // await user.init("https://steamcommunity.com/id/silverstone1294/");
   // console.log(user);
+
+  const game = new GameModule();
+  await game.init("294100");
 
   res.send("did it work");
 });
