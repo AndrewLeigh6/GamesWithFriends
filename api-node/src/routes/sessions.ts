@@ -1,8 +1,6 @@
 import { GameModule } from "./../modules/GameModule";
 import { SessionModule } from "./../modules/SessionModule";
-import { resolveVanityUrl, getOwnedGames } from "./../services/steamapi";
 import express, { Request, Response } from "express";
-import { PartialModelObject } from "objection";
 import { Session } from "../db/models/Session";
 import { User } from "../db/models/User";
 export const sessionsRouter = express.Router();

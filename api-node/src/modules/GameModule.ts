@@ -15,12 +15,17 @@ export class GameModule {
     return gameDetails;
   };
 
-  private setGameDetails = (gameDetails: GameDetails): void => {
+  private setGameDetails = (gameDetails: GameDetails): boolean => {
     const data = gameDetails[this.appId].data;
 
-    this.name = data.name;
-    this.imageVerticalUrl = this.getVerticalImageUrl(this.appId);
-    this.imageHorizontalUrl = this.getHorizontalImageUrl(this.appId);
+    if (data !== undefined) {
+      this.name = data.name;
+      this.imageVerticalUrl = this.getVerticalImageUrl(this.appId);
+      this.imageHorizontalUrl = this.getHorizontalImageUrl(this.appId);
+      return true;
+    }
+
+    return false;
   };
 
   private getVerticalImageUrl = (appId: string): string => {
@@ -49,24 +54,31 @@ export class GameModule {
       image_horizontal_url: game.imageHorizontalUrl,
     };
 
+    /* Check that the game hasn't been saved already */
+    const existingGame = await this.recordExists(game.appId);
+    if (existingGame) {
+      console.log("Tried to add existing game (second check)", game.name);
+      this.setExistingGameDetails(existingGame);
+      if (typeof existingGame.id === "number") {
+        return existingGame.id;
+      }
+      return null;
+    }
+
     const gameRow: Game = await Game.query().insert(insertData).returning("*");
 
     if (typeof gameRow.id === "number") {
+      console.log("Added new game", gameRow.name);
+
       return gameRow.id;
     }
 
     return null;
   };
 
-  public init = async (appId: string): Promise<void> => {
-    this.appId = appId;
-
-    /* If the game exists, we grab it's row ID from the DB and save it
-    as an attribute. Otherwise, save the new game and grab the new ID. */
-    const game = await this.recordExists(appId);
-
-    /* Sorry, I know this is horrible. Here's a promise to research
+  /* Sorry, I know this is horrible. Here's a promise to research
     nice and clean type guards at some point, and fix this mess. */
+  private setExistingGameDetails = (game: GameRecord): void => {
     if (
       game !== undefined &&
       typeof game.id === "number" &&
@@ -78,13 +90,25 @@ export class GameModule {
       this.name = game.name;
       this.imageVerticalUrl = game.image_vertical_url;
       this.imageHorizontalUrl = game.image_horizontal_url;
+    }
+  };
+
+  public init = async (appId: string): Promise<void> => {
+    this.appId = appId;
+
+    /* If the game exists, we grab it's row ID from the DB and save it
+    as an attribute. Otherwise, save the new game and grab the new ID. */
+
+    const existingGame = await this.recordExists(appId);
+    if (existingGame) {
+      console.log("Tried to add existing game (first check)", appId);
+      this.setExistingGameDetails(existingGame);
     } else {
       const gameDetails: GameDetails = await this.getGameDetails(appId);
-      if (gameDetails[appId].success === true) {
-        this.setGameDetails(gameDetails);
+      const detailsSet = this.setGameDetails(gameDetails);
+      if (detailsSet) {
         this.rowId = await this.save(this);
       }
     }
-    console.log(this);
   };
 }

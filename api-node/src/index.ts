@@ -1,5 +1,8 @@
 import express from "express";
 import Knex from "knex";
+import morgan from "morgan";
+import * as fs from "fs";
+import * as path from "path";
 import { Model } from "objection";
 import { sessionsRouter } from "./routes/sessions";
 import { usersRouter } from "./routes/users";
@@ -14,7 +17,12 @@ https://vincit.github.io/objection.js/guide/query-examples.html#relation-find-qu
 
 const knexConfig = require("./db/knexfile");
 
+const logStream = fs.createWriteStream(path.join(__dirname, "access.log"), {
+  flags: "a",
+});
+
 const app = express();
+app.use(morgan("dev", { stream: logStream }));
 app.use("/sessions", sessionsRouter);
 app.use("/users", usersRouter);
 

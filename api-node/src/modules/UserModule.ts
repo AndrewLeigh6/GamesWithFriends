@@ -1,6 +1,10 @@
+import { GameModule } from "./GameModule";
 import { User } from "./../db/models/User";
-import axios from "axios";
-import { Game, getOwnedGames, resolveVanityUrl } from "../services/steamapi";
+import {
+  OwnedGame,
+  getOwnedGames,
+  resolveVanityUrl,
+} from "../services/steamapi";
 
 interface UserRecord extends Partial<User> {}
 
@@ -9,7 +13,8 @@ export class UserModule {
   steamId: string = "";
   username: string = "";
   isHost: boolean = false;
-  games: Game[] = [];
+  ownedGameAppIds: OwnedGame[] = [];
+  games: GameModule[] = [];
 
   private setUsername = (url: string): void => {
     const username = url.split("/")[4];
@@ -21,7 +26,7 @@ export class UserModule {
     return steamId;
   };
 
-  private getOwnedGames = async (steamId: string): Promise<Game[]> => {
+  private getOwnedGames = async (steamId: string): Promise<OwnedGame[]> => {
     const userGames = await getOwnedGames(steamId);
     return userGames;
   };
@@ -34,7 +39,10 @@ export class UserModule {
     return user;
   };
 
-  private save = async (user: this): Promise<number | null> => {
+  private save = async (
+    user: this,
+    games: GameModule[]
+  ): Promise<number | null> => {
     const insertData: UserRecord = {
       steam_id: user.steamId,
       steam_username: user.username,
@@ -42,14 +50,52 @@ export class UserModule {
 
     const userRow: User = await User.query().insert(insertData).returning("*");
 
+    const gameIds = games.flatMap((game) => {
+      if (typeof game.rowId === "number") {
+        return [game.rowId];
+      } else {
+        return [];
+      }
+    });
+
     if (typeof userRow.id === "number") {
+      const usersGames = await User.relatedQuery("games")
+        .for(userRow.id)
+        .relate(gameIds);
       return userRow.id;
     }
 
     return null;
   };
 
+  private createGames = async (ownedGames: OwnedGame[]): Promise<void> => {
+    const createGame = async (appId: string): Promise<GameModule> => {
+      const game = new GameModule();
+      await game.init(appId);
+
+      return game;
+    };
+
+    await Promise.all(
+      ownedGames.map(
+        async (ownedGame: OwnedGame): Promise<void> => {
+          let game: GameModule;
+          game = await createGame(ownedGame.appid);
+
+          this.games.push(game);
+        }
+      )
+    );
+  };
+
   public init = async (url: string, isHost: boolean = false): Promise<this> => {
+    /* TODO: Need to fix how we get the username. My profile looks like this:
+    https://steamcommunity.com/id/silverstone1294/
+    and so we need to get the ID from the vanity url.
+    However, your profile could also look like this: 
+    https://steamcommunity.com/profiles/76561197975556468/
+    In this case, we can just grab the ID directly. */
+
     this.setUsername(url);
     this.isHost = isHost;
     this.steamId = await this.getSteamId(this.username);
@@ -61,9 +107,12 @@ export class UserModule {
     if (user !== undefined && typeof user.id === "number") {
       this.rowId = user.id;
     } else {
-      this.games = await this.getOwnedGames(this.steamId);
-      this.rowId = await this.save(this);
+      this.ownedGameAppIds = await this.getOwnedGames(this.steamId);
+      await this.createGames(this.ownedGameAppIds);
+      this.rowId = await this.save(this, this.games);
     }
+
+    console.log(`List of games for ${this.username}: `, this.games);
 
     return this;
   };

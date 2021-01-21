@@ -7,10 +7,8 @@ interface SessionData {
   host_id?: number;
 }
 
-interface User extends UserModule {}
-
 export class SessionModule {
-  users: User[] = [];
+  users: UserModule[] = [];
 
   private createUsers = async (steamUrls: string[]): Promise<void> => {
     const createUser = async (
@@ -44,7 +42,7 @@ export class SessionModule {
     );
   };
 
-  private save = async (hostId: number, users: User[]): Promise<void> => {
+  private save = async (hostId: number, users: UserModule[]): Promise<void> => {
     const insertData = { host_id: hostId };
     const session: SessionData = await Session.query().insert(insertData);
 
@@ -61,11 +59,9 @@ export class SessionModule {
         .for(session.id)
         .relate(userIds);
     }
-
-    // we left off here - sessions and sessions_users are sorted
   };
 
-  private getHostId = (users: User[]): number | null => {
+  private getHostId = (users: UserModule[]): number | null => {
     const hostIndex = users.findIndex((user) => {
       return user.isHost;
     });
