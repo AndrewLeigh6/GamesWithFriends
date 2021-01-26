@@ -1,10 +1,19 @@
 import { UserModule } from "./UserModule";
-import axios from "axios";
 import { Session } from "../db/models/Session";
+import { Game } from "../db/models/Game";
+import { Model } from "objection";
 
 interface SessionData {
   id?: number;
   host_id?: number;
+}
+
+interface UserCount extends Model {
+  count?: string;
+}
+
+interface GameWithOwners extends Game {
+  owners?: string;
 }
 
 export class SessionModule {
@@ -77,6 +86,61 @@ export class SessionModule {
     }
 
     return null;
+  };
+
+  public getSharedGames = async (sessionId: string): Promise<Game[]> => {
+    // Basically, if there are 4 users in the session, return "4"
+    const getSessionUserCount = async (
+      sessionId: string
+    ): Promise<string | undefined> => {
+      const usersInSessionCountQuery = await Session.relatedQuery("users")
+        .count()
+        .for(sessionId);
+
+      const usersInSessionResult: UserCount = usersInSessionCountQuery[0];
+      const usersInSessionCount = usersInSessionResult.count;
+      if (typeof usersInSessionCount === "string") {
+        return usersInSessionCount;
+      }
+
+      return undefined;
+    };
+
+    // Get ALL games owned by users in this session
+    const getGamesOwnedByAllUsers = async (
+      sessionId: string
+    ): Promise<Game[]> => {
+      const userGames: GameWithOwners[] = await Game.query()
+        .select(
+          "games.*",
+          Game.relatedQuery("users")
+            .count()
+            .as("owners")
+            .whereIn("users.id", usersInSession)
+        )
+        .orderBy("games.name", "asc");
+
+      return userGames;
+    };
+
+    const getGamesInCommon = (userGame: GameWithOwners) => {
+      return userGame.owners === usersInSessionCount;
+    };
+
+    const usersInSessionCount = await getSessionUserCount(sessionId);
+
+    const usersInSession = Session.relatedQuery("users")
+      .select("users.id")
+      .for(sessionId);
+
+    const userGames: GameWithOwners[] = await getGamesOwnedByAllUsers(
+      sessionId
+    );
+
+    // Finally, filter out games that the users don't have in common
+    const sharedGames: GameWithOwners[] = userGames.filter(getGamesInCommon);
+
+    return sharedGames;
   };
 
   public init = async (steamUrls: string[]): Promise<void> => {
