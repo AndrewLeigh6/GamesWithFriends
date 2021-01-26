@@ -23,6 +23,7 @@ interface AppProps {
   leftIcon: LeftIcon;
   rightIcon?: RightIcon;
   readonly?: boolean;
+  iconClicked?: () => void;
 }
 
 const Input = (props: AppProps) => {
@@ -47,7 +48,9 @@ const Input = (props: AppProps) => {
         value={props.value}
         readOnly={props.readonly}
       />
-      {props.rightIcon ? renderRightIcon(props.rightIcon) : null}
+      {props.rightIcon && props.iconClicked
+        ? renderRightIcon(props.rightIcon, props.iconClicked)
+        : null}
     </div>
   );
 };
@@ -57,10 +60,18 @@ const renderLeftIcon = (icon: LeftIcon): JSX.Element => {
   return <IconType className={classes.LeftIcon} name={icon + " icon"} />;
 };
 
-const renderRightIcon = (icon: RightIcon): JSX.Element => {
+const renderRightIcon = (
+  icon: RightIcon,
+  iconClicked: () => void
+): JSX.Element => {
   const IconType = getRightIcon(icon);
   const iconComponent = (
-    <button type="button" className={classes.Button} title={icon + " button"}>
+    <button
+      type="button"
+      className={classes.Button}
+      title={icon + " button"}
+      onClick={iconClicked}
+    >
       <IconType className={classes.RightIcon} name={icon + " icon"} />
     </button>
   );

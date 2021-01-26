@@ -1,9 +1,6 @@
 import { SessionModule } from "./../modules/SessionModule";
 import express, { Request, Response } from "express";
 import { Session } from "../db/models/Session";
-import { User } from "../db/models/User";
-import { Game } from "../db/models/Game";
-import { Model } from "objection";
 export const sessionsRouter = express.Router();
 
 interface RequestWithUsers extends Request {

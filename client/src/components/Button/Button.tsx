@@ -6,10 +6,15 @@ type Color = "Primary" | "SecondaryLight" | "SecondaryDark";
 interface AppProps {
   children: string;
   color: Color;
+  clicked?: () => void;
 }
 
 const Button = (props: AppProps) => {
-  return <button className={getClasses(props.color)}>{props.children}</button>;
+  return (
+    <button className={getClasses(props.color)} onClick={props.clicked}>
+      {props.children}
+    </button>
+  );
 };
 
 const getClasses = (color: Color) => {

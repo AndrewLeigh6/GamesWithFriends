@@ -1,10 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../../components/Button/Button";
 import InfoText from "../../components/InfoText/InfoText";
 import Input, { LeftIcon, RightIcon } from "../../components/Input/Input";
 import classes from "./GenerateLinks.module.scss";
 
 const GenerateLinks = () => {
+  const MAX_FRIENDS = 7;
+  const MIN_FRIENDS = 1;
+
+  const [friends, setFriends] = useState<number>(1);
+
+  const handleAddFriend = () => {
+    if (friends < MAX_FRIENDS) {
+      setFriends(friends + 1);
+    }
+  };
+
+  const handleRemoveFriend = () => {
+    if (friends > MIN_FRIENDS) {
+      setFriends(friends - 1);
+    }
+  };
+
+  const buildFriendInputs = (): JSX.Element[] => {
+    const friendInputs = Array.from(Array(friends)).map((friend) => {
+      return (
+        <Input
+          label="Friend's Steam URL"
+          leftIcon={LeftIcon.Friend}
+          name="friend"
+          placeholder="Enter your friend's Steam URL"
+          rightIcon={RightIcon.Times}
+          key={friend}
+          iconClicked={handleRemoveFriend}
+        />
+      );
+    });
+
+    return friendInputs;
+  };
+
   return (
     <div className={classes.GenerateLinks}>
       <Input
@@ -13,15 +48,11 @@ const GenerateLinks = () => {
         name="user"
         placeholder="Enter your Steam URL"
       />
-      <Input
-        label="Friend's Steam URL"
-        leftIcon={LeftIcon.Friend}
-        name="friend"
-        placeholder="Enter your friend's Steam URL"
-        rightIcon={RightIcon.Times}
-      />
+      {buildFriendInputs()}
       <div className={classes.Buttons}>
-        <Button color="SecondaryDark">Add Friend</Button>
+        <Button color="SecondaryDark" clicked={handleAddFriend}>
+          Add Friend
+        </Button>
         <Button color="Primary">Generate Links</Button>
       </div>
       <div className={classes.Info}>
