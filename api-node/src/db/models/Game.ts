@@ -24,7 +24,7 @@ export class Game extends Model {
           from: "games_users.game_id",
           to: "games_users.user_id",
         },
-        to: "user.id",
+        to: "users.id",
       },
     },
     categories: {

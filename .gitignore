@@ -23,6 +23,7 @@
 .env.development.local
 .env.test.local
 .env.production.local
+/api-node/log-file.txt
 
 npm-debug.log*
 yarn-debug.log*

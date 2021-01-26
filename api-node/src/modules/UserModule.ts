@@ -22,6 +22,8 @@ export class UserModule {
   };
 
   private getSteamId = async (username: string): Promise<string> => {
+    console.log("steam id is", username);
+
     const steamId = await resolveVanityUrl(username);
     return steamId;
   };

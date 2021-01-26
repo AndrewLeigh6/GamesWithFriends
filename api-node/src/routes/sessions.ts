@@ -1,8 +1,9 @@
-import { GameModule } from "./../modules/GameModule";
 import { SessionModule } from "./../modules/SessionModule";
 import express, { Request, Response } from "express";
 import { Session } from "../db/models/Session";
 import { User } from "../db/models/User";
+import { Game } from "../db/models/Game";
+import { Model } from "objection";
 export const sessionsRouter = express.Router();
 
 interface RequestWithUsers extends Request {
@@ -11,8 +12,16 @@ interface RequestWithUsers extends Request {
   };
 }
 
+interface UserCount extends Model {
+  count?: string;
+}
+
+interface GameWithOwners extends Game {
+  owners?: string;
+}
+
 /* 
-more useful links:
+useful links:
 https://vincit.github.io/objection.js/api/query-builder/mutate-methods.html#relate
 https://vincit.github.io/objection.js/api/query-builder/mutate-methods.html#insert
 https://vincit.github.io/objection.js/recipes/extra-properties.html
@@ -21,52 +30,15 @@ https://vincit.github.io/objection.js/recipes/extra-properties.html
 /* you can send a request like http://localhost:3000/api/sessions?user=andrew&user=bob&user=joey
 and it will give you {user: ["andrew", "bob", "joey"]} */
 
-// TESTING
-sessionsRouter.get("/test", async function (req: Request, res: Response) {
-  // const username = "silverstone1294";
-  // const steamId = await resolveVanityUrl(username);
-
-  // const userGames = await getOwnedGames(steamId);
-
-  // res.json(userGames);
-
-  // const user = new UserHelper();
-  // await user.init("https://steamcommunity.com/id/silverstone1294/");
-  // console.log(user);
-
-  const game = new GameModule();
-  await game.init("294100");
-
-  res.send("did it work");
-});
-
 // create session
 sessionsRouter.post("/", async function (req: RequestWithUsers, res: Response) {
-  // // create initial session with host
-  // const hostSteamId = 1;
-  // const insertData = { host_id: hostSteamId };
-
-  // const session: SessionData = await Session.query().insert(insertData);
-
-  // // next, we need to get our users info from steam and put them in the db
-
-  // // finally, add our new users to sessions_users
-  // const sessionId = session.id;
-
-  // if (sessionId) {
-  //   const sessionUsers = await Session.relatedQuery("users")
-  //     .for(sessionId)
-  //     .relate([1, 2, 3, 4]);
-  // }
-
   const sessionModule = new SessionModule();
   await sessionModule.init(req.query.users);
-  //console.log("Our users are", sessionModule.users);
 
-  res.json({ hi: "hi" });
+  console.log(sessionModule.users);
+
+  res.json(sessionModule);
 });
-
-// get session by id
 
 // get users by session id
 sessionsRouter.get(
@@ -88,12 +60,35 @@ sessionsRouter.get(
   async function (req: Request, res: Response) {
     const sessionId: string = req.params.sessionId;
 
-    const usersInSession = Session.relatedQuery("users").for(sessionId);
+    // Get number of users in session
+    const usersInSessionCountQuery = await Session.relatedQuery("users")
+      .count()
+      .for(sessionId);
 
-    const games = await User.relatedQuery("games")
-      .for(usersInSession)
-      .distinct("name", "image_vertical_url", "image_horizontal_url");
+    const usersInSessionObj: UserCount = usersInSessionCountQuery[0];
+    const usersInSessionCount = usersInSessionObj.count;
 
-    res.json(games);
+    // Next, prepare the first part of our query
+    const usersInSession = Session.relatedQuery("users")
+      .select("users.id")
+      .for(sessionId);
+
+    // Put it all together and get the games the users own
+    const userGames = await Game.query()
+      .select(
+        "games.*",
+        Game.relatedQuery("users")
+          .count()
+          .as("owners")
+          .whereIn("users.id", usersInSession)
+      )
+      .orderBy("games.name", "asc");
+
+    // Finally, filter out games that the users don't have in common
+    const sharedGames = userGames.filter((userGame: GameWithOwners) => {
+      return userGame.owners === usersInSessionCount;
+    });
+
+    res.json(sharedGames);
   }
 );
