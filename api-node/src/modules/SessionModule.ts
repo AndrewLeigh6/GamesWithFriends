@@ -1,7 +1,9 @@
+import { generateUrl } from "./../helpers/helpers";
 import { UserModule } from "./UserModule";
 import { Session } from "../db/models/Session";
 import { Game } from "../db/models/Game";
-import { Model } from "objection";
+import { Model, PartialModelObject } from "objection";
+import { User } from "../db/models/User";
 
 interface SessionData {
   id?: number;
@@ -63,11 +65,20 @@ export class SessionModule {
       }
     });
 
-    if (typeof session.id === "number") {
-      const sessionUsers = await Session.relatedQuery("users")
-        .for(session.id)
-        .relate(userIds);
-    }
+    await Promise.all(
+      userIds.map(async (userId) => {
+        if (typeof session.id === "number") {
+          const url = generateUrl();
+
+          const sessionUser = await Session.relatedQuery("users")
+            .for(session.id)
+            .relate({
+              id: userId,
+              url: url,
+            } as PartialModelObject<User>);
+        }
+      })
+    );
   };
 
   private getHostId = (users: UserModule[]): number | null => {
@@ -141,6 +152,16 @@ export class SessionModule {
     const sharedGames: GameWithOwners[] = userGames.filter(getGamesInCommon);
 
     return sharedGames;
+  };
+
+  /* ON HOLD - WE NEED TO GENERATE URLS FIRST */
+  public initFromUrl = async (url: string): Promise<void> => {
+    // string should be like SpecialBrownParrot
+    console.log(url);
+    /* so what do we need to do here?
+      - generate all users from db, not steam urls
+      - get all games in common
+    */
   };
 
   public init = async (steamUrls: string[]): Promise<void> => {

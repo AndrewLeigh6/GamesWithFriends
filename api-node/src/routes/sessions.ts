@@ -1,3 +1,4 @@
+import { User } from "./../db/models/User";
 import { SessionModule } from "./../modules/SessionModule";
 import express, { Request, Response } from "express";
 import { Session } from "../db/models/Session";
@@ -6,6 +7,12 @@ export const sessionsRouter = express.Router();
 interface RequestWithUsers extends Request {
   query: {
     users: string[];
+  };
+}
+
+interface RequestWithUrl extends Request {
+  query: {
+    url: string;
   };
 }
 
@@ -28,7 +35,7 @@ sessionsRouter.get(
 
     const users = await Session.relatedQuery("users")
       .for(sessionId)
-      .distinct("steam_id", "steam_username");
+      .distinct("steam_id", "steam_username", "url");
 
     res.json(users);
   }
@@ -44,5 +51,31 @@ sessionsRouter.get(
     const sharedGames = await sessionModule.getSharedGames(sessionId);
 
     res.json(sharedGames);
+  }
+);
+
+// testing
+sessionsRouter.get(
+  "/test",
+  async function (req: RequestWithUrl, res: Response) {
+    const url = req.query.url;
+    const sessionModule = new SessionModule();
+    sessionModule.initFromUrl(url);
+    res.json(url);
+  }
+);
+
+sessionsRouter.get(
+  "/:sessionId/users/:userId",
+  async (req: Request, res: Response) => {
+    // in the current session, get the user details
+    const sessionId = req.params.sessionId;
+    const userId = req.params.userId;
+
+    const user = await Session.relatedQuery("users")
+      .for(sessionId)
+      .where("users.id", userId);
+
+    res.json(user);
   }
 );

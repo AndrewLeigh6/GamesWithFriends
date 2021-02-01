@@ -22,7 +22,6 @@ export class User extends Model {
         through: {
           from: "games_users.user_id",
           to: "games_users.game_id",
-          extra: ["url"],
         },
         to: "games.id",
       },
@@ -35,6 +34,7 @@ export class User extends Model {
         through: {
           from: "sessions_users.user_id",
           to: "sessions_users.session_id",
+          extra: ["url"],
         },
         to: "sessions.id",
       },
