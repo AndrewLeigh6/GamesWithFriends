@@ -2,28 +2,36 @@ import React, { useState } from "react";
 import Button from "../../components/Button/Button";
 import InfoText from "../../components/InfoText/InfoText";
 import Input, { LeftIcon, RightIcon } from "../../components/Input/Input";
+import axios, { AxiosResponse } from "axios";
 import classes from "./GenerateLinks.module.scss";
+import { Friend } from "../../App";
 
-const GenerateLinks = () => {
-  const MAX_FRIENDS = 7;
-  const MIN_FRIENDS = 1;
+interface AppProps {
+  friends: Friend[];
+  onAddFriend: (name: string) => void;
+  onRemoveFriend: (index: number) => void;
+}
 
-  const [friends, setFriends] = useState<number>(1);
+const GenerateLinks = (props: AppProps) => {
+  const createSession = async (): Promise<void> => {
+    let result: AxiosResponse;
 
-  const handleAddFriend = () => {
-    if (friends < MAX_FRIENDS) {
-      setFriends(friends + 1);
-    }
-  };
-
-  const handleRemoveFriend = () => {
-    if (friends > MIN_FRIENDS) {
-      setFriends(friends - 1);
+    try {
+      result = await axios.post(
+        "/api/sessions?users=https://steamcommunity.com/id/lawadaisy/&users=https://steamcommunity.com/id/loke1104/"
+      );
+      console.log(result);
+    } catch (error: unknown) {
+      if (typeof error === "string") {
+        throw new Error(error);
+      } else {
+        throw new Error("Failed to create new session");
+      }
     }
   };
 
   const buildFriendInputs = (): JSX.Element[] => {
-    const friendInputs = Array.from(Array(friends)).map((friend) => {
+    const friendInputs = props.friends.map((friend, index) => {
       return (
         <Input
           label="Friend's Steam URL"
@@ -31,8 +39,8 @@ const GenerateLinks = () => {
           name="friend"
           placeholder="Enter your friend's Steam URL"
           rightIcon={RightIcon.Times}
-          key={friend}
-          iconClicked={handleRemoveFriend}
+          iconClicked={() => props.onRemoveFriend(index)}
+          key={friend.id}
         />
       );
     });
@@ -50,10 +58,12 @@ const GenerateLinks = () => {
       />
       {buildFriendInputs()}
       <div className={classes.Buttons}>
-        <Button color="SecondaryDark" clicked={handleAddFriend}>
+        <Button color="SecondaryDark" clicked={() => props.onAddFriend("")}>
           Add Friend
         </Button>
-        <Button color="Primary">Generate Links</Button>
+        <Button color="Primary" clicked={createSession}>
+          Generate Links
+        </Button>
       </div>
       <div className={classes.Info}>
         <InfoText title="How does it work?">
