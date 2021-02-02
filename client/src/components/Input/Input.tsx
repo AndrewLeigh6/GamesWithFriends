@@ -23,7 +23,12 @@ interface AppProps {
   leftIcon: LeftIcon;
   rightIcon?: RightIcon;
   readonly?: boolean;
+  index?: number;
   iconClicked?: () => void;
+  changed?: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index?: number
+  ) => void;
 }
 
 const Input = (props: AppProps) => {
@@ -31,6 +36,20 @@ const Input = (props: AppProps) => {
 
   if (props.rightIcon) {
     inputContainerClasses.push(classes.WithRightIcon);
+  }
+
+  let index = 0;
+
+  let events = {
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) =>
+      props.changed ? props.changed(event, index) : null,
+  };
+
+  if (typeof props.index === "number") {
+    index = props.index;
+  } else {
+    events.onChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+      props.changed ? props.changed(event) : null;
   }
 
   return (
@@ -47,6 +66,7 @@ const Input = (props: AppProps) => {
         placeholder={props.placeholder}
         value={props.value}
         readOnly={props.readonly}
+        {...events}
       />
       {props.rightIcon && props.iconClicked
         ? renderRightIcon(props.rightIcon, props.iconClicked)

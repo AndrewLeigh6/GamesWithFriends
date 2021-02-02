@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "../../components/Button/Button";
 import InfoText from "../../components/InfoText/InfoText";
 import Input, { LeftIcon, RightIcon } from "../../components/Input/Input";
-import axios, { AxiosResponse } from "axios";
 import classes from "./GenerateLinks.module.scss";
 import { Friend } from "../../App";
 
@@ -10,37 +9,28 @@ interface AppProps {
   friends: Friend[];
   onAddFriend: (name: string) => void;
   onRemoveFriend: (index: number) => void;
+  onFriendUrlChanged: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index?: number
+  ) => void;
+  onHostUrlChanged: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onCreateSession: () => Promise<void>;
 }
 
 const GenerateLinks = (props: AppProps) => {
-  const createSession = async (): Promise<void> => {
-    let result: AxiosResponse;
-
-    try {
-      result = await axios.post(
-        "/api/sessions?users=https://steamcommunity.com/id/lawadaisy/&users=https://steamcommunity.com/id/loke1104/"
-      );
-      console.log(result);
-    } catch (error: unknown) {
-      if (typeof error === "string") {
-        throw new Error(error);
-      } else {
-        throw new Error("Failed to create new session");
-      }
-    }
-  };
-
   const buildFriendInputs = (): JSX.Element[] => {
     const friendInputs = props.friends.map((friend, index) => {
       return (
         <Input
           label="Friend's Steam URL"
           leftIcon={LeftIcon.Friend}
-          name="friend"
+          name={"friend" + index}
           placeholder="Enter your friend's Steam URL"
           rightIcon={RightIcon.Times}
           iconClicked={() => props.onRemoveFriend(index)}
           key={friend.id}
+          index={index}
+          changed={props.onFriendUrlChanged}
         />
       );
     });
@@ -55,13 +45,14 @@ const GenerateLinks = (props: AppProps) => {
         leftIcon={LeftIcon.User}
         name="user"
         placeholder="Enter your Steam URL"
+        changed={props.onHostUrlChanged}
       />
       {buildFriendInputs()}
       <div className={classes.Buttons}>
         <Button color="SecondaryDark" clicked={() => props.onAddFriend("")}>
           Add Friend
         </Button>
-        <Button color="Primary" clicked={createSession}>
+        <Button color="Primary" clicked={props.onCreateSession}>
           Generate Links
         </Button>
       </div>
