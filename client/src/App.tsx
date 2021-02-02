@@ -1,4 +1,3 @@
-import axios, { AxiosResponse } from "axios";
 import React, { useReducer, useState } from "react";
 import Layout from "./components/Layout/Layout";
 import GamesList from "./containers/GamesList/GamesList";
@@ -6,7 +5,7 @@ import GeneratedLinks from "./containers/GeneratedLinks/GeneratedLinks";
 import GenerateLinks from "./containers/GenerateLinks/GenerateLinks";
 import Results from "./containers/Results/Results";
 import Waiting from "./containers/Waiting/Waiting";
-import { getRandomId } from "./helpers/helpers";
+import { Session } from "./helpers/Session";
 
 const MIN_FRIENDS = 1;
 const MAX_FRIENDS = 7;
@@ -27,7 +26,7 @@ function friendsReducer(state: State, action: Actions) {
   switch (action.type) {
     case "add":
       if (state.length < MAX_FRIENDS) {
-        const id = getRandomId();
+        const id = Session.getRandomId();
         return [...state, { id: id, url: action.url }];
       } else {
         return state;
@@ -47,7 +46,7 @@ function friendsReducer(state: State, action: Actions) {
   }
 }
 
-const initalState = [{ id: getRandomId(), url: "" }];
+const initalState = [{ id: Session.getRandomId(), url: "" }];
 
 function App() {
   const [hostUrl, setHostUrl] = useState("");
@@ -77,25 +76,7 @@ function App() {
   };
 
   const onCreateSession = async (): Promise<void> => {
-    let result: AxiosResponse;
-
-    const initialString = "users=" + hostUrl;
-
-    // build query string
-    let queryString = friends.reduce((prev, curr): string => {
-      return prev + "&users=" + curr.url;
-    }, initialString);
-
-    try {
-      result = await axios.post(`/api/sessions?${queryString}`);
-      console.log(result);
-    } catch (error: unknown) {
-      if (typeof error === "string") {
-        throw new Error(error);
-      } else {
-        throw new Error("Failed to create new session");
-      }
-    }
+    Session.create(hostUrl, friends);
   };
 
   return (
