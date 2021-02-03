@@ -4,6 +4,7 @@ import InfoText from "../../components/InfoText/InfoText";
 import Input, { LeftIcon, RightIcon } from "../../components/Input/Input";
 import classes from "./GenerateLinks.module.scss";
 import { Friend } from "../../App";
+import { Link } from "react-router-dom";
 
 interface AppProps {
   friends: Friend[];
@@ -52,9 +53,11 @@ const GenerateLinks = (props: AppProps) => {
         <Button color="SecondaryDark" clicked={() => props.onAddFriend("")}>
           Add Friend
         </Button>
-        <Button color="Primary" clicked={props.onCreateSession}>
-          Generate Links
-        </Button>
+        <Link to="/generated-links">
+          <Button color="Primary" clicked={props.onCreateSession}>
+            Generate Links
+          </Button>
+        </Link>
       </div>
       <div className={classes.Info}>
         <InfoText title="How does it work?">

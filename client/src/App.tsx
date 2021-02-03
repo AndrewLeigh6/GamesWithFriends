@@ -6,6 +6,7 @@ import GenerateLinks from "./containers/GenerateLinks/GenerateLinks";
 import Results from "./containers/Results/Results";
 import Waiting from "./containers/Waiting/Waiting";
 import { Session } from "./helpers/Session";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const MIN_FRIENDS = 1;
 const MAX_FRIENDS = 7;
@@ -81,16 +82,25 @@ function App() {
 
   return (
     <div className="App">
-      <Layout>
-        <GenerateLinks
-          friends={friends}
-          onAddFriend={onAddFriend}
-          onRemoveFriend={onRemoveFriend}
-          onFriendUrlChanged={onFriendUrlChanged}
-          onHostUrlChanged={onHostUrlChanged}
-          onCreateSession={onCreateSession}
-        />
-      </Layout>
+      <Router>
+        <Layout>
+          <Switch>
+            <Route path="/generated-links">
+              <GeneratedLinks />
+            </Route>
+            <Route path="/">
+              <GenerateLinks
+                friends={friends}
+                onAddFriend={onAddFriend}
+                onRemoveFriend={onRemoveFriend}
+                onFriendUrlChanged={onFriendUrlChanged}
+                onHostUrlChanged={onHostUrlChanged}
+                onCreateSession={onCreateSession}
+              />
+            </Route>
+          </Switch>
+        </Layout>
+      </Router>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import InfoText from "../../components/InfoText/InfoText";
 import Input, { LeftIcon, RightIcon } from "../../components/Input/Input";
@@ -32,7 +33,9 @@ const GeneratedLinks = () => {
         readonly
       />
       <div className={classes.Buttons}>
-        <Button color="SecondaryDark">Go back</Button>
+        <Link to="/">
+          <Button color="SecondaryDark">Go back</Button>
+        </Link>
         <Button color="Primary">View games</Button>
       </div>
       <div className={classes.Info}>
