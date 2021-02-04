@@ -85,6 +85,20 @@ const GenerateLinks = () => {
     session.create(hostUrl, friends);
   };
 
+  const buildHostInput = (): JSX.Element => {
+    const hostInput = (
+      <Input
+        label="Your Steam URL"
+        leftIcon={LeftIcon.User}
+        name="user"
+        placeholder="Enter your Steam URL"
+        changed={onHostUrlChanged}
+      />
+    );
+
+    return hostInput;
+  };
+
   const buildFriendInputs = (): JSX.Element[] => {
     const friendInputs = friends.map((friend, index) => {
       return (
@@ -105,27 +119,9 @@ const GenerateLinks = () => {
     return friendInputs;
   };
 
-  return (
-    <div className={classes.GenerateLinks}>
-      <Input
-        label="Your Steam URL"
-        leftIcon={LeftIcon.User}
-        name="user"
-        placeholder="Enter your Steam URL"
-        changed={onHostUrlChanged}
-      />
-      {buildFriendInputs()}
-      <div className={classes.Buttons}>
-        <Button color="SecondaryDark" clicked={() => onAddFriend("")}>
-          Add Friend
-        </Button>
-        <Link to="/generated-links">
-          <Button color="Primary" clicked={onCreateSession}>
-            Generate Links
-          </Button>
-        </Link>
-      </div>
-      <div className={classes.Info}>
+  const buildInfoText = (): JSX.Element => {
+    const infoText = (
+      <React.Fragment>
         <InfoText title="How does it work?">
           Enter your Steam URL, and the URL of at least one friend. You’ll each
           be shown a list of the games that you have in common, which you can
@@ -141,7 +137,35 @@ const GenerateLinks = () => {
             Paste it into the first text box at the top of this page.
           </p>
         </InfoText>
-      </div>
+      </React.Fragment>
+    );
+
+    return infoText;
+  };
+
+  const buildButtons = (): JSX.Element => {
+    const buttons = (
+      <React.Fragment>
+        <Button color="SecondaryDark" clicked={() => onAddFriend("")}>
+          Add Friend
+        </Button>
+        {/* <Link to="/generated-links"> */}
+        <Button color="Primary" clicked={onCreateSession}>
+          Generate Links
+        </Button>
+        {/* </Link> */}
+      </React.Fragment>
+    );
+
+    return buttons;
+  };
+
+  return (
+    <div className={classes.GenerateLinks}>
+      {buildHostInput()}
+      {buildFriendInputs()}
+      <div className={classes.Buttons}>{buildButtons()}</div>
+      <div className={classes.Info}>{buildInfoText()}</div>
     </div>
   );
 };
