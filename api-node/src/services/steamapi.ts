@@ -2,8 +2,14 @@ const steamApiKey = process.env.STEAM_API_KEY;
 import axios, { AxiosResponse } from "axios";
 import rateLimit from "axios-rate-limit";
 
-interface VanityUrlData {
+export interface VanityUrlData {
   steamid: string;
+}
+
+export interface PlayerSummaryData {
+  steamid: string;
+  personaname: string;
+  avatarmedium: string;
 }
 
 export interface OwnedGame {
@@ -61,6 +67,16 @@ export const resolveVanityUrl = async (steamUrl: string): Promise<string> => {
   const { steamid }: VanityUrlData = response.data.response;
 
   return steamid;
+};
+
+export const getPlayerSummary = async (
+  id: string
+): Promise<PlayerSummaryData> => {
+  const url = `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamApiKey}&steamids=${id}`;
+  const response: AxiosResponse = await http.get(url);
+  const playerSummaryData: PlayerSummaryData =
+    response.data.response.players[0];
+  return playerSummaryData;
 };
 
 export const getOwnedGames = async (steamId: string): Promise<OwnedGame[]> => {

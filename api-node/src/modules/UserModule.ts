@@ -1,3 +1,4 @@
+import { getPlayerSummary } from "./../services/steamapi";
 import { GameModule } from "./GameModule";
 import { User } from "./../db/models/User";
 import {
@@ -21,11 +22,29 @@ export class UserModule {
     this.username = username;
   };
 
-  private getSteamId = async (username: string): Promise<string> => {
+  private getSteamIdFromUsername = async (
+    username: string
+  ): Promise<string> => {
     console.log("steam id is", username);
 
     const steamId = await resolveVanityUrl(username);
     return steamId;
+  };
+
+  private isVanityUrl = (url: string): boolean => {
+    const result = url.includes("/id/");
+    return result;
+  };
+
+  private getSteamUsernameFromId = async (id: string): Promise<string> => {
+    const playerSummary = await getPlayerSummary(id);
+    const username = playerSummary.personaname;
+    return username;
+  };
+
+  private setId = (url: string): void => {
+    const id = url.split("/")[4];
+    this.steamId = id;
   };
 
   private getOwnedGames = async (steamId: string): Promise<OwnedGame[]> => {
@@ -91,16 +110,21 @@ export class UserModule {
   };
 
   public init = async (url: string, isHost: boolean = false): Promise<this> => {
-    /* TODO: Need to fix how we get the username. My profile looks like this:
+    /* My profile looks like this:
     https://steamcommunity.com/id/silverstone1294/
     and so we need to get the ID from the vanity url.
     However, your profile could also look like this: 
     https://steamcommunity.com/profiles/76561197975556468/
     In this case, we can just grab the ID directly. */
-
-    this.setUsername(url);
     this.isHost = isHost;
-    this.steamId = await this.getSteamId(this.username);
+
+    if (this.isVanityUrl(url)) {
+      this.setUsername(url);
+      this.steamId = await this.getSteamIdFromUsername(this.username);
+    } else {
+      this.setId(url);
+      this.username = await this.getSteamUsernameFromId(this.steamId);
+    }
 
     /* If the user exists, we grab their row ID from the DB and save it
     as an attribute. Otherwise, save the new user and grab the new ID. */
