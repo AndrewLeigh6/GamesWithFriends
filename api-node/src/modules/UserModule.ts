@@ -107,7 +107,10 @@ export class UserModule {
     const user = await this.recordExists(this.steamId);
 
     if (user !== undefined && typeof user.id === "number") {
+      this.ownedGameAppIds = await this.getOwnedGames(this.steamId);
+      await this.createGames(this.ownedGameAppIds);
       this.rowId = user.id;
+      // dont forget to get owned game app ids for existing users too
     } else {
       this.ownedGameAppIds = await this.getOwnedGames(this.steamId);
       await this.createGames(this.ownedGameAppIds);
