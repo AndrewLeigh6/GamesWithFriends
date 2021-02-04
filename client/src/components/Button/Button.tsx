@@ -4,7 +4,7 @@ import classes from "./Button.module.scss";
 type Color = "Primary" | "SecondaryLight" | "SecondaryDark";
 
 interface AppProps {
-  children: string;
+  children: string | JSX.Element;
   color: Color;
   clicked?: () => void;
 }

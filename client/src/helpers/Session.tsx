@@ -1,7 +1,19 @@
 import axios, { AxiosResponse } from "axios";
 import { FriendInput } from "../containers/GenerateLinks/GenerateLinks";
 
+export interface User {
+  rowId: number;
+  steamId: string;
+  username: string;
+  isHost: boolean;
+  ownedGameAppIds: {
+    appId: number;
+  }[];
+}
+
 export class Session {
+  public users: User[] | null = null;
+
   public static getRandomId = (): number => {
     const number = Math.floor(Math.random() * 100);
     return number;
@@ -29,7 +41,7 @@ export class Session {
 
     try {
       result = await axios.post(`/api/sessions?${queryString}`);
-      console.log(result);
+      this.users = result.data.users;
     } catch (error: unknown) {
       if (typeof error === "string") {
         throw new Error(error);

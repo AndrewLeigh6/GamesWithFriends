@@ -3,7 +3,7 @@ import Button from "../../components/Button/Button";
 import InfoText from "../../components/InfoText/InfoText";
 import Input, { LeftIcon, RightIcon } from "../../components/Input/Input";
 import classes from "./GenerateLinks.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Session } from "../../helpers/Session";
 
 const MIN_FRIENDS = 1;
@@ -56,6 +56,8 @@ const GenerateLinks = () => {
     "https://steamcommunity.com/id/felineyx/"
   );
   const [friends, dispatch] = useReducer(friendsFormReducer, initalState);
+  const [isLoading, setIsLoading] = useState(true);
+  const history = useHistory();
 
   const onAddFriend = (url: string): void => {
     dispatch({ type: "add", url: url });
@@ -81,8 +83,11 @@ const GenerateLinks = () => {
   };
 
   const onCreateSession = async (): Promise<void> => {
+    setIsLoading(true);
     const session = new Session();
-    session.create(hostUrl, friends);
+    await session.create(hostUrl, friends);
+    setIsLoading(false);
+    history.push("/generated-links");
   };
 
   const buildHostInput = (): JSX.Element => {
@@ -144,18 +149,29 @@ const GenerateLinks = () => {
   };
 
   const buildButtons = (): JSX.Element => {
-    const buttons = (
+    let buttons = (
       <React.Fragment>
         <Button color="SecondaryDark" clicked={() => onAddFriend("")}>
           Add Friend
         </Button>
-        {/* <Link to="/generated-links"> */}
         <Button color="Primary" clicked={onCreateSession}>
           Generate Links
         </Button>
-        {/* </Link> */}
       </React.Fragment>
     );
+
+    /* Try using these:
+    https://github.com/davidhu2000/react-spinners
+    https://www.davidhu.io/react-spinners/
+    The pacman one looks cool */
+
+    if (isLoading) {
+      buttons = (
+        <React.Fragment>
+          <Button color="Primary">Loading users...</Button>
+        </React.Fragment>
+      );
+    }
 
     return buttons;
   };
