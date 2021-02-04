@@ -1,26 +1,92 @@
-import React from "react";
+import React, { useReducer, useState } from "react";
 import Button from "../../components/Button/Button";
 import InfoText from "../../components/InfoText/InfoText";
 import Input, { LeftIcon, RightIcon } from "../../components/Input/Input";
 import classes from "./GenerateLinks.module.scss";
-import { Friend } from "../../App";
 import { Link } from "react-router-dom";
+import { Session } from "../../helpers/Session";
 
-interface AppProps {
-  friends: Friend[];
-  onAddFriend: (name: string) => void;
-  onRemoveFriend: (index: number) => void;
-  onFriendUrlChanged: (
-    event: React.ChangeEvent<HTMLInputElement>,
-    index?: number
-  ) => void;
-  onHostUrlChanged: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onCreateSession: () => Promise<void>;
+const MIN_FRIENDS = 1;
+const MAX_FRIENDS = 7;
+
+export interface FriendInput {
+  id: number;
+  url: string;
 }
 
-const GenerateLinks = (props: AppProps) => {
+type State = FriendInput[];
+
+type Actions =
+  | { type: "add"; url: string }
+  | { type: "remove"; index: number }
+  | { type: "change"; url: string; index: number };
+
+function friendsFormReducer(state: State, action: Actions) {
+  switch (action.type) {
+    case "add":
+      if (state.length < MAX_FRIENDS) {
+        const id = Session.getRandomId();
+        return [...state, { id: id, url: action.url }];
+      } else {
+        return state;
+      }
+    case "remove":
+      if (state.length > MIN_FRIENDS) {
+        return state.filter((_, index) => index !== action.index);
+      } else {
+        return state;
+      }
+    case "change":
+      const copy = [...state];
+      copy[action.index].url = action.url;
+      return copy;
+    default:
+      return state;
+  }
+}
+
+const initalState = [
+  {
+    id: Session.getRandomId(),
+    url: "https://steamcommunity.com/id/lawadaisy/",
+  },
+];
+const GenerateLinks = () => {
+  const [hostUrl, setHostUrl] = useState(
+    "https://steamcommunity.com/id/felineyx/"
+  );
+  const [friends, dispatch] = useReducer(friendsFormReducer, initalState);
+
+  const onAddFriend = (url: string): void => {
+    dispatch({ type: "add", url: url });
+  };
+
+  const onRemoveFriend = (index: number): void => {
+    dispatch({ type: "remove", index: index });
+  };
+
+  const onFriendUrlChanged = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index?: number
+  ): void => {
+    if (typeof index === "number") {
+      dispatch({ type: "change", url: event.target.value, index: index });
+    }
+  };
+
+  const onHostUrlChanged = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setHostUrl(event.target.value);
+  };
+
+  const onCreateSession = async (): Promise<void> => {
+    const session = new Session();
+    session.create(hostUrl, friends);
+  };
+
   const buildFriendInputs = (): JSX.Element[] => {
-    const friendInputs = props.friends.map((friend, index) => {
+    const friendInputs = friends.map((friend, index) => {
       return (
         <Input
           label="Friend's Steam URL"
@@ -28,10 +94,10 @@ const GenerateLinks = (props: AppProps) => {
           name={"friend" + index}
           placeholder="Enter your friend's Steam URL"
           rightIcon={RightIcon.Times}
-          iconClicked={() => props.onRemoveFriend(index)}
+          iconClicked={() => onRemoveFriend(index)}
           key={friend.id}
           index={index}
-          changed={props.onFriendUrlChanged}
+          changed={onFriendUrlChanged}
         />
       );
     });
@@ -46,15 +112,15 @@ const GenerateLinks = (props: AppProps) => {
         leftIcon={LeftIcon.User}
         name="user"
         placeholder="Enter your Steam URL"
-        changed={props.onHostUrlChanged}
+        changed={onHostUrlChanged}
       />
       {buildFriendInputs()}
       <div className={classes.Buttons}>
-        <Button color="SecondaryDark" clicked={() => props.onAddFriend("")}>
+        <Button color="SecondaryDark" clicked={() => onAddFriend("")}>
           Add Friend
         </Button>
         <Link to="/generated-links">
-          <Button color="Primary" clicked={props.onCreateSession}>
+          <Button color="Primary" clicked={onCreateSession}>
             Generate Links
           </Button>
         </Link>

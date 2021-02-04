@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { Friend } from "../App";
+import { FriendInput } from "../containers/GenerateLinks/GenerateLinks";
 
 export class Session {
   public static getRandomId = (): number => {
@@ -7,9 +7,9 @@ export class Session {
     return number;
   };
 
-  private static buildQueryString = (
+  private buildQueryString = (
     hostUrl: string,
-    friends: Friend[]
+    friends: FriendInput[]
   ): string => {
     const initialString = "users=" + hostUrl;
 
@@ -20,11 +20,11 @@ export class Session {
     return queryString;
   };
 
-  public static create = async (
+  public create = async (
     hostUrl: string,
-    friends: Friend[]
+    friends: FriendInput[]
   ): Promise<void> => {
-    const queryString = Session.buildQueryString(hostUrl, friends);
+    const queryString = this.buildQueryString(hostUrl, friends);
     let result: AxiosResponse;
 
     try {
