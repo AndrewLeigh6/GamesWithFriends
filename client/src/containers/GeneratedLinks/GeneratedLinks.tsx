@@ -1,44 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { iUserContext, UsersContext } from "../../App";
 import Button from "../../components/Button/Button";
 import InfoText from "../../components/InfoText/InfoText";
 import Input, { LeftIcon, RightIcon } from "../../components/Input/Input";
 import classes from "./GeneratedLinks.module.scss";
 
 const GeneratedLinks = () => {
-  return (
-    <div className={classes.GeneratedLinks}>
-      <Input
-        label="Loke1104"
-        leftIcon={LeftIcon.Friend}
-        rightIcon={RightIcon.Copy}
-        name="user"
-        value="www.gameswithfriends.com/SadGreenPanda"
-        readonly
-      />
-      <Input
-        label="Blanket"
-        leftIcon={LeftIcon.Friend}
-        rightIcon={RightIcon.Copy}
-        name="user"
-        value="www.gameswithfriends.com/AngryRedTurtle"
-        readonly
-      />
-      <Input
-        label="Alex"
-        leftIcon={LeftIcon.Friend}
-        rightIcon={RightIcon.Copy}
-        name="user"
-        value="www.gameswithfriends.com/CheerfulPurpleFish"
-        readonly
-      />
-      <div className={classes.Buttons}>
-        <Link to="/">
-          <Button color="SecondaryDark">Go back</Button>
-        </Link>
-        <Button color="Primary">View games</Button>
-      </div>
-      <div className={classes.Info}>
+  const { users } = useContext<iUserContext>(UsersContext);
+
+  const buildUsers = (): JSX.Element[] => {
+    const userInputs = users.map((user) => {
+      return (
+        <Input
+          label={user.username}
+          leftIcon={LeftIcon.Friend}
+          rightIcon={RightIcon.Copy}
+          name={user.username}
+          value={user.randomUrl}
+          readonly
+          key={user.username}
+        />
+      );
+    });
+
+    return userInputs;
+  };
+
+  const buildInfoText = (): JSX.Element => {
+    const infoText = (
+      <React.Fragment>
         <InfoText title="How does it work?">
           <p>
             Send each of your friends their respective link. You can quickly
@@ -52,7 +43,21 @@ const GeneratedLinks = () => {
             to three games you’d like to play.
           </p>
         </InfoText>
+      </React.Fragment>
+    );
+
+    return infoText;
+  };
+  return (
+    <div className={classes.GeneratedLinks}>
+      {buildUsers()}
+      <div className={classes.Buttons}>
+        <Link to="/">
+          <Button color="SecondaryDark">Go back</Button>
+        </Link>
+        <Button color="Primary">View games</Button>
       </div>
+      <div className={classes.Info}>{buildInfoText()}</div>
     </div>
   );
 };

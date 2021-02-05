@@ -1,10 +1,11 @@
-import React, { useReducer, useState } from "react";
+import React, { useContext, useReducer, useState } from "react";
 import Button from "../../components/Button/Button";
 import InfoText from "../../components/InfoText/InfoText";
 import Input, { LeftIcon, RightIcon } from "../../components/Input/Input";
 import classes from "./GenerateLinks.module.scss";
 import { useHistory } from "react-router-dom";
 import { Session } from "../../helpers/Session";
+import { iUserContext, UsersContext } from "../../App";
 
 const MIN_FRIENDS = 1;
 const MAX_FRIENDS = 7;
@@ -51,6 +52,7 @@ const initalState = [
     url: "https://steamcommunity.com/id/lawadaisy/",
   },
 ];
+
 const GenerateLinks = () => {
   const [hostUrl, setHostUrl] = useState(
     "https://steamcommunity.com/id/felineyx/"
@@ -58,6 +60,7 @@ const GenerateLinks = () => {
   const [friends, dispatch] = useReducer(friendsFormReducer, initalState);
   const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
+  const { users, setUsers } = useContext<iUserContext>(UsersContext);
 
   const onAddFriend = (url: string): void => {
     dispatch({ type: "add", url: url });
@@ -86,8 +89,16 @@ const GenerateLinks = () => {
     setIsLoading(true);
     const session = new Session();
     await session.create(hostUrl, friends);
-    setIsLoading(false);
-    history.push("/generated-links");
+    console.log(session.users);
+
+    if (session.users !== null) {
+      setUsers(session.users);
+      setIsLoading(false);
+      history.push("/generated-links");
+    } else {
+      setIsLoading(false);
+      throw new Error("Failed to retrieve users");
+    }
   };
 
   const buildHostInput = (): JSX.Element => {

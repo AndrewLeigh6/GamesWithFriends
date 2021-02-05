@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { createContext, useContext, useReducer, useState } from "react";
 import Layout from "./components/Layout/Layout";
 import GamesList from "./containers/GamesList/GamesList";
 import GeneratedLinks from "./containers/GeneratedLinks/GeneratedLinks";
@@ -7,20 +7,41 @@ import Results from "./containers/Results/Results";
 import Waiting from "./containers/Waiting/Waiting";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+export interface User {
+  username: string;
+  randomUrl: string;
+}
+
+export interface iUserContext {
+  users: User[];
+  setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+}
+
+// set defaults
+export const UsersContext = createContext<iUserContext>({
+  users: [],
+  setUsers: () => {},
+});
+
 function App() {
+  const [users, setUsers] = useState<User[]>([]);
+  const value = { users, setUsers };
+
   return (
     <div className="App">
       <Router>
-        <Layout>
-          <Switch>
-            <Route path="/generated-links">
-              <GeneratedLinks />
-            </Route>
-            <Route path="/">
-              <GenerateLinks />
-            </Route>
-          </Switch>
-        </Layout>
+        <UsersContext.Provider value={value}>
+          <Layout>
+            <Switch>
+              <Route path="/generated-links">
+                <GeneratedLinks />
+              </Route>
+              <Route path="/">
+                <GenerateLinks />
+              </Route>
+            </Switch>
+          </Layout>
+        </UsersContext.Provider>
       </Router>
     </div>
   );

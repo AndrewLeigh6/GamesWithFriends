@@ -3,6 +3,7 @@ import { FriendInput } from "../containers/GenerateLinks/GenerateLinks";
 
 export interface User {
   rowId: number;
+  randomUrl: string;
   steamId: string;
   username: string;
   isHost: boolean;
