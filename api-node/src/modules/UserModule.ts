@@ -14,8 +14,13 @@ export class UserModule {
   steamId: string = "";
   username: string = "";
   isHost: boolean = false;
+  randomUrl: string | null = null;
   ownedGameAppIds: OwnedGame[] = [];
   games: GameModule[] = [];
+
+  public setRandomUrl = (url: string): void => {
+    this.randomUrl = url;
+  };
 
   private setUsername = (url: string): void => {
     const username = url.split("/")[4];

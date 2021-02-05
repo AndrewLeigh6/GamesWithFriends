@@ -66,7 +66,7 @@ export class SessionModule {
     });
 
     await Promise.all(
-      userIds.map(async (userId) => {
+      userIds.map(async (userId, index) => {
         if (typeof session.id === "number") {
           const url = generateUrl();
 
@@ -76,6 +76,8 @@ export class SessionModule {
               id: userId,
               url: url,
             } as PartialModelObject<User>);
+
+          users[index].setRandomUrl(url);
         }
       })
     );
