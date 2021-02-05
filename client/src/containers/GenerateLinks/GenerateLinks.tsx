@@ -3,7 +3,7 @@ import Button from "../../components/Button/Button";
 import InfoText from "../../components/InfoText/InfoText";
 import Input, { LeftIcon, RightIcon } from "../../components/Input/Input";
 import classes from "./GenerateLinks.module.scss";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Session } from "../../helpers/Session";
 
 const MIN_FRIENDS = 1;
@@ -56,7 +56,7 @@ const GenerateLinks = () => {
     "https://steamcommunity.com/id/felineyx/"
   );
   const [friends, dispatch] = useReducer(friendsFormReducer, initalState);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
 
   const onAddFriend = (url: string): void => {
@@ -160,11 +160,6 @@ const GenerateLinks = () => {
       </React.Fragment>
     );
 
-    /* Try using these:
-    https://github.com/davidhu2000/react-spinners
-    https://www.davidhu.io/react-spinners/
-    The pacman one looks cool */
-
     if (isLoading) {
       buttons = (
         <React.Fragment>
@@ -180,7 +175,9 @@ const GenerateLinks = () => {
     <div className={classes.GenerateLinks}>
       {buildHostInput()}
       {buildFriendInputs()}
-      <div className={classes.Buttons}>{buildButtons()}</div>
+      <div className={isLoading ? classes.ButtonsLoading : classes.Buttons}>
+        {buildButtons()}
+      </div>
       <div className={classes.Info}>{buildInfoText()}</div>
     </div>
   );
