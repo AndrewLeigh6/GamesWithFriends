@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useState } from "react";
+import React, { createContext, useState } from "react";
 import Layout from "./components/Layout/Layout";
 import GamesList from "./containers/GamesList/GamesList";
 import GeneratedLinks from "./containers/GeneratedLinks/GeneratedLinks";
@@ -25,12 +25,12 @@ export const UsersContext = createContext<iUserContext>({
 
 function App() {
   const [users, setUsers] = useState<User[]>([]);
-  const value = { users, setUsers };
+  const usersState = { users, setUsers };
 
   return (
     <div className="App">
       <Router>
-        <UsersContext.Provider value={value}>
+        <UsersContext.Provider value={usersState}>
           <Layout>
             <Switch>
               <Route path="/generated-links">

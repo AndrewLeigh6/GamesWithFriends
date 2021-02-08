@@ -53,7 +53,10 @@ export class SessionModule {
     );
   };
 
-  private save = async (hostId: number, users: UserModule[]): Promise<void> => {
+  private save = async (
+    hostId: number,
+    users: UserModule[]
+  ): Promise<number | undefined> => {
     const insertData = { host_id: hostId };
     const session: SessionData = await Session.query().insert(insertData);
 
@@ -81,6 +84,12 @@ export class SessionModule {
         }
       })
     );
+
+    if (typeof session.id === "number") {
+      console.log("save id", session.id);
+
+      return session.id;
+    }
   };
 
   private getHostId = (users: UserModule[]): number | null => {
@@ -166,12 +175,17 @@ export class SessionModule {
     */
   };
 
-  public init = async (steamUrls: string[]): Promise<void> => {
+  public init = async (steamUrls: string[]): Promise<number | undefined> => {
     await this.createUsers(steamUrls);
     const hostId = this.getHostId(this.users);
 
     if (hostId) {
-      await this.save(hostId, this.users);
+      const sessionId = await this.save(hostId, this.users);
+      console.log("init id", sessionId);
+
+      if (typeof sessionId === "number") {
+        return sessionId;
+      }
     }
   };
 }

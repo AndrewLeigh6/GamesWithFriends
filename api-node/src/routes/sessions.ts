@@ -22,9 +22,17 @@ and it will give you {user: ["andrew", "bob", "joey"]} */
 // create session
 sessionsRouter.post("/", async function (req: RequestWithUsers, res: Response) {
   const sessionModule = new SessionModule();
-  await sessionModule.init(req.query.users);
+  const sessionId = await sessionModule.init(req.query.users);
+  const response = {
+    sessionId: sessionId,
+    sessionModule: sessionModule,
+  };
 
-  res.json(sessionModule);
+  if (typeof sessionId === "number") {
+    res.json(response);
+  } else {
+    res.send("Unable to create session");
+  }
 });
 
 // get users by session id

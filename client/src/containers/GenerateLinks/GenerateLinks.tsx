@@ -60,7 +60,7 @@ const GenerateLinks = () => {
   const [friends, dispatch] = useReducer(friendsFormReducer, initalState);
   const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
-  const { users, setUsers } = useContext<iUserContext>(UsersContext);
+  const { setUsers } = useContext<iUserContext>(UsersContext);
 
   const onAddFriend = (url: string): void => {
     dispatch({ type: "add", url: url });
