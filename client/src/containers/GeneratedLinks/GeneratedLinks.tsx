@@ -8,16 +8,18 @@ import classes from "./GeneratedLinks.module.scss";
 
 const GeneratedLinks = () => {
   const { users } = useContext<iUserContext>(UsersContext);
+  const BASE_URL = "http://localhost:3000/session?q=";
 
   const buildUsers = (): JSX.Element[] => {
     const userInputs = users.map((user) => {
+      const finalUrl = `${BASE_URL}${user.randomUrl}`;
       return (
         <Input
           label={user.username}
           leftIcon={LeftIcon.Friend}
           rightIcon={RightIcon.Copy}
           name={user.username}
-          value={user.randomUrl}
+          value={finalUrl}
           readonly
           key={user.username}
         />
