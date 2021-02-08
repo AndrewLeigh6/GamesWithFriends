@@ -10,6 +10,14 @@ const GeneratedLinks = () => {
   const { users } = useContext<iUserContext>(UsersContext);
   const BASE_URL = "http://localhost:3000/session?q=";
 
+  const copyUrl = async (url: string): Promise<void> => {
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch (error: unknown) {
+      throw new Error(`Failed to copy URL text:${error}`);
+    }
+  };
+
   const buildUsers = (): JSX.Element[] => {
     const userInputs = users.map((user) => {
       const finalUrl = `${BASE_URL}${user.randomUrl}`;
@@ -18,6 +26,7 @@ const GeneratedLinks = () => {
           label={user.username}
           leftIcon={LeftIcon.Friend}
           rightIcon={RightIcon.Copy}
+          iconClicked={() => copyUrl(finalUrl)}
           name={user.username}
           value={finalUrl}
           readonly
