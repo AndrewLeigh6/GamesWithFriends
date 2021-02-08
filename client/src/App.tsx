@@ -36,6 +36,9 @@ function App() {
               <Route path="/generated-links">
                 <GeneratedLinks />
               </Route>
+              <Route path="/session">
+                <GamesList />
+              </Route>
               <Route path="/">
                 <GenerateLinks />
               </Route>

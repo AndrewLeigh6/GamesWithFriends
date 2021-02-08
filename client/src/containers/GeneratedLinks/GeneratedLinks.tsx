@@ -9,6 +9,7 @@ import classes from "./GeneratedLinks.module.scss";
 const GeneratedLinks = () => {
   const { users } = useContext<iUserContext>(UsersContext);
   const BASE_URL = "http://localhost:3000/session?q=";
+  let hostUrl = "";
 
   const copyUrl = async (url: string): Promise<void> => {
     try {
@@ -19,8 +20,11 @@ const GeneratedLinks = () => {
   };
 
   const buildUsers = (): JSX.Element[] => {
-    const userInputs = users.map((user) => {
+    const userInputs = users.map((user, index) => {
       const finalUrl = `${BASE_URL}${user.randomUrl}`;
+      if (index === 0) {
+        hostUrl = "/session?q=" + user.randomUrl;
+      }
       return (
         <Input
           label={user.username}
@@ -66,7 +70,10 @@ const GeneratedLinks = () => {
         <Link to="/">
           <Button color="SecondaryDark">Go back</Button>
         </Link>
-        <Button color="Primary">View games</Button>
+
+        <Link to={hostUrl}>
+          <Button color="Primary">View games</Button>
+        </Link>
       </div>
       <div className={classes.Info}>{buildInfoText()}</div>
     </div>
