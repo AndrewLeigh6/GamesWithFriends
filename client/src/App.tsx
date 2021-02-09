@@ -6,6 +6,7 @@ import GenerateLinks from "./containers/GenerateLinks/GenerateLinks";
 import Results from "./containers/Results/Results";
 import Waiting from "./containers/Waiting/Waiting";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Session, SharedGame } from "./helpers/Session";
 
 export interface User {
   username: string;
@@ -24,7 +25,9 @@ export const UsersContext = createContext<iUserContext>({
 });
 
 function App() {
+  const [session, setSession] = useState<Session | undefined>();
   const [users, setUsers] = useState<User[]>([]);
+  const [games, setGames] = useState<SharedGame[] | undefined>();
   const usersState = { users, setUsers };
 
   return (
@@ -37,10 +40,14 @@ function App() {
                 <GeneratedLinks />
               </Route>
               <Route path="/session">
-                <GamesList />
+                <GamesList
+                  session={session}
+                  games={games}
+                  setGames={setGames}
+                />
               </Route>
               <Route path="/">
-                <GenerateLinks />
+                <GenerateLinks setSession={setSession} />
               </Route>
             </Switch>
           </Layout>

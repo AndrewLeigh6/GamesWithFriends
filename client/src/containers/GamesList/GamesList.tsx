@@ -1,32 +1,50 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Icon } from "../../components/FoundGame/Feature/Feature";
 import FoundGame from "../../components/FoundGame/FoundGame";
 import GamesSelected from "../../components/GamesSelected/GamesSelected";
+import { Session, SharedGame } from "../../helpers/Session";
 import classes from "./GamesList.module.scss";
 
-const GamesList = () => {
-  const buildGames = (): JSX.Element[] => {
-    // get list of games in common
-    return [
-      <React.Fragment>
-        <FoundGame
-          title="Fall Guys: Ultimate Knockout"
-          image="https://cdn.cloudflare.steamstatic.com/steam/apps/1097150/library_600x900.jpg?t=1595511208"
-          feature="feature"
-          icon={Icon.Controller}
-          buttonText="Selected"
-          key={1}
-        />
-        <FoundGame
-          title="Terraria"
-          image="https://cdn.cloudflare.steamstatic.com/steam/apps/105600/library_600x900.jpg?t=1568056870"
-          feature="feature"
-          icon={Icon.Controller}
-          buttonText="Select"
-          key={2}
-        />
-      </React.Fragment>,
-    ];
+interface AppProps {
+  session: Session | undefined;
+  games: SharedGame[] | undefined;
+  setGames: React.Dispatch<React.SetStateAction<SharedGame[] | undefined>>;
+}
+
+const GamesList = (props: AppProps) => {
+  const { session, setGames } = props;
+
+  useEffect(() => {
+    const getGames = async () => {
+      if (session instanceof Session) {
+        const games = await session.getSharedGames();
+        if (games) {
+          setGames(games);
+        }
+      }
+    };
+    getGames();
+  }, [session, setGames]);
+
+  const buildGames = (): JSX.Element[] | null => {
+    if (props.games && props.games.length > 0) {
+      const gamesList = props.games.map((game) => {
+        return (
+          <FoundGame
+            title={game.name}
+            image={game.image_vertical_url}
+            icon={Icon.Controller}
+            buttonText="Select"
+            key={game.app_id}
+            feature="feature"
+          />
+        );
+      });
+
+      return gamesList;
+    }
+
+    return null;
   };
   return (
     <React.Fragment>

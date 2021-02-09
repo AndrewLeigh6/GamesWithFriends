@@ -10,6 +10,10 @@ import { iUserContext, UsersContext } from "../../App";
 const MIN_FRIENDS = 1;
 const MAX_FRIENDS = 7;
 
+interface AppProps {
+  setSession: React.Dispatch<React.SetStateAction<Session | undefined>>;
+}
+
 export interface FriendInput {
   id: number;
   url: string;
@@ -53,7 +57,7 @@ const initalState = [
   },
 ];
 
-const GenerateLinks = () => {
+const GenerateLinks = (props: AppProps) => {
   const [hostUrl, setHostUrl] = useState(
     "https://steamcommunity.com/id/felineyx/"
   );
@@ -89,9 +93,9 @@ const GenerateLinks = () => {
     setIsLoading(true);
     const session = new Session();
     await session.create(hostUrl, friends);
-    console.log(session.users);
 
     if (session.users !== null) {
+      props.setSession(session);
       setUsers(session.users);
       setIsLoading(false);
       history.push("/generated-links");

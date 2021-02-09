@@ -63,7 +63,6 @@ export class Session {
       result = await axios.post(`/api/sessions?${queryString}`);
       this.sessionId = result.data.sessionId;
       this.users = result.data.sessionModule.users;
-      console.log(this);
     } catch (error: unknown) {
       if (typeof error === "string") {
         throw new Error(error);
