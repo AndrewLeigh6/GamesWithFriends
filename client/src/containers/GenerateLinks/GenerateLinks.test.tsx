@@ -8,10 +8,12 @@ it("renders initially with correct input fields", () => {
 
   const component = <GenerateLinks setSession={setSession} />;
 
-  const { getByRole } = render(component);
+  const { getByRole, getByText } = render(component);
 
   getByRole("textbox", { name: /your steam url/i });
   getByRole("textbox", { name: /friend's steam url/i });
+  getByText(/how does it work/i);
+  getByText(/how do i get my steam url/i);
 });
 
 it("adds an input field when 'add friend' button is clicked", () => {
@@ -98,5 +100,3 @@ it("prevents having fewer than one user", () => {
   users = getAllByRole("textbox", { name: /friend's steam url/i });
   expect(users).toHaveLength(1);
 });
-
-// TODO: Add tests for generate links
