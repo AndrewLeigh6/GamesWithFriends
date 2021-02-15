@@ -1,0 +1,9 @@
+setup:
+  addons:
+    - plan: heroku-postgresql
+    as: db
+build:
+  docker:
+    client: ./client/Dockerfile.dev
+    api: ./api-node/Dockerfile.dev
+    nginx: ./nginx/Dockerfile.dev
