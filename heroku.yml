@@ -1,5 +1,0 @@
-build:
-  docker:
-    client: ./client/Dockerfile.dev
-    api: ./api-node/Dockerfile.dev
-    nginx: ./nginx/Dockerfile.dev

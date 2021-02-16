@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import Knex from "knex";
 import morgan from "morgan";
 import * as fs from "fs";
@@ -25,6 +25,11 @@ const app = express();
 app.use(morgan("dev", { stream: logStream }));
 app.use("/sessions", sessionsRouter);
 app.use("/users", usersRouter);
+// app.use(express.static(path.join(__dirname, "../", "../client/build")));
+
+// app.get("/*", (req: Request, res: Response) => {
+//   res.sendFile(path.join(__dirname, "../", "../client/build", "index.html"));
+// });
 
 // init knex and objection
 const knex: Knex = Knex(knexConfig.development);
