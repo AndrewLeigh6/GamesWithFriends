@@ -9,12 +9,12 @@ services:
   client:
     stdin_open: true
     build:
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
       context: ./client
   api:
     restart: always
     build:
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
       context: ./api-node
     env_file: ./api-node/.env
   nginx:
