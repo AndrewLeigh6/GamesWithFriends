@@ -16,6 +16,7 @@
     "unique-names-generator": "^4.3.1"
   },
   "scripts": {
+    "build": "tsc",
     "start:build": "tsc -w",
     "start:run": "nodemon build/index.js >> log-file.txt",
     "start": "concurrently npm:start:*",
