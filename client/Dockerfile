@@ -1,10 +1,11 @@
-FROM node:14-slim
+FROM node:14-slim as builder
 WORKDIR "/app"
-COPY package.json ./
-RUN npm install serve
+COPY ./package.json ./
 RUN npm install
 COPY . .
 RUN npm run build
-COPY ./build .
-CMD ["npm", "run", "serve"]
+
+FROM nginx
 EXPOSE 3000
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/build /usr/share/nginx/html

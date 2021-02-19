@@ -20,7 +20,7 @@
     "start:build": "tsc -w",
     "start:run": "nodemon build/index.js >> log-file.txt",
     "start": "concurrently npm:start:*",
-    "host": "node build/index.js",
+    "host": "node index.js",
     "db:up": "knex migrate:latest --cwd src/db --debug",
     "db:down": "knex migrate:down --cwd src/db --debug",
     "db:seed": "knex seed:run --cwd src/db --debug"
