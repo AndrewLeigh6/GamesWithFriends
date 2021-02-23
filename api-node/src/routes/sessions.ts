@@ -1,3 +1,5 @@
+import { GameModule } from "./../modules/GameModule";
+import { CategoryModule } from "./../modules/CategoryModule";
 import { User } from "./../db/models/User";
 import { SessionModule } from "./../modules/SessionModule";
 import express, { Request, Response } from "express";
@@ -66,10 +68,10 @@ sessionsRouter.get(
 sessionsRouter.get(
   "/test",
   async function (req: RequestWithUrl, res: Response) {
-    const url = req.query.url;
-    const sessionModule = new SessionModule();
-    sessionModule.initFromUrl(url);
-    res.json(url);
+    // const url = req.query.url;
+    // const sessionModule = new SessionModule();
+    // sessionModule.initFromUrl(url);
+    // res.json(url);
   }
 );
 

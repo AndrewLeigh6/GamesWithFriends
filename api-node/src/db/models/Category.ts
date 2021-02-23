@@ -3,6 +3,9 @@ import { Game } from "./Game";
 import path from "path";
 
 export class Category extends Model {
+  id?: number;
+  name?: string;
+
   static get tableName() {
     return "categories";
   }

@@ -1,7 +1,14 @@
+import { CategoryModule } from "./CategoryModule";
 import { Game } from "./../db/models/Game";
 import { GameDetails, getGameDetails } from "./../services/steamapi";
+import { Category } from "../db/models/Category";
 
 interface GameRecord extends Partial<Game> {}
+
+interface CategoryData {
+  id: number;
+  description: string;
+}
 
 export class GameModule {
   rowId: number | null = null;
@@ -9,6 +16,7 @@ export class GameModule {
   name: string = "";
   imageVerticalUrl: string = "";
   imageHorizontalUrl: string = "";
+  categories: CategoryModule[] = [];
 
   private getGameDetails = async (appId: string): Promise<GameDetails> => {
     const gameDetails = await getGameDetails(appId);
@@ -46,7 +54,10 @@ export class GameModule {
     return game;
   };
 
-  private save = async (game: this): Promise<number | null> => {
+  private save = async (
+    game: this,
+    categories: CategoryModule[]
+  ): Promise<number | null> => {
     const insertData: GameRecord = {
       app_id: game.appId,
       name: game.name,
@@ -66,6 +77,22 @@ export class GameModule {
     }
 
     const gameRow: Game = await Game.query().insert(insertData).returning("*");
+
+    // Relate categories in db
+    const categoryIds = categories.flatMap((category) => {
+      if (typeof category.rowId === "number") {
+        return [category.rowId];
+      } else {
+        return [];
+      }
+    });
+
+    if (typeof gameRow.id === "number") {
+      const categoriesGames = await Game.relatedQuery("categories")
+        .for(gameRow.id)
+        .relate(categoryIds);
+      return gameRow.id;
+    }
 
     if (typeof gameRow.id === "number") {
       console.log("Added new game", gameRow.name);
@@ -93,6 +120,58 @@ export class GameModule {
     }
   };
 
+  private createCategories = async (
+    categories: CategoryData[]
+  ): Promise<void> => {
+    const createCategory = async (name: string): Promise<CategoryModule> => {
+      const category = new CategoryModule();
+      await category.init(name);
+
+      return category;
+    };
+
+    await Promise.all(
+      categories.map(
+        async (gameCategory: CategoryData): Promise<void> => {
+          let category: CategoryModule;
+          if (gameCategory.description) {
+            category = await createCategory(gameCategory.description);
+            this.categories.push(category);
+          }
+        }
+      )
+    );
+  };
+
+  private getExistingGameCategoryData = async (
+    gameRowId: number | null
+  ): Promise<CategoryData[] | null> => {
+    if (gameRowId) {
+      // get all the categories for a game and return an array
+      const categoryData = await Game.relatedQuery<Category>("categories").for(
+        gameRowId
+      );
+      let result: CategoryData[] = [];
+
+      await Promise.all(
+        categoryData.map((category) => {
+          if (category.id && category.name) {
+            result.push({
+              id: category.id,
+              description: category.name,
+            });
+          }
+        })
+      );
+
+      console.log("LOGGING EXISTING GAME CATEGORY DATA");
+      console.log(categoryData);
+      return result;
+    } else {
+      return null;
+    }
+  };
+
   public init = async (appId: string): Promise<void> => {
     this.appId = appId;
 
@@ -103,11 +182,16 @@ export class GameModule {
     if (existingGame) {
       console.log("Tried to add existing game (first check)", appId);
       this.setExistingGameDetails(existingGame);
+      const categoryData = await this.getExistingGameCategoryData(this.rowId);
+      if (categoryData) {
+        await this.createCategories(categoryData);
+      }
     } else {
       const gameDetails: GameDetails = await this.getGameDetails(appId);
       const detailsSet = this.setGameDetails(gameDetails);
       if (detailsSet) {
-        this.rowId = await this.save(this);
+        await this.createCategories(gameDetails[appId].data.categories);
+        this.rowId = await this.save(this, this.categories);
       }
     }
   };

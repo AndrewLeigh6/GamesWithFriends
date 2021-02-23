@@ -139,14 +139,11 @@ export class UserModule {
       this.ownedGameAppIds = await this.getOwnedGames(this.steamId);
       await this.createGames(this.ownedGameAppIds);
       this.rowId = user.id;
-      // dont forget to get owned game app ids for existing users too
     } else {
       this.ownedGameAppIds = await this.getOwnedGames(this.steamId);
       await this.createGames(this.ownedGameAppIds);
       this.rowId = await this.save(this, this.games);
     }
-
-    console.log(`List of games for ${this.username}: `, this.games);
 
     return this;
   };

@@ -32,7 +32,6 @@ export interface GameDetails {
 let requests = 0;
 
 // Limit request rate so Steam don't ban me from their API
-
 //TODO: I'm fairly sure this is doing literally nothing
 const http = rateLimit(axios.create(), {
   maxRequests: 2,
