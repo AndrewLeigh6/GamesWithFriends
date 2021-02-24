@@ -53,13 +53,13 @@ function friendsFormReducer(state: State, action: Actions) {
 const initalState = [
   {
     id: Session.getRandomId(),
-    url: "https://steamcommunity.com/id/lawadaisy/",
+    url: "https://steamcommunity.com/id/eatenbyduckpeople/",
   },
 ];
 
 const GenerateLinks = (props: AppProps) => {
   const [hostUrl, setHostUrl] = useState(
-    "https://steamcommunity.com/id/felineyx/"
+    "https://steamcommunity.com/id/silverstone1294/"
   );
   const [friends, dispatch] = useReducer(friendsFormReducer, initalState);
   const [isLoading, setIsLoading] = useState(false);

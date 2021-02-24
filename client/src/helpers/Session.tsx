@@ -11,13 +11,19 @@ interface CreateSessionResponse extends AxiosResponse {
 }
 
 export interface User {
-  rowId: number;
-  randomUrl: string;
-  steamId: string;
+  rowId?: number;
   username: string;
-  isHost: boolean;
-  ownedGameAppIds: {
+  randomUrl: string;
+  steamId?: string;
+  isHost?: boolean;
+  ownedGameAppIds?: {
     appId: number;
+  }[];
+  games?: {
+    categories: {
+      rowId: number;
+      name: string;
+    }[];
   }[];
 }
 

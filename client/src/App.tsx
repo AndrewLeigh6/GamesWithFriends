@@ -6,12 +6,12 @@ import GenerateLinks from "./containers/GenerateLinks/GenerateLinks";
 import Results from "./containers/Results/Results";
 import Waiting from "./containers/Waiting/Waiting";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Session, SharedGame } from "./helpers/Session";
+import { Session, SharedGame, User } from "./helpers/Session";
 
-export interface User {
-  username: string;
-  randomUrl: string;
-}
+// export interface UserInput {
+//   username: string;
+//   randomUrl: string;
+// }
 
 export interface iUserContext {
   users: User[];
