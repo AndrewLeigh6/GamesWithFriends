@@ -1,3 +1,4 @@
+import { Category } from "./../db/models/Category";
 import { generateUrl } from "./../helpers/helpers";
 import { UserModule } from "./UserModule";
 import { Session } from "../db/models/Session";
@@ -111,10 +112,45 @@ export class SessionModule {
   };
 
   public getSharedGames = async (sessionId: string): Promise<Game[]> => {
+    const usersInSessionCount = await getSessionUserCount(sessionId);
+
+    const usersInSession = Session.relatedQuery("users")
+      .select("users.id")
+      .for(sessionId);
+
+    const userGames: GameWithOwners[] = await getGamesOwnedByAllUsers(
+      sessionId
+    );
+
+    // Filter out games that the users don't have in common
+    const sharedGames: GameWithOwners[] = userGames.filter(getGamesInCommon);
+
+    // Get all multiplayer games in the db
+    const multiplayerCategory = Category.query().where("name", "Multi-player");
+    const multiplayerGames = await Category.relatedQuery<Game>("games").for(
+      multiplayerCategory
+    );
+
+    // Now we want to return games that are both multiplayer and shared
+    const sharedMultiplayerGames = sharedGames.filter((sharedGame) => {
+      return multiplayerGames.some(
+        (multiGame) => sharedGame.id === multiGame.id
+      );
+    });
+
+    return sharedMultiplayerGames;
+
+    /* =======================================================================
+    HELPER FUNCTIONS 
+    ===========================================================================*/
+    function getGamesInCommon(userGame: GameWithOwners) {
+      return userGame.owners === usersInSessionCount;
+    }
+
     // Basically, if there are 4 users in the session, return "4"
-    const getSessionUserCount = async (
+    async function getSessionUserCount(
       sessionId: string
-    ): Promise<string | undefined> => {
+    ): Promise<string | undefined> {
       const usersInSessionCountQuery = await Session.relatedQuery("users")
         .count()
         .for(sessionId);
@@ -126,13 +162,10 @@ export class SessionModule {
       }
 
       return undefined;
-    };
+    }
 
-    // Get ALL games owned by users in this session
-    const getGamesOwnedByAllUsers = async (
-      sessionId: string
-    ): Promise<Game[]> => {
-      const userGames: GameWithOwners[] = await Game.query()
+    async function getGamesOwnedByAllUsers(sessionId: string): Promise<Game[]> {
+      const userGames: GameWithOwners[] = await Game.query<Game>()
         .select(
           "games.*",
           Game.relatedQuery("users")
@@ -143,26 +176,10 @@ export class SessionModule {
         .orderBy("games.name", "asc");
 
       return userGames;
-    };
-
-    const getGamesInCommon = (userGame: GameWithOwners) => {
-      return userGame.owners === usersInSessionCount;
-    };
-
-    const usersInSessionCount = await getSessionUserCount(sessionId);
-
-    const usersInSession = Session.relatedQuery("users")
-      .select("users.id")
-      .for(sessionId);
-
-    const userGames: GameWithOwners[] = await getGamesOwnedByAllUsers(
-      sessionId
-    );
-
-    // Finally, filter out games that the users don't have in common
-    const sharedGames: GameWithOwners[] = userGames.filter(getGamesInCommon);
-
-    return sharedGames;
+    }
+    /* =======================================================================
+    END HELPER FUNCTIONS 
+    ===========================================================================*/
   };
 
   /* ON HOLD - WE NEED TO GENERATE URLS FIRST */

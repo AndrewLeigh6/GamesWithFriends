@@ -20,7 +20,7 @@ export class Category extends Model {
           from: "categories_games.category_id",
           to: "categories_games.game_id",
         },
-        to: "game.id",
+        to: "games.id",
       },
     },
   };
