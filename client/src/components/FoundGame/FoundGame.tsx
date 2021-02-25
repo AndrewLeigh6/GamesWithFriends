@@ -58,8 +58,6 @@ function filterFeatures(feature: FeatureProp): boolean {
     feature.name === "Full controller support" ||
     feature.name === "Multi-player" ||
     feature.name === "Cross-Platform Multiplayer" ||
-    feature.name === "Online Co-op" ||
-    feature.name === "Online PvP" ||
     feature.name === "PvP" ||
     feature.name === "Co-op"
   ) {
