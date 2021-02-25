@@ -8,7 +8,6 @@
 
 .Image {
   border-radius: 10px;
-  max-width: 80%;
 }
 
 .Title {
@@ -17,15 +16,19 @@
   text-align: left;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  flex: 1;
+  flex-basis: 5rem;
 }
 
-.Features li {
-  margin-bottom: 0.5rem;
+.Features {
+  flex: 1;
 }
 
 .Features ul {
   list-style-type: none;
   text-align: left;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.Features li {
+  margin-bottom: 0.5rem;
 }
