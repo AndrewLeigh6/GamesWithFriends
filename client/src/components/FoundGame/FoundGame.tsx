@@ -36,7 +36,11 @@ const FoundGame = (props: AppProps) => {
 const renderFeatures = (features: FeatureProp[]): JSX.Element[] => {
   const result = features.map((feature) => {
     return (
-      <Feature key={feature.name} feature={feature.name} icon={Icon.Coop} />
+      <Feature
+        key={feature.name}
+        feature={feature.name}
+        icon={selectIcon(feature.name)}
+      />
     );
   });
   return result;
@@ -50,6 +54,17 @@ const renderButton = (buttonText: buttonText): JSX.Element => {
       return <Button color="SecondaryDark">{buttonText}</Button>;
     default:
       throw new Error("Button text not valid");
+  }
+};
+
+const selectIcon = (featureName: string): Icon => {
+  switch (featureName) {
+    case "Full controller support":
+      return Icon.Controller;
+    case "PvP":
+      return Icon.PvP;
+    default:
+      return Icon.Coop;
   }
 };
 
