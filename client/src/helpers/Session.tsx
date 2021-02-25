@@ -20,6 +20,7 @@ export interface User {
     appId: number;
   }[];
   games?: {
+    appId: number;
     categories: {
       rowId: number;
       name: string;
@@ -33,6 +34,10 @@ export interface SharedGame {
   name: string;
   image_vertical_url: string;
   image_horizontal_url: string;
+  categories: {
+    rowId: number;
+    name: string;
+  }[];
 }
 
 export class Session {
@@ -82,8 +87,8 @@ export class Session {
     let result: AxiosResponse;
     try {
       result = await axios.get(`/api/sessions/${this.sessionId}/games`);
-      if (result.data) {
-        this.games = result.data;
+      if (result.data && this.users) {
+        this.games = addGameCategories(result.data, this.users);
         return this.games;
       }
       return null;
@@ -93,6 +98,22 @@ export class Session {
       } else {
         throw new Error("Failed to create new session");
       }
+    }
+
+    function addGameCategories(
+      gameData: SharedGame[],
+      users: User[]
+    ): SharedGame[] {
+      const host = users[0];
+      gameData.forEach((game, index) => {
+        if (host.games) {
+          const foundGame = host.games.findIndex(
+            (hostGame) => game.app_id === hostGame.appId.toString()
+          );
+          gameData[index].categories = host.games[foundGame].categories;
+        }
+      });
+      return gameData;
     }
   };
 }

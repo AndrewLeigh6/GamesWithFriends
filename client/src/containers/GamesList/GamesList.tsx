@@ -33,10 +33,9 @@ const GamesList = (props: AppProps) => {
           <FoundGame
             title={game.name}
             image={game.image_vertical_url}
-            icon={Icon.Controller}
             buttonText="Select"
             key={game.app_id}
-            feature="feature"
+            features={game.categories}
           />
         );
       });
