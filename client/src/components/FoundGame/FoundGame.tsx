@@ -2,6 +2,7 @@ import React from "react";
 import Button from "../Button/Button";
 import Feature, { Icon } from "./Feature/Feature";
 import classes from "./FoundGame.module.scss";
+import placeholder from "./placeholder.png";
 
 type buttonText = "Select" | "Selected";
 
@@ -23,7 +24,12 @@ const FoundGame = (props: AppProps) => {
 
   return (
     <div className={classes.FoundGame}>
-      <img src={props.image} className={classes.Image} alt={props.title} />
+      <img
+        src={props.image}
+        className={classes.Image}
+        alt={props.title}
+        onError={handleError}
+      />
       <div className={classes.Title}>{props.title}</div>
       <div className={classes.Features}>
         <ul>{renderFeatures(filteredFeatures)}</ul>
@@ -66,6 +72,12 @@ const selectIcon = (featureName: string): Icon => {
     default:
       return Icon.Coop;
   }
+};
+
+const handleError = (
+  event: React.SyntheticEvent<HTMLImageElement, Event>
+): void => {
+  event.currentTarget.src = placeholder;
 };
 
 function filterFeatures(feature: FeatureProp): boolean {
