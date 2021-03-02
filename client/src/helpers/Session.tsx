@@ -10,6 +10,14 @@ interface CreateSessionResponse extends AxiosResponse {
   };
 }
 
+export interface UserGame {
+  appId: number;
+  categories: {
+    rowId: number;
+    name: string;
+  }[];
+}
+
 export interface User {
   rowId?: number;
   username: string;
@@ -19,13 +27,7 @@ export interface User {
   ownedGameAppIds?: {
     appId: number;
   }[];
-  games?: {
-    appId: number;
-    categories: {
-      rowId: number;
-      name: string;
-    }[];
-  }[];
+  games?: UserGame[];
 }
 
 export interface SharedGame {
@@ -83,37 +85,74 @@ export class Session {
     }
   };
 
+  public createFromUrl = async (url: string): Promise<void> => {
+    let result: AxiosResponse;
+
+    try {
+      result = await axios.get(`/api/sessions/url/${url}`);
+      console.log(result);
+      this.sessionId = result.data.sessionId;
+      this.users = result.data.sessionData.users;
+    } catch (error: unknown) {
+      throw new Error("Failed to initialise existing session: " + error);
+    }
+  };
+
   public getSharedGames = async (): Promise<SharedGame[] | null> => {
     let result: AxiosResponse;
     try {
       result = await axios.get(`/api/sessions/${this.sessionId}/games`);
-      if (result.data && this.users) {
-        this.games = addGameCategories(result.data, this.users);
+      console.log("Logging results", result);
+
+      if (result.data && this.users && this.users[0].games) {
+        this.games = addGameCategories(result.data, this.users[0].games);
         return this.games;
       }
       return null;
     } catch (error: unknown) {
-      if (typeof error === "string") {
-        throw new Error(error);
-      } else {
-        throw new Error("Failed to create new session");
-      }
+      throw new Error("Failed to create new session: " + error);
     }
+
+    // function addGameCategories(
+    //   gameData: SharedGame[],
+    //   users: User[]
+    // ): SharedGame[] {
+    //   console.log("calling add game categories");
+
+    //   const host = users[0];
+    //   gameData.forEach((game, index) => {
+    //     if (host.games) {
+    //       const foundGame = host.games.findIndex(
+    //         (hostGame) => game.app_id === hostGame.appId.toString()
+    //       );
+    //       gameData[index].categories = host.games[foundGame].categories;
+    //     }
+    //   });
+    //   return gameData;
+    // }
 
     function addGameCategories(
       gameData: SharedGame[],
-      users: User[]
+      userGames: UserGame[] | SharedGame[]
     ): SharedGame[] {
-      const host = users[0];
       gameData.forEach((game, index) => {
-        if (host.games) {
-          const foundGame = host.games.findIndex(
-            (hostGame) => game.app_id === hostGame.appId.toString()
+        if (isUserGame(userGames)) {
+          const foundGame = userGames.findIndex(
+            (userGame) => userGame.appId.toString() === game.app_id
           );
-          gameData[index].categories = host.games[foundGame].categories;
+          gameData[index].categories = userGames[foundGame].categories;
+        } else {
+          const foundGame = userGames.findIndex(
+            (userGame) => userGame.app_id === game.app_id
+          );
+          gameData[index].categories = userGames[foundGame].categories;
         }
       });
       return gameData;
+    }
+
+    function isUserGame(games: UserGame[] | SharedGame[]): games is UserGame[] {
+      return (games as UserGame[])[0].appId !== undefined;
     }
   };
 }

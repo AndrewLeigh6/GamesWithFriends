@@ -18,8 +18,19 @@ interface RequestWithUrl extends Request {
   };
 }
 
-/* you can send a request like http://localhost:3000/api/sessions?user=andrew&user=bob&user=joey
-and it will give you {user: ["andrew", "bob", "joey"]} */
+interface ExistingSessionUserData {
+  id: number;
+  host_id: number;
+  users: [
+    {
+      id: number;
+      steam_id: string;
+      steam_username: string;
+      url: string;
+    }
+  ];
+}
+[];
 
 // create session
 sessionsRouter.post("/", async function (req: RequestWithUsers, res: Response) {
@@ -34,6 +45,39 @@ sessionsRouter.post("/", async function (req: RequestWithUsers, res: Response) {
     res.json(response);
   } else {
     res.send("Unable to create session");
+  }
+});
+
+// get session details by url
+sessionsRouter.get("/url/:url", async function (req: Request, res: Response) {
+  const url: string = req.params.url;
+
+  // get user and session id associated with this url
+  const data = await Session.query()
+    .withGraphJoined("users")
+    .where("url", "=", url);
+
+  if (data[0].users) {
+    const sessionId = data[0].id;
+    const hostId = data[0].host_id;
+    const userId = data[0].users[0].id;
+    const username = data[0].users[0].steam_username;
+
+    if (sessionId) {
+      const sessionData = await Session.query()
+        .withGraphFetched("users.[games.[categories]]")
+        .where("sessions.id", "=", sessionId);
+
+      const response = {
+        sessionId: sessionId,
+        hostId: hostId,
+        userId: userId,
+        username: username,
+        sessionData: sessionData[0],
+      };
+
+      res.json(response);
+    }
   }
 });
 

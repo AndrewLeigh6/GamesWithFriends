@@ -8,7 +8,7 @@ import classes from "./GeneratedLinks.module.scss";
 
 const GeneratedLinks = () => {
   const { users } = useContext<iUserContext>(UsersContext);
-  const BASE_URL = "http://localhost:3000/session?q=";
+  const BASE_URL = "http://localhost:81/session?q=";
   let hostUrl = "";
 
   const copyUrl = async (url: string): Promise<void> => {

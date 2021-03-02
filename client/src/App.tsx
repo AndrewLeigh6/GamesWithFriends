@@ -42,6 +42,7 @@ function App() {
               <Route path="/session">
                 <GamesList
                   session={session}
+                  setSession={setSession}
                   games={games}
                   setGames={setGames}
                 />

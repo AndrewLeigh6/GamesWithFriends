@@ -3,8 +3,11 @@ import { User } from "./User";
 import path from "path";
 
 export class Session extends Model {
+  id?: number;
   host_id?: number;
   url?: string;
+
+  users?: User[];
 
   static get tableName() {
     return "sessions";

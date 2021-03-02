@@ -143,7 +143,7 @@ export class SessionModule {
     /* =======================================================================
     HELPER FUNCTIONS 
     ===========================================================================*/
-    function getGamesInCommon(userGame: GameWithOwners) {
+    function getGamesInCommon(userGame: GameWithOwners): boolean {
       return userGame.owners === usersInSessionCount;
     }
 

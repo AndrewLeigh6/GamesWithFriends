@@ -51,7 +51,7 @@ it("renders input correctly with value prop and copy icon", () => {
     <Input
       label="felineyx"
       name="felineyx"
-      value="http://localhost:3000/session?q=PrivateChocolateWolverine"
+      value="http://localhost:81/session?q=PrivateChocolateWolverine"
       leftIcon={LeftIcon.User}
       rightIcon={RightIcon.Copy}
       iconClicked={() => null}
@@ -62,7 +62,5 @@ it("renders input correctly with value prop and copy icon", () => {
 
   getByRole("textbox", { name: /felineyx/i });
   getByRole("button", { name: /copy button/i });
-  getByDisplayValue(
-    "http://localhost:3000/session?q=PrivateChocolateWolverine"
-  );
+  getByDisplayValue("http://localhost:81/session?q=PrivateChocolateWolverine");
 });
