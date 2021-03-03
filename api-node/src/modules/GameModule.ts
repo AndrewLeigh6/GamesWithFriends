@@ -130,17 +130,19 @@ export class GameModule {
       return category;
     };
 
-    await Promise.all(
-      categories.map(
-        async (gameCategory: CategoryData): Promise<void> => {
-          let category: CategoryModule;
-          if (gameCategory.description) {
-            category = await createCategory(gameCategory.description);
-            this.categories.push(category);
+    if (categories) {
+      await Promise.all(
+        categories.map(
+          async (gameCategory: CategoryData): Promise<void> => {
+            let category: CategoryModule;
+            if (gameCategory.description) {
+              category = await createCategory(gameCategory.description);
+              this.categories.push(category);
+            }
           }
-        }
-      )
-    );
+        )
+      );
+    }
   };
 
   private getExistingGameCategoryData = async (
@@ -164,8 +166,6 @@ export class GameModule {
         })
       );
 
-      console.log("LOGGING EXISTING GAME CATEGORY DATA");
-      console.log(categoryData);
       return result;
     } else {
       return null;
