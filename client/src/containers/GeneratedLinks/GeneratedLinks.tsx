@@ -20,7 +20,20 @@ const GeneratedLinks = () => {
   };
 
   const buildUsers = (): JSX.Element[] => {
-    const userInputs = users.map((user, index) => {
+    // Sort user inputs so the host is always at the top
+    const sortedUsers = users.sort((a, b): number => {
+      if (a.isHost) {
+        return -1;
+      }
+
+      if (b.isHost) {
+        return 1;
+      }
+
+      return 0;
+    });
+
+    const userInputs = sortedUsers.map((user, index) => {
       const finalUrl = `${BASE_URL}${user.randomUrl}`;
       if (index === 0) {
         hostUrl = "/session?q=" + user.randomUrl;
