@@ -13,24 +13,32 @@ interface AppProps {
   setGames: React.Dispatch<React.SetStateAction<SharedGame[] | undefined>>;
 }
 
+function useQuery(): URLSearchParams {
+  return new URLSearchParams(useLocation().search);
+}
+
 const GamesList = (props: AppProps) => {
   const { session, setGames, setSession } = props;
   const params = useQuery();
 
-  function useQuery(): URLSearchParams {
-    return new URLSearchParams(useLocation().search);
-  }
-
+  /* This looks weird due to the repeated session check, but they
+   had to be split in two to avoid the infinite loop of death. */
   useEffect(() => {
-    const getGames = async () => {
-      if (session instanceof Session) {
+    const getGamesFromSession = async () => {
+      if (session !== undefined) {
         const games = await session.getSharedGames();
 
         if (games) {
           setGames(games);
         }
-      } else {
-        // Session is undefined, so we're initialising from URL
+      }
+    };
+    getGamesFromSession();
+  }, [session, setGames]);
+
+  useEffect(() => {
+    const getGamesFromUrl = async () => {
+      if (session === undefined) {
         const newSession = new Session();
         const url = params.get("q");
 
@@ -40,8 +48,8 @@ const GamesList = (props: AppProps) => {
         }
       }
     };
-    getGames();
-  }, [session, setSession, setGames, params]);
+    getGamesFromUrl();
+  }, [session, setSession, params]);
 
   const buildGames = (): JSX.Element[] | null => {
     if (props.games && props.games.length > 0) {
@@ -62,6 +70,7 @@ const GamesList = (props: AppProps) => {
 
     return null;
   };
+
   return (
     <React.Fragment>
       <div className={classes.GamesList}>{buildGames()}</div>
