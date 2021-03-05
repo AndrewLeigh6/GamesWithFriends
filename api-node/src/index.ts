@@ -6,6 +6,7 @@ import * as path from "path";
 import { Model } from "objection";
 import { sessionsRouter } from "./routes/sessions";
 import { usersRouter } from "./routes/users";
+import { votesRouter } from "./routes/votes";
 
 /* 
 useful knex stuff
@@ -25,11 +26,7 @@ const app = express();
 app.use(morgan("dev", { stream: logStream }));
 app.use("/sessions", sessionsRouter);
 app.use("/users", usersRouter);
-// app.use(express.static(path.join(__dirname, "../", "../client/build")));
-
-// app.get("/*", (req: Request, res: Response) => {
-//   res.sendFile(path.join(__dirname, "../", "../client/build", "index.html"));
-// });
+app.use("/votes", votesRouter);
 
 // init knex and objection
 const knex: Knex = Knex(knexConfig.development);
