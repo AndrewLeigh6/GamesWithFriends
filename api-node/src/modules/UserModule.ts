@@ -10,7 +10,7 @@ import {
 interface UserRecord extends Partial<User> {}
 
 export class UserModule {
-  rowId: number | null = null;
+  id: number | null = null;
   steamId: string = "";
   username: string = "";
   isHost: boolean = false;
@@ -77,8 +77,8 @@ export class UserModule {
     const userRow: User = await User.query().insert(insertData).returning("*");
 
     const gameIds = games.flatMap((game) => {
-      if (typeof game.rowId === "number") {
-        return [game.rowId];
+      if (typeof game.id === "number") {
+        return [game.id];
       } else {
         return [];
       }
@@ -138,11 +138,11 @@ export class UserModule {
     if (user !== undefined && typeof user.id === "number") {
       this.ownedGameAppIds = await this.getOwnedGames(this.steamId);
       await this.createGames(this.ownedGameAppIds);
-      this.rowId = user.id;
+      this.id = user.id;
     } else {
       this.ownedGameAppIds = await this.getOwnedGames(this.steamId);
       await this.createGames(this.ownedGameAppIds);
-      this.rowId = await this.save(this, this.games);
+      this.id = await this.save(this, this.games);
     }
 
     return this;

@@ -13,14 +13,13 @@ interface CreateSessionResponse extends AxiosResponse {
 export interface UserGame {
   appId: number;
   categories: {
-    rowId: number;
+    id: number;
     name: string;
   }[];
 }
 
 export interface User {
   id?: number;
-  rowId?: number;
   username: string;
   randomUrl: string;
   url?: string;
@@ -39,7 +38,7 @@ export interface SharedGame {
   image_vertical_url: string;
   image_horizontal_url: string;
   categories: {
-    rowId: number;
+    id: number;
     name: string;
   }[];
 }

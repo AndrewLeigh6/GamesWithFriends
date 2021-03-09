@@ -1,6 +1,6 @@
 import { Category } from "./../db/models/Category";
 export class CategoryModule {
-  rowId: number | null = null;
+  id: number | null = null;
   name: string | null = null;
 
   /* Potential flaw? We check if the category exists, but we don't
@@ -18,7 +18,7 @@ export class CategoryModule {
 
   private setExistingCategoryDetails = (category: Category): void => {
     if (typeof category.id === "number" && typeof category.name === "string") {
-      this.rowId = category.id;
+      this.id = category.id;
       this.name = category.name;
     }
   };
@@ -43,7 +43,7 @@ export class CategoryModule {
     if (existingCategory) {
       this.setExistingCategoryDetails(existingCategory);
     } else {
-      this.rowId = await this.save(name);
+      this.id = await this.save(name);
     }
   };
 }

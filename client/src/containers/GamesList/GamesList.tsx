@@ -65,9 +65,6 @@ const GamesList = (props: AppProps) => {
       if (user && user.id) {
         return user.id;
       }
-      if (user && user.rowId) {
-        return user.rowId;
-      }
     }
 
     return null;

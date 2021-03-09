@@ -11,7 +11,7 @@ interface CategoryData {
 }
 
 export class GameModule {
-  rowId: number | null = null;
+  id: number | null = null;
   appId: string = "";
   name: string = "";
   imageVerticalUrl: string = "";
@@ -80,8 +80,8 @@ export class GameModule {
 
     // Relate categories in db
     const categoryIds = categories.flatMap((category) => {
-      if (typeof category.rowId === "number") {
-        return [category.rowId];
+      if (typeof category.id === "number") {
+        return [category.id];
       } else {
         return [];
       }
@@ -113,7 +113,7 @@ export class GameModule {
       typeof game.image_vertical_url === "string" &&
       typeof game.image_horizontal_url === "string"
     ) {
-      this.rowId = game.id;
+      this.id = game.id;
       this.name = game.name;
       this.imageVerticalUrl = game.image_vertical_url;
       this.imageHorizontalUrl = game.image_horizontal_url;
@@ -146,12 +146,12 @@ export class GameModule {
   };
 
   private getExistingGameCategoryData = async (
-    gameRowId: number | null
+    gameId: number | null
   ): Promise<CategoryData[] | null> => {
-    if (gameRowId) {
+    if (gameId) {
       // get all the categories for a game and return an array
       const categoryData = await Game.relatedQuery<Category>("categories").for(
-        gameRowId
+        gameId
       );
       let result: CategoryData[] = [];
 
@@ -182,7 +182,7 @@ export class GameModule {
     if (existingGame) {
       console.log("Tried to add existing game (first check)", appId);
       this.setExistingGameDetails(existingGame);
-      const categoryData = await this.getExistingGameCategoryData(this.rowId);
+      const categoryData = await this.getExistingGameCategoryData(this.id);
       if (categoryData) {
         await this.createCategories(categoryData);
       }
@@ -191,7 +191,7 @@ export class GameModule {
       const detailsSet = this.setGameDetails(gameDetails);
       if (detailsSet) {
         await this.createCategories(gameDetails[appId].data.categories);
-        this.rowId = await this.save(this, this.categories);
+        this.id = await this.save(this, this.categories);
       }
     }
   };

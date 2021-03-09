@@ -62,8 +62,8 @@ export class SessionModule {
     const session: SessionData = await Session.query().insert(insertData);
 
     const userIds = users.flatMap((user) => {
-      if (typeof user.rowId === "number") {
-        return [user.rowId];
+      if (typeof user.id === "number") {
+        return [user.id];
       } else {
         return [];
       }
@@ -101,8 +101,8 @@ export class SessionModule {
     if (hostIndex > -1) {
       const host = users[hostIndex];
 
-      if (typeof host.rowId === "number") {
-        return host.rowId;
+      if (typeof host.id === "number") {
+        return host.id;
       }
 
       return null;
