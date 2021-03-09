@@ -15,10 +15,26 @@ interface AppProps {
   image: string;
   buttonText: buttonText;
   features: FeatureProp[];
+  selectedHandler: () => void;
 }
 
 const FoundGame = (props: AppProps) => {
   const { features } = props;
+
+  const renderButton = (buttonText: buttonText): JSX.Element => {
+    switch (buttonText) {
+      case "Select":
+        return (
+          <Button color="SecondaryLight" clicked={props.selectedHandler}>
+            {buttonText}
+          </Button>
+        );
+      case "Selected":
+        return <Button color="SecondaryDark">{buttonText}</Button>;
+      default:
+        throw new Error("Button text not valid");
+    }
+  };
 
   let filteredFeatures = features.filter(filterFeatures);
 
@@ -50,17 +66,6 @@ const renderFeatures = (features: FeatureProp[]): JSX.Element[] => {
     );
   });
   return result;
-};
-
-const renderButton = (buttonText: buttonText): JSX.Element => {
-  switch (buttonText) {
-    case "Select":
-      return <Button color="SecondaryLight">{buttonText}</Button>;
-    case "Selected":
-      return <Button color="SecondaryDark">{buttonText}</Button>;
-    default:
-      throw new Error("Button text not valid");
-  }
 };
 
 const selectIcon = (featureName: string): Icon => {

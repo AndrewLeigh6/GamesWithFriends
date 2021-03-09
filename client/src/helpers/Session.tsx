@@ -19,9 +19,11 @@ export interface UserGame {
 }
 
 export interface User {
+  id?: number;
   rowId?: number;
   username: string;
   randomUrl: string;
+  url?: string;
   steamId?: string;
   isHost?: boolean;
   ownedGameAppIds?: {
@@ -112,24 +114,6 @@ export class Session {
     } catch (error: unknown) {
       throw new Error("Failed to create new session: " + error);
     }
-
-    // function addGameCategories(
-    //   gameData: SharedGame[],
-    //   users: User[]
-    // ): SharedGame[] {
-    //   console.log("calling add game categories");
-
-    //   const host = users[0];
-    //   gameData.forEach((game, index) => {
-    //     if (host.games) {
-    //       const foundGame = host.games.findIndex(
-    //         (hostGame) => game.app_id === hostGame.appId.toString()
-    //       );
-    //       gameData[index].categories = host.games[foundGame].categories;
-    //     }
-    //   });
-    //   return gameData;
-    // }
 
     function addGameCategories(
       gameData: SharedGame[],

@@ -11,6 +11,7 @@ interface AppProps {
   setSession: React.Dispatch<React.SetStateAction<Session | undefined>>;
   games: SharedGame[] | undefined;
   setGames: React.Dispatch<React.SetStateAction<SharedGame[] | undefined>>;
+  submitVote: (sessionId: number, gameId: number, userId: number) => void;
 }
 
 function useQuery(): URLSearchParams {
@@ -51,21 +52,50 @@ const GamesList = (props: AppProps) => {
     getGamesFromUrl();
   }, [session, setSession, params]);
 
-  const buildGames = (): JSX.Element[] | null => {
-    if (props.games && props.games.length > 0) {
-      const gamesList = props.games.map((game) => {
-        return (
-          <FoundGame
-            title={game.name}
-            image={game.image_vertical_url}
-            buttonText="Select"
-            key={game.app_id}
-            features={game.categories}
-          />
-        );
-      });
+  const getUserId = (): number | null => {
+    const url = params.get("q");
+    if (session && session.users) {
+      const user = session.users.find((user) => {
+        if (user.randomUrl === url || user.url === url) {
+          return true;
+        }
 
-      return gamesList;
+        return false;
+      });
+      if (user && user.id) {
+        return user.id;
+      }
+      if (user && user.rowId) {
+        return user.rowId;
+      }
+    }
+
+    return null;
+  };
+
+  const buildGames = (): JSX.Element[] | null => {
+    if (props.games && props.games.length > 0 && props.session) {
+      const userId = getUserId();
+      const sessionId = props.session.sessionId;
+
+      if (userId && sessionId) {
+        const gamesList = props.games.map((game) => {
+          return (
+            <FoundGame
+              title={game.name}
+              image={game.image_vertical_url}
+              buttonText="Select"
+              key={game.app_id}
+              features={game.categories}
+              selectedHandler={() =>
+                props.submitVote(sessionId, game.id, userId)
+              }
+            />
+          );
+        });
+
+        return gamesList;
+      }
     }
 
     return null;

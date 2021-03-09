@@ -182,16 +182,6 @@ export class SessionModule {
     ===========================================================================*/
   };
 
-  /* ON HOLD - WE NEED TO GENERATE URLS FIRST */
-  public initFromUrl = async (url: string): Promise<void> => {
-    // string should be like SpecialBrownParrot
-    console.log(url);
-    /* so what do we need to do here?
-      - generate all users from db, not steam urls
-      - get all games in common
-    */
-  };
-
   public init = async (steamUrls: string[]): Promise<number | undefined> => {
     await this.createUsers(steamUrls);
     const hostId = this.getHostId(this.users);

@@ -7,6 +7,7 @@ import Results from "./containers/Results/Results";
 import Waiting from "./containers/Waiting/Waiting";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Session, SharedGame, User } from "./helpers/Session";
+import axios from "axios";
 
 // export interface UserInput {
 //   username: string;
@@ -30,6 +31,27 @@ function App() {
   const [games, setGames] = useState<SharedGame[] | undefined>();
   const usersState = { users, setUsers };
 
+  const submitVote = (
+    sessionId: number,
+    gameId: number,
+    userId: number
+  ): void => {
+    // axios.post("http://localhost:81/api/votes", {
+    //   sessionId: sessionId,
+    //   gameId: gameId,
+    //   userId: userId,
+    // });
+    axios.post(
+      `http://localhost:81/api/votes?sessionId=${sessionId}&gameId=${gameId}&userId=${userId}`
+    );
+  };
+
+  const cancelVote = async (
+    sessionId: number,
+    gameId: number,
+    userId: number
+  ): Promise<void> => {};
+
   return (
     <div className="App">
       <Router>
@@ -45,6 +67,7 @@ function App() {
                   setSession={setSession}
                   games={games}
                   setGames={setGames}
+                  submitVote={submitVote}
                 />
               </Route>
               <Route path="/">
