@@ -4,8 +4,6 @@ import Feature, { Icon } from "./Feature/Feature";
 import classes from "./FoundGame.module.scss";
 import placeholder from "./placeholder.png";
 
-type buttonText = "Select" | "Selected";
-
 interface FeatureProp {
   name: string;
 }
@@ -13,26 +11,31 @@ interface FeatureProp {
 interface AppProps {
   title: string;
   image: string;
-  buttonText: buttonText;
+  selected: boolean;
   features: FeatureProp[];
   selectedHandler: () => void;
+  deselectedHandler: () => void;
 }
 
 const FoundGame = (props: AppProps) => {
   const { features } = props;
 
-  const renderButton = (buttonText: buttonText): JSX.Element => {
-    switch (buttonText) {
-      case "Select":
+  const renderButton = (selected: boolean): JSX.Element => {
+    switch (selected) {
+      case false:
         return (
           <Button color="SecondaryLight" clicked={props.selectedHandler}>
-            {buttonText}
+            Select
           </Button>
         );
-      case "Selected":
-        return <Button color="SecondaryDark">{buttonText}</Button>;
+      case true:
+        return (
+          <Button color="SecondaryDark" clicked={props.deselectedHandler}>
+            Selected
+          </Button>
+        );
       default:
-        throw new Error("Button text not valid");
+        throw new Error("Button state not valid");
     }
   };
 
@@ -50,7 +53,7 @@ const FoundGame = (props: AppProps) => {
       <div className={classes.Features}>
         <ul>{renderFeatures(filteredFeatures)}</ul>
       </div>
-      {renderButton(props.buttonText)}
+      {renderButton(props.selected)}
     </div>
   );
 };

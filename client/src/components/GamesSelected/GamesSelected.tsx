@@ -10,7 +10,7 @@ interface AppProps {
 const GamesSelected = (props: AppProps) => {
   return (
     <div className={classes.GamesSelected}>
-      <GamesSelectedText gamesSelected={0} />
+      <GamesSelectedText gamesSelected={props.gamesSelected} />
       <Button color="Primary">Done</Button>
     </div>
   );

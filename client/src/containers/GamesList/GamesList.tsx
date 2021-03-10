@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import { Icon } from "../../components/FoundGame/Feature/Feature";
 import FoundGame from "../../components/FoundGame/FoundGame";
 import GamesSelected from "../../components/GamesSelected/GamesSelected";
 import { Session, SharedGame } from "../../helpers/Session";
@@ -11,7 +11,6 @@ interface AppProps {
   setSession: React.Dispatch<React.SetStateAction<Session | undefined>>;
   games: SharedGame[] | undefined;
   setGames: React.Dispatch<React.SetStateAction<SharedGame[] | undefined>>;
-  submitVote: (sessionId: number, gameId: number, userId: number) => void;
 }
 
 function useQuery(): URLSearchParams {
@@ -21,6 +20,7 @@ function useQuery(): URLSearchParams {
 const GamesList = (props: AppProps) => {
   const { session, setGames, setSession } = props;
   const params = useQuery();
+  const [votes, setVotes] = useState<number[]>([]);
 
   /* This looks weird due to the repeated session check, but they
    had to be split in two to avoid the infinite loop of death. */
@@ -70,6 +70,58 @@ const GamesList = (props: AppProps) => {
     return null;
   };
 
+  const doesVoteExist = (gameId: number) => {
+    return votes.find((vote) => vote === gameId);
+  };
+
+  const submitVote = (
+    sessionId: number,
+    gameId: number,
+    userId: number
+  ): void => {
+    const MAX_VOTES = 3;
+    if (votes.length < MAX_VOTES) {
+      axios
+        .post(
+          `http://localhost:81/api/votes?sessionId=${sessionId}&gameId=${gameId}&userId=${userId}`
+        )
+        .then(() => {
+          const voteExists = doesVoteExist(gameId);
+          if (!voteExists) {
+            setVotes((oldVotes) => [...oldVotes, gameId]);
+          }
+        })
+        .catch((error) => {
+          throw new Error(error);
+        });
+    }
+  };
+
+  const cancelVote = async (
+    sessionId: number,
+    gameId: number,
+    userId: number
+  ): Promise<void> => {
+    const MIN_VOTES = 0;
+    if (votes.length > MIN_VOTES) {
+      axios
+        .delete(
+          `http://localhost:81/api/votes?sessionId=${sessionId}&gameId=${gameId}&userId=${userId}`
+        )
+        .then((res) => {
+          console.log(res);
+
+          const voteExists = doesVoteExist(gameId);
+          if (voteExists) {
+            setVotes((oldVotes) => oldVotes.filter((vote) => vote !== gameId));
+          }
+        })
+        .catch((error) => {
+          throw new Error(error);
+        });
+    }
+  };
+
   const buildGames = (): JSX.Element[] | null => {
     if (props.games && props.games.length > 0 && props.session) {
       const userId = getUserId();
@@ -77,16 +129,20 @@ const GamesList = (props: AppProps) => {
 
       if (userId && sessionId) {
         const gamesList = props.games.map((game) => {
+          let selected = false;
+          const voteExists = doesVoteExist(game.id);
+          if (voteExists) {
+            selected = true;
+          }
           return (
             <FoundGame
               title={game.name}
               image={game.image_vertical_url}
-              buttonText="Select"
+              selected={selected}
               key={game.app_id}
               features={game.categories}
-              selectedHandler={() =>
-                props.submitVote(sessionId, game.id, userId)
-              }
+              selectedHandler={() => submitVote(sessionId, game.id, userId)}
+              deselectedHandler={() => cancelVote(sessionId, game.id, userId)}
             />
           );
         });
@@ -98,10 +154,12 @@ const GamesList = (props: AppProps) => {
     return null;
   };
 
+  const gamesSelected = votes.length;
+
   return (
     <React.Fragment>
       <div className={classes.GamesList}>{buildGames()}</div>
-      <GamesSelected gamesSelected={0} />
+      <GamesSelected gamesSelected={gamesSelected} />
     </React.Fragment>
   );
 };
