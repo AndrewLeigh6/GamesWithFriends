@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { Session } from "../db/models/Session";
 import { Vote } from "../db/models/Vote";
 export const votesRouter = express.Router();
 
@@ -44,5 +45,17 @@ votesRouter.delete("/", async function (req: VoteRequest, res: Response) {
     if (vote) {
       res.send("Vote removed successfully");
     }
+  }
+});
+
+// get all votes
+votesRouter.get("/", async function (req: VoteRequest, res: Response) {
+  const sessionId = Number(req.query.sessionId);
+
+  if (sessionId) {
+    const votes = await Vote.query()
+      .withGraphJoined("users")
+      .where("session_id", sessionId);
+    res.send(votes);
   }
 });

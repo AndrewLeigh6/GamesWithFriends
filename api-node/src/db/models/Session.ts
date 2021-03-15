@@ -27,5 +27,13 @@ export class Session extends Model {
         to: "users.id",
       },
     },
+    votes: {
+      relation: Model.HasOneRelation,
+      modelClass: path.join(__dirname, "Vote"),
+      join: {
+        from: "sessions.id",
+        to: "votes.session_id",
+      },
+    },
   };
 }

@@ -21,6 +21,8 @@ const GamesList = (props: AppProps) => {
   const { session, setGames, setSession } = props;
   const params = useQuery();
   const [votes, setVotes] = useState<number[]>([]);
+  const MAX_VOTES = 3;
+  const MIN_VOTES = 0;
 
   /* This looks weird due to the repeated session check, but they
    had to be split in two to avoid the infinite loop of death. */
@@ -79,7 +81,6 @@ const GamesList = (props: AppProps) => {
     gameId: number,
     userId: number
   ): void => {
-    const MAX_VOTES = 3;
     if (votes.length < MAX_VOTES) {
       axios
         .post(
@@ -102,7 +103,6 @@ const GamesList = (props: AppProps) => {
     gameId: number,
     userId: number
   ): Promise<void> => {
-    const MIN_VOTES = 0;
     if (votes.length > MIN_VOTES) {
       axios
         .delete(
@@ -159,7 +159,10 @@ const GamesList = (props: AppProps) => {
   return (
     <React.Fragment>
       <div className={classes.GamesList}>{buildGames()}</div>
-      <GamesSelected gamesSelected={gamesSelected} />
+      <GamesSelected
+        gamesSelected={gamesSelected}
+        maxVotesAllowed={MAX_VOTES}
+      />
     </React.Fragment>
   );
 };

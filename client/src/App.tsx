@@ -8,11 +8,6 @@ import Waiting from "./containers/Waiting/Waiting";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Session, SharedGame, User } from "./helpers/Session";
 
-// export interface UserInput {
-//   username: string;
-//   randomUrl: string;
-// }
-
 export interface iUserContext {
   users: User[];
   setUsers: React.Dispatch<React.SetStateAction<User[]>>;
@@ -46,6 +41,12 @@ function App() {
                   games={games}
                   setGames={setGames}
                 />
+              </Route>
+              <Route path="/waiting">
+                <Waiting session={session} />
+              </Route>
+              <Route path="/results">
+                <Results />
               </Route>
               <Route path="/">
                 <GenerateLinks setSession={setSession} />

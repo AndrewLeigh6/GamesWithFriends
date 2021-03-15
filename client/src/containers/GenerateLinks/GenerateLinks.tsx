@@ -53,7 +53,7 @@ function friendsFormReducer(state: State, action: Actions) {
 const initalState = [
   {
     id: Session.getRandomId(),
-    url: "https://steamcommunity.com/id/eatenbyduckpeople/",
+    url: "https://steamcommunity.com/id/loke1104/",
   },
 ];
 
