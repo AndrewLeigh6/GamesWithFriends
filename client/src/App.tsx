@@ -13,6 +13,11 @@ export interface iUserContext {
   setUsers: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
+export interface Vote {
+  username: string;
+  gameIds: number[];
+}
+
 // set defaults
 export const UsersContext = createContext<iUserContext>({
   users: [],
@@ -23,6 +28,7 @@ function App() {
   const [session, setSession] = useState<Session | undefined>();
   const [users, setUsers] = useState<User[]>([]);
   const [games, setGames] = useState<SharedGame[] | undefined>();
+  const [votes, setVotes] = useState<Vote[]>([]);
   const usersState = { users, setUsers };
 
   return (
@@ -43,7 +49,7 @@ function App() {
                 />
               </Route>
               <Route path="/waiting">
-                <Waiting session={session} />
+                <Waiting session={session} votes={votes} setVotes={setVotes} />
               </Route>
               <Route path="/results">
                 <Results />

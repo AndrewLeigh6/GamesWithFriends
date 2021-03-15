@@ -1,12 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
+import { Vote } from "../../App";
 import WaitingBubble from "../../components/WaitingBubble/WaitingBubble";
 import { Session } from "../../helpers/Session";
 import classes from "./Waiting.module.scss";
 
 interface AppProps {
   session: Session | undefined;
+  votes: Vote[];
+  setVotes: React.Dispatch<React.SetStateAction<Vote[]>>;
 }
 
 interface VotesResponse {
@@ -21,16 +24,11 @@ interface VotesResponse {
   };
 }
 
-interface Vote {
-  username: string;
-  gameIds: number[];
-}
-
 const Waiting = (props: AppProps) => {
-  const [votes, setVotes] = useState<Vote[]>([]);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
   const history = useHistory();
   const MAX_VOTES = 3;
+  const { session, setVotes, votes } = props;
 
   useEffect(() => {
     const getAllVotes = async (
@@ -83,8 +81,8 @@ const Waiting = (props: AppProps) => {
     };
 
     const init = async (): Promise<void> => {
-      if (props.session && props.session.sessionId) {
-        const rawVotes = await getAllVotes(props.session.sessionId);
+      if (session && session.sessionId) {
+        const rawVotes = await getAllVotes(session.sessionId);
         if (rawVotes) {
           const sortedVotes = sortVotes(rawVotes);
           setVotes(sortedVotes);
@@ -96,7 +94,7 @@ const Waiting = (props: AppProps) => {
     const INTERVAL_TIMER = 5000;
     init();
     setIntervalId(setInterval(init, INTERVAL_TIMER));
-  }, [props.session]);
+  }, [session, setVotes]);
 
   useEffect(() => {
     // If everyone has 3/3 votes, we can stop polling and move to the results page
