@@ -6,7 +6,7 @@ import WaitingBubble from "../../components/WaitingBubble/WaitingBubble";
 import { Session } from "../../helpers/Session";
 import classes from "./Waiting.module.scss";
 
-interface AppProps {
+interface WaitingProps {
   session: Session | undefined;
   votes: Vote[];
   setVotes: React.Dispatch<React.SetStateAction<Vote[]>>;
@@ -24,7 +24,7 @@ interface VotesResponse {
   };
 }
 
-const Waiting = (props: AppProps) => {
+const Waiting = (props: WaitingProps) => {
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
   const history = useHistory();
   const MAX_VOTES = 3;

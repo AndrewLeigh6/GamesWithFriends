@@ -1,12 +1,12 @@
 import classes from "./InfoText.module.scss";
 import React from "react";
 
-interface AppProps {
+interface InfoTextProps {
   children: React.ReactNode;
   title: string;
 }
 
-const InfoText = (props: AppProps) => {
+const InfoText = (props: InfoTextProps) => {
   return (
     <div className={classes.InfoText}>
       <div className={classes.Title}>{props.title}</div>

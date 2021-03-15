@@ -10,7 +10,7 @@ import { iUserContext, UsersContext } from "../../App";
 const MIN_FRIENDS = 1;
 const MAX_FRIENDS = 7;
 
-interface AppProps {
+interface GenerateLinksProps {
   setSession: React.Dispatch<React.SetStateAction<Session | undefined>>;
 }
 
@@ -57,7 +57,7 @@ const initalState = [
   },
 ];
 
-const GenerateLinks = (props: AppProps) => {
+const GenerateLinks = (props: GenerateLinksProps) => {
   const [hostUrl, setHostUrl] = useState(
     "https://steamcommunity.com/id/silverstone1294/"
   );

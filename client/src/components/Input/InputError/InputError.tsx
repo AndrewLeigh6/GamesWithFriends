@@ -1,11 +1,11 @@
 import React from "react";
 import classes from "./InputError.module.scss";
 
-interface AppProps {
+interface InputErrorProps {
   message: string;
 }
 
-const InputError = (props: AppProps) => {
+const InputError = (props: InputErrorProps) => {
   return <div className={classes.InputError}>{props.message}</div>;
 };
 

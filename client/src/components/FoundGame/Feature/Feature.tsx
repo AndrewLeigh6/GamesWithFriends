@@ -10,12 +10,12 @@ export enum Icon {
   Controller = "controller",
 }
 
-interface AppProps {
+interface FeatureProps {
   feature: string;
   icon: Icon;
 }
 
-const Feature = (props: AppProps) => {
+const Feature = (props: FeatureProps) => {
   return (
     <li className={classes.Feature}>
       {renderIcon(props.icon)}

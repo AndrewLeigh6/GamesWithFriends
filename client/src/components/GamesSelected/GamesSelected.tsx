@@ -4,12 +4,12 @@ import Button from "../Button/Button";
 import GamesSelectedText from "../GamesSelectedText/GamesSelectedText";
 import classes from "./GamesSelected.module.scss";
 
-interface AppProps {
+interface GamesSelectedProps {
   gamesSelected: number;
   maxVotesAllowed: number;
 }
 
-const GamesSelected = (props: AppProps) => {
+const GamesSelected = (props: GamesSelectedProps) => {
   return (
     <div className={classes.GamesSelected}>
       <GamesSelectedText gamesSelected={props.gamesSelected} />

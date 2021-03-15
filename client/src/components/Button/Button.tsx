@@ -3,13 +3,13 @@ import classes from "./Button.module.scss";
 
 type Color = "Primary" | "SecondaryLight" | "SecondaryDark";
 
-interface AppProps {
+interface ButtonProps {
   children: string | JSX.Element;
   color: Color;
   clicked?: () => void;
 }
 
-const Button = (props: AppProps) => {
+const Button = (props: ButtonProps) => {
   return (
     <button className={getClasses(props.color)} onClick={props.clicked}>
       {props.children}

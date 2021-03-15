@@ -8,7 +8,7 @@ interface FeatureProp {
   name: string;
 }
 
-interface AppProps {
+interface FoundGameProps {
   title: string;
   image: string;
   selected: boolean;
@@ -17,7 +17,7 @@ interface AppProps {
   deselectedHandler: () => void;
 }
 
-const FoundGame = (props: AppProps) => {
+const FoundGame = (props: FoundGameProps) => {
   const { features } = props;
 
   const renderButton = (selected: boolean): JSX.Element => {

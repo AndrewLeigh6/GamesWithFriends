@@ -6,7 +6,7 @@ import GamesSelected from "../../components/GamesSelected/GamesSelected";
 import { Session, SharedGame } from "../../helpers/Session";
 import classes from "./GamesList.module.scss";
 
-interface AppProps {
+interface GamesListProps {
   session: Session | undefined;
   setSession: React.Dispatch<React.SetStateAction<Session | undefined>>;
   games: SharedGame[] | undefined;
@@ -17,7 +17,7 @@ function useQuery(): URLSearchParams {
   return new URLSearchParams(useLocation().search);
 }
 
-const GamesList = (props: AppProps) => {
+const GamesList = (props: GamesListProps) => {
   const { session, setGames, setSession } = props;
   const params = useQuery();
   const [votes, setVotes] = useState<number[]>([]);

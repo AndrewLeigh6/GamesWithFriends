@@ -1,11 +1,11 @@
 import classes from "./Layout.module.scss";
 import React from "react";
 
-interface AppProps {
+interface LayoutProps {
   children: React.ReactNode;
 }
 
-const Layout = (props: AppProps) => {
+const Layout = (props: LayoutProps) => {
   return (
     <div className={classes.Layout}>
       <h1 className={classes.Title}> Games With Friends </h1>

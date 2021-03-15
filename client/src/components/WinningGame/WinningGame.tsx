@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./WinningGame.module.scss";
 import { ReactComponent as Crown } from "../../icons/crown-solid.svg";
 
-interface AppProps {
+interface WinningGameProps {
   title: string;
   image: string;
   votes: number;
@@ -15,7 +15,7 @@ const crowns = {
   },
 };
 
-const WinningGame = (props: AppProps) => {
+const WinningGame = (props: WinningGameProps) => {
   return (
     <div className={classes.WinningGame}>
       <div className={classes.Title}>{props.title}</div>

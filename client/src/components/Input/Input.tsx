@@ -15,7 +15,7 @@ export enum RightIcon {
   Copy = "Copy",
 }
 
-interface AppProps {
+interface InputProps {
   label: string;
   placeholder?: string;
   name: string;
@@ -31,7 +31,7 @@ interface AppProps {
   ) => void;
 }
 
-const Input = (props: AppProps) => {
+const Input = (props: InputProps) => {
   const inputContainerClasses = [classes.InputContainer];
 
   if (props.rightIcon) {
