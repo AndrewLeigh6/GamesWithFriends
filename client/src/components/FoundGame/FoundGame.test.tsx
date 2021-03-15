@@ -1,20 +1,25 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import FoundGame from "./FoundGame";
-import { Icon } from "./Feature/Feature";
 
 it("renders found game correctly with props", () => {
   const title = "Fall Guys: Ultimate Knockout";
   const image = "random image";
-  const feature = "Online Co-op";
+  const categories = [
+    {
+      id: 1,
+      name: "Co-op",
+    },
+  ];
 
   const component = (
     <FoundGame
       title={title}
       image={image}
-      icon={Icon.Controller}
-      feature={feature}
-      buttonText="Select"
+      selected={false}
+      features={categories}
+      selectedHandler={() => null}
+      deselectedHandler={() => null}
     />
   );
 
@@ -22,6 +27,6 @@ it("renders found game correctly with props", () => {
 
   getByRole("img", { name: /fall guys: ultimate knockout/i });
   getByText(/fall guys: ultimate knockout/i);
-  getByText(/online co-op/i);
+  getByText(/co-op/i);
   getByRole("button", { name: /select/i });
 });
