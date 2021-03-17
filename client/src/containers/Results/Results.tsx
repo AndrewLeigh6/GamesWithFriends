@@ -72,7 +72,10 @@ const getWinningGames = (
       return b.votes - a.votes;
     });
 
-    return sortedGames;
+    const MAX_WINNERS = 3;
+    const topWinningGames = sortedGames.slice(0, MAX_WINNERS);
+
+    return topWinningGames;
   }
 };
 
