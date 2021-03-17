@@ -19,6 +19,8 @@ interface Winner {
   votes: number;
 }
 
+type CrownColours = "Gold" | "Silver" | "Bronze";
+
 /* This all looks a bit mental, but we're just counting votes and transforming this:
   [{username: "someone", gameIds: [266, 225, 268]}
   {username: "someone else", gameIds: [266, 259, 214]}]
@@ -45,10 +47,10 @@ const getResultTotals = (votes: Vote[]): ResultTotals => {
 const getWinningGames = (
   games: SharedGame[],
   votes: Vote[]
-): Winner[] | any => {
+): Winner[] | null => {
   if (games) {
     const voteTotals = getResultTotals(votes);
-    let winningGames = [];
+    let winningGames: Winner[] = [];
 
     /* Just need to dig out the info we need from our existing games state */
     for (const id in voteTotals) {
@@ -76,6 +78,8 @@ const getWinningGames = (
     const topWinningGames = sortedGames.slice(0, MAX_WINNERS);
 
     return topWinningGames;
+  } else {
+    return null;
   }
 };
 
@@ -84,17 +88,22 @@ const Results = (props: ResultsProps) => {
     if (props.games) {
       const winners = getWinningGames(props.games, props.votes);
 
-      const winningGames = winners.map((winner: Winner) => {
-        return (
-          <WinningGame
-            title={winner.title}
-            image={winner.image}
-            votes={winner.votes}
-          />
-        );
-      });
+      if (winners) {
+        console.log(winners);
 
-      return winningGames;
+        const winningGames = winners.map((winner: Winner, index) => {
+          return (
+            <WinningGame
+              title={winner.title}
+              image={winner.image}
+              votes={winner.votes}
+              position={index}
+            />
+          );
+        });
+
+        return winningGames;
+      }
     }
   };
 
