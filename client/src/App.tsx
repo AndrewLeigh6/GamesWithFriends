@@ -52,7 +52,7 @@ function App() {
                 <Waiting session={session} votes={votes} setVotes={setVotes} />
               </Route>
               <Route path="/results">
-                <Results />
+                <Results votes={votes} games={games} />
               </Route>
               <Route path="/">
                 <GenerateLinks setSession={setSession} />
