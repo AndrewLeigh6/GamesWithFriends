@@ -50,6 +50,7 @@ const getWinningGames = (
     const voteTotals = getResultTotals(votes);
     let winningGames = [];
 
+    /* Just need to dig out the info we need from our existing games state */
     for (const id in voteTotals) {
       const gameId = Number(id);
       const gameDetails = games.find((game) => {
@@ -67,7 +68,11 @@ const getWinningGames = (
       }
     }
 
-    return winningGames;
+    const sortedGames = winningGames.sort((a, b) => {
+      return b.votes - a.votes;
+    });
+
+    return sortedGames;
   }
 };
 
