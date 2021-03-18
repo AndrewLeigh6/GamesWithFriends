@@ -13,7 +13,7 @@ const GamesSelected = (props: GamesSelectedProps) => {
   return (
     <div className={classes.GamesSelected}>
       <GamesSelectedText gamesSelected={props.gamesSelected} />
-      <Link to="/waiting">
+      <Link to="/waiting" className={classes.DoneLink}>
         {props.gamesSelected === props.maxVotesAllowed ? (
           <Button color="Primary">Done</Button>
         ) : null}
