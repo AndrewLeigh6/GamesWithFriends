@@ -8,7 +8,7 @@ import classes from "./GeneratedLinks.module.scss";
 
 const GeneratedLinks = () => {
   const { users } = useContext<iUserContext>(UsersContext);
-  const BASE_URL = "http://localhost:81/session?q=";
+  const BASE_URL = "http://localhost:81/session?url=";
   let hostUrl = "";
 
   const copyUrl = async (url: string): Promise<void> => {
@@ -36,7 +36,7 @@ const GeneratedLinks = () => {
     const userInputs = sortedUsers.map((user, index) => {
       const finalUrl = `${BASE_URL}${user.randomUrl}`;
       if (index === 0) {
-        hostUrl = "/session?q=" + user.randomUrl;
+        hostUrl = "/session?url=" + user.randomUrl;
       }
       return (
         <Input

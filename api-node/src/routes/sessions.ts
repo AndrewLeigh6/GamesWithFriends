@@ -50,7 +50,7 @@ sessionsRouter.post("/", async function (req: RequestWithUsers, res: Response) {
 
 // get session details by url
 sessionsRouter.get("/url/:url", async function (req: Request, res: Response) {
-  const url: string = req.params.url;
+  const url = req.params.url;
 
   // get user and session id associated with this url
   const data = await Session.query()

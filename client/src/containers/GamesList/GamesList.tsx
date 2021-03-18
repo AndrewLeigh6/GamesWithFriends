@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import FoundGame from "../../components/FoundGame/FoundGame";
 import GamesSelected from "../../components/GamesSelected/GamesSelected";
@@ -21,41 +21,12 @@ const GamesList = (props: GamesListProps) => {
   const { session, setGames, setSession } = props;
   const params = useQuery();
   const [votes, setVotes] = useState<number[]>([]);
+  const [votesDeleted, setVotesDeleted] = useState<boolean>(false);
   const MAX_VOTES = 3;
   const MIN_VOTES = 0;
 
-  /* This looks weird due to the repeated session check, but they
-   had to be split in two to avoid the infinite loop of death. */
-  useEffect(() => {
-    const getGamesFromSession = async () => {
-      if (session !== undefined) {
-        const games = await session.getSharedGames();
-
-        if (games) {
-          setGames(games);
-        }
-      }
-    };
-    getGamesFromSession();
-  }, [session, setGames]);
-
-  useEffect(() => {
-    const getGamesFromUrl = async () => {
-      if (session === undefined) {
-        const newSession = new Session();
-        const url = params.get("q");
-
-        if (url) {
-          await newSession.createFromUrl(url);
-          setSession(newSession);
-        }
-      }
-    };
-    getGamesFromUrl();
-  }, [session, setSession, params]);
-
-  const getUserId = (): number | null => {
-    const url = params.get("q");
+  const getUserId = useCallback((): number | null => {
+    const url = params.get("url");
     if (session && session.users) {
       const user = session.users.find((user) => {
         if (user.randomUrl === url || user.url === url) {
@@ -70,7 +41,56 @@ const GamesList = (props: GamesListProps) => {
     }
 
     return null;
-  };
+  }, [params, session]);
+
+  /* This looks weird due to the repeated session check, but they
+   had to be split in two to avoid the infinite loop of death. */
+  useEffect(() => {
+    const getGamesFromSession = async () => {
+      if (session !== undefined) {
+        if (session.sessionId) {
+          const games = await session.getSharedGames();
+
+          if (games) {
+            setGames(games);
+          }
+        }
+      }
+    };
+    getGamesFromSession();
+  }, [session, setGames]);
+
+  useEffect(() => {
+    const getGamesFromUrl = async () => {
+      if (session === undefined) {
+        const newSession = new Session();
+        const url = params.get("url");
+
+        if (url) {
+          await newSession.createFromUrl(url);
+          setSession(newSession);
+        }
+      }
+    };
+    getGamesFromUrl();
+  }, [session, setSession, params]);
+
+  /* Clear existing votes from this session if any exist. This is 
+  to stop users refreshing the page and submitting 3 more votes */
+  useEffect(() => {
+    const deleteUserVotes = async () => {
+      if (session) {
+        const userId = getUserId();
+        if (session.sessionId && userId && !votesDeleted) {
+          await session.deleteUserVotesForSession(session.sessionId, userId);
+          // We just want to do this once, so we set a flag here for future re-renders
+          setVotesDeleted(true);
+        }
+      }
+    };
+
+    deleteUserVotes();
+  }, [getUserId, session, votesDeleted, setVotesDeleted]);
 
   const doesVoteExist = (gameId: number) => {
     return votes.find((vote) => vote === gameId);

@@ -138,4 +138,15 @@ export class Session {
       return (games as UserGame[])[0].appId !== undefined;
     }
   };
+
+  public deleteUserVotesForSession = async (
+    sessionId: number,
+    userId: number
+  ) => {
+    try {
+      await axios.delete(`/api/votes/session/${sessionId}/user/${userId}`);
+    } catch (error: unknown) {
+      throw new Error("Failed to delete votes for user:" + error);
+    }
+  };
 }
