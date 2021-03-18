@@ -19,8 +19,6 @@ interface Winner {
   votes: number;
 }
 
-type CrownColours = "Gold" | "Silver" | "Bronze";
-
 /* This all looks a bit mental, but we're just counting votes and transforming this:
   [{username: "someone", gameIds: [266, 225, 268]}
   {username: "someone else", gameIds: [266, 259, 214]}]
