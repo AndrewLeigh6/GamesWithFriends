@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./WinningGame.module.scss";
 import { ReactComponent as Crown } from "../../icons/crown-solid.svg";
+import placeholder from "./placeholder.png";
 
 interface WinningGameProps {
   title: string;
@@ -43,13 +44,24 @@ const WinningGame = (props: WinningGameProps) => {
   return (
     <div className={classes.WinningGame}>
       <div className={classes.Title}>{props.title}</div>
-      <img className={classes.Image} src={props.image} alt={props.title} />
+      <img
+        className={classes.Image}
+        src={props.image}
+        alt={props.title}
+        onError={handleError}
+      />
       <div className={classes.Votes}>
         <Crown className={crown.classes} title={crown.title} />
         {props.votes} <span>votes</span>
       </div>
     </div>
   );
+};
+
+const handleError = (
+  event: React.SyntheticEvent<HTMLImageElement, Event>
+): void => {
+  event.currentTarget.src = placeholder;
 };
 
 export default WinningGame;
