@@ -34,9 +34,8 @@ const Waiting = (props: WaitingProps) => {
     const getAllVotes = async (
       sessionId: number
     ): Promise<VotesResponse[] | null> => {
-      const votes = await axios.get<VotesResponse[]>(
-        `http://localhost:81/api/votes?sessionId=${sessionId}`
-      );
+      const url = window.location.origin + `/api/votes?sessionId=${sessionId}`;
+      const votes = await axios.get<VotesResponse[]>(url);
 
       if (votes) {
         return votes.data;
@@ -98,17 +97,21 @@ const Waiting = (props: WaitingProps) => {
 
   useEffect(() => {
     // If everyone has 3/3 votes, we can stop polling and move to the results page
-    if (votes.length > 0) {
-      const usersFinishedVoting = votes.every((vote) => {
-        return vote.gameIds.length === MAX_VOTES;
-      });
+    if (session) {
+      if (session.users) {
+        if (votes.length > 0 && votes.length === session.users.length) {
+          const usersFinishedVoting = votes.every((vote) => {
+            return vote.gameIds.length === MAX_VOTES;
+          });
 
-      if (usersFinishedVoting && intervalId) {
-        clearInterval(intervalId);
-        history.push("/results");
+          if (usersFinishedVoting && intervalId) {
+            clearInterval(intervalId);
+            history.push("/results");
+          }
+        }
       }
     }
-  }, [votes, intervalId, history]);
+  }, [votes, intervalId, history, session]);
 
   const renderWaitingBubbles = (): JSX.Element[] => {
     const result = votes.map((vote) => {

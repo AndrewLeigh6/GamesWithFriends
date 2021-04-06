@@ -101,11 +101,12 @@ const GamesList = (props: GamesListProps) => {
     gameId: number,
     userId: number
   ): void => {
+    const url =
+      window.location.origin +
+      `/api/votes?sessionId=${sessionId}&gameId=${gameId}&userId=${userId}`;
     if (votes.length < MAX_VOTES) {
       axios
-        .post(
-          `http://localhost:81/api/votes?sessionId=${sessionId}&gameId=${gameId}&userId=${userId}`
-        )
+        .post(url)
         .then(() => {
           const voteExists = doesVoteExist(gameId);
           if (!voteExists) {
@@ -123,11 +124,12 @@ const GamesList = (props: GamesListProps) => {
     gameId: number,
     userId: number
   ): Promise<void> => {
+    const url =
+      window.location.origin +
+      `/api/votes?sessionId=${sessionId}&gameId=${gameId}&userId=${userId}`;
     if (votes.length > MIN_VOTES) {
       axios
-        .delete(
-          `http://localhost:81/api/votes?sessionId=${sessionId}&gameId=${gameId}&userId=${userId}`
-        )
+        .delete(url)
         .then((res) => {
           console.log(res);
 

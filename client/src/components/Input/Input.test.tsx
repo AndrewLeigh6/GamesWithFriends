@@ -47,11 +47,12 @@ it("renders input correctly with right icon props", () => {
 });
 
 it("renders input correctly with value prop and copy icon", () => {
+  const url = window.location.origin + "/session?url=PrivateChocolateWolverine";
   const component = (
     <Input
       label="felineyx"
       name="felineyx"
-      value="http://localhost:81/session?url=PrivateChocolateWolverine"
+      value={url}
       leftIcon={LeftIcon.User}
       rightIcon={RightIcon.Copy}
       iconClicked={() => null}
@@ -62,7 +63,5 @@ it("renders input correctly with value prop and copy icon", () => {
 
   getByRole("textbox", { name: /felineyx/i });
   getByRole("button", { name: /copy button/i });
-  getByDisplayValue(
-    "http://localhost:81/session?url=PrivateChocolateWolverine"
-  );
+  getByDisplayValue(url);
 });
