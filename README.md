@@ -28,5 +28,5 @@ To get this working on your PC, you'll need to install Docker. If you want it in
 
 1. Make sure you've got Docker up and running.
 2. Using the terminal, navigate to the `gameswithfriends` folder and run `docker-compose -f docker-compose.build.yml up --build`. It might crash the first time you run it - don't worry, this is normal. Just hit command or ctrl + C, then try again.
-3. Once that's done, open another terminal window, and run `docker ps`. Copy the container ID for gameswithfriends_api, and then run `docker exec -it containerIDhere npm run db:up`.
-4. Open up your browser, and you should be able to view the site at localhost:81.
+3. Once that's done, open another terminal window, and run `docker ps`. Copy the container ID for `gameswithfriends_api`, and then run `docker exec -it containerIDhere npm run db:up`.
+4. Open up your browser, and you should be able to view the site at `localhost:81`.
