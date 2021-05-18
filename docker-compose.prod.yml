@@ -1,0 +1,29 @@
+version: "3"
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: gameswithfriends
+      POSTGRES_PASSWORD: password
+  client:
+    stdin_open: true
+    image: andrewleigh6/gwf-client:latest
+  api:
+    restart: always
+    image: andrewleigh6/gwf-api:latest
+    env_file: ./api-node/.env
+  nginx:
+    restart: always
+    image: andrewleigh6/gwf-nginx:latest
+    ports:
+      - "81:81"
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+volumes:
+  postgres:
