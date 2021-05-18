@@ -25,7 +25,7 @@ services:
       dockerfile: Dockerfile
       context: ./nginx
     ports:
-      - "81:81"
+      - "80:80"
   adminer:
     image: adminer
     restart: always
