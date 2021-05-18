@@ -8,14 +8,7 @@ import { sessionsRouter } from "./routes/sessions";
 import { usersRouter } from "./routes/users";
 import { votesRouter } from "./routes/votes";
 
-/* 
-useful knex stuff
-==========
-https://vincit.github.io/objection.js/guide/relations.html#require-loops
-https://vincit.github.io/objection.js/recipes/subqueries.html
-https://vincit.github.io/objection.js/guide/query-examples.html#relation-find-queries
-*/
-
+require("dotenv").config();
 const knexConfig = require("./db/knexfile");
 
 const logStream = fs.createWriteStream(path.join(__dirname, "access.log"), {
@@ -24,9 +17,15 @@ const logStream = fs.createWriteStream(path.join(__dirname, "access.log"), {
 
 const app = express();
 app.use(morgan("dev", { stream: logStream }));
-app.use("/sessions", sessionsRouter);
-app.use("/users", usersRouter);
-app.use("/votes", votesRouter);
+
+app.use("/api/sessions", sessionsRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/votes", votesRouter);
+
+app.use(express.static(path.join(__dirname, "../", "../client/build")));
+app.get("/*", (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, "../", "../client/build", "index.html"));
+});
 
 // init knex and objection
 const knex: Knex = Knex(knexConfig.development);

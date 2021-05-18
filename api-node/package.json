@@ -8,6 +8,7 @@
     "@types/morgan": "^1.9.2",
     "axios": "^0.21.1",
     "concurrently": "^5.3.0",
+    "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "knex": "^0.21.15",
     "morgan": "^1.10.0",
@@ -18,7 +19,7 @@
   "scripts": {
     "build": "tsc",
     "start:build": "tsc -w",
-    "start:run": "nodemon build/index.js >> log-file.txt",
+    "start:run": "nodemon build/index.js",
     "start": "concurrently npm:start:*",
     "host": "node index.js",
     "db:up": "knex migrate:latest --cwd src/db --debug",
