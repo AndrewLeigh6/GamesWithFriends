@@ -19,7 +19,7 @@ services:
     restart: always
     image: andrewleigh6/gwf-nginx:latest
     ports:
-      - "81:81"
+      - "80:80"
   adminer:
     image: adminer
     restart: always
