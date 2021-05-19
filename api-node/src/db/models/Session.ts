@@ -6,6 +6,7 @@ export class Session extends Model {
   id?: number;
   host_id?: number;
   url?: string;
+  done_voting?: boolean;
 
   users?: User[];
 
@@ -22,7 +23,7 @@ export class Session extends Model {
         through: {
           from: "sessions_users.session_id",
           to: "sessions_users.user_id",
-          extra: ["url"],
+          extra: ["url", "done_voting"],
         },
         to: "users.id",
       },

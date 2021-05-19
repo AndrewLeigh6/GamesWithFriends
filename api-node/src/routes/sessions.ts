@@ -108,17 +108,6 @@ sessionsRouter.get(
   }
 );
 
-// testing
-sessionsRouter.get(
-  "/test",
-  async function (req: RequestWithUrl, res: Response) {
-    // const url = req.query.url;
-    // const sessionModule = new SessionModule();
-    // sessionModule.initFromUrl(url);
-    // res.json(url);
-  }
-);
-
 sessionsRouter.get(
   "/:sessionId/users/:userId",
   async (req: Request, res: Response) => {
@@ -131,5 +120,23 @@ sessionsRouter.get(
       .where("users.id", userId);
 
     res.json(user);
+  }
+);
+
+// finish voting
+sessionsRouter.post(
+  "/:sessionId/users/:userId",
+  async function (req: Request, res: Response) {
+    const sessionId = Number(req.params.sessionId);
+    const userId = Number(req.params.userId);
+
+    if (sessionId && userId) {
+      const query = await Session.relatedQuery("users")
+        .for(sessionId)
+        .where("users.id", userId)
+        .patch({ done_voting: true });
+
+      res.json(query);
+    }
   }
 );

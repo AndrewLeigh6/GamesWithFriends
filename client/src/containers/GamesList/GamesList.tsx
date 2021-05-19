@@ -144,6 +144,22 @@ const GamesList = (props: GamesListProps) => {
     }
   };
 
+  const setDoneVoting = async (
+    sessionId: number,
+    userId: number
+  ): Promise<void> => {
+    const url =
+      window.location.origin + `/api/sessions/${sessionId}/users/${userId}`;
+    axios
+      .post(url)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+  };
+
   const buildGames = (): JSX.Element[] | null => {
     if (props.games && props.games.length > 0 && props.session) {
       const userId = getUserId();
@@ -176,17 +192,29 @@ const GamesList = (props: GamesListProps) => {
     return null;
   };
 
-  const gamesSelected = votes.length;
+  if (props.session) {
+    const gamesSelected = votes.length;
 
-  return (
-    <React.Fragment>
-      <div className={classes.GamesList}>{buildGames()}</div>
-      <GamesSelected
-        gamesSelected={gamesSelected}
-        maxVotesAllowed={MAX_VOTES}
-      />
-    </React.Fragment>
-  );
+    const userId = getUserId();
+    const sessionId = props.session.sessionId;
+
+    if (sessionId && userId) {
+      return (
+        <React.Fragment>
+          <div className={classes.GamesList}>{buildGames()}</div>
+          <GamesSelected
+            gamesSelected={gamesSelected}
+            maxVotesAllowed={MAX_VOTES}
+            setDoneVoting={() => setDoneVoting(sessionId, userId)}
+          />
+        </React.Fragment>
+      );
+    }
+
+    return null;
+  }
+
+  return null;
 };
 
 export default GamesList;
