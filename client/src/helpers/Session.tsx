@@ -119,14 +119,11 @@ export class Session {
     ): SharedGame[] {
       gameData.forEach((game, index) => {
         if (isUserGame(userGames)) {
-          console.log("1", userGames);
-
           const foundGame = userGames.findIndex(
             (userGame) => userGame.appId.toString() === game.appId
           );
           gameData[index].categories = userGames[foundGame].categories;
         } else {
-          console.log("2", userGames);
           const foundGame = userGames.findIndex(
             (userGame) => userGame.appId === game.appId
           );

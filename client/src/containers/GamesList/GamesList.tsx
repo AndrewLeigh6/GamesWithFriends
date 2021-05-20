@@ -22,6 +22,7 @@ const GamesList = (props: GamesListProps) => {
   const params = useQuery();
   const [votes, setVotes] = useState<number[]>([]);
   const [votesDeleted, setVotesDeleted] = useState<boolean>(false);
+  const [gamesLoaded, setGamesLoaded] = useState<boolean>(false);
   const MAX_VOTES = 3;
   const MIN_VOTES = 0;
 
@@ -43,11 +44,9 @@ const GamesList = (props: GamesListProps) => {
     return null;
   }, [params, session]);
 
-  /* This looks weird due to the repeated session check, but they
-   had to be split in two to avoid the infinite loop of death. */
   useEffect(() => {
     const getGamesFromSession = async () => {
-      if (session !== undefined) {
+      if (gamesLoaded && session) {
         if (session.sessionId) {
           const games = await session.getSharedGames();
 
@@ -58,22 +57,28 @@ const GamesList = (props: GamesListProps) => {
       }
     };
     getGamesFromSession();
-  }, [session, setGames]);
+  }, [session, setGames, gamesLoaded]);
 
+  /* Originally this was just for new users loading in from a URL, but I decided it was worth
+  using this for the host too and taking the slight hit in performance in exchange for
+  streamlining all the state data due to a couple of inconsistencies. We just use setGamesLoaded
+  to ensure it only fires once. */
   useEffect(() => {
     const getGamesFromUrl = async () => {
-      if (session === undefined) {
+      if (!gamesLoaded) {
         const newSession = new Session();
         const url = params.get("url");
 
         if (url) {
           await newSession.createFromUrl(url);
           setSession(newSession);
+          setGamesLoaded(true);
+          console.log("loaded games");
         }
       }
     };
     getGamesFromUrl();
-  }, [session, setSession, params]);
+  }, [setSession, gamesLoaded, setGamesLoaded, params]);
 
   /* Clear existing votes from this session if any exist. This is 
   to stop users refreshing the page and submitting 3 more votes */
