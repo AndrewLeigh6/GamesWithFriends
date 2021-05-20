@@ -29,7 +29,7 @@ const GamesList = (props: GamesListProps) => {
     const url = params.get("url");
     if (session && session.users) {
       const user = session.users.find((user) => {
-        if (user.randomUrl === url || user.url === url) {
+        if (user.url === url) {
           return true;
         }
 
@@ -150,14 +150,9 @@ const GamesList = (props: GamesListProps) => {
   ): Promise<void> => {
     const url =
       window.location.origin + `/api/sessions/${sessionId}/users/${userId}`;
-    axios
-      .post(url)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
+    axios.post(url).catch((error) => {
+      throw new Error(error);
+    });
   };
 
   const buildGames = (): JSX.Element[] | null => {
@@ -175,9 +170,9 @@ const GamesList = (props: GamesListProps) => {
           return (
             <FoundGame
               title={game.name}
-              image={game.image_vertical_url}
+              image={game.imageVerticalUrl}
               selected={selected}
-              key={game.app_id}
+              key={game.appId}
               features={game.categories}
               selectedHandler={() => submitVote(sessionId, game.id, userId)}
               deselectedHandler={() => cancelVote(sessionId, game.id, userId)}

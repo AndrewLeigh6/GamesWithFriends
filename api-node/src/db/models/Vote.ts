@@ -1,11 +1,15 @@
 import path from "path";
-import { Model } from "objection";
+import { Model, snakeCaseMappers } from "objection";
 
 export class Vote extends Model {
   id?: number;
   session_id?: number;
   games_id?: number;
   users_id?: number;
+
+  static get columnNameMappers() {
+    return snakeCaseMappers();
+  }
 
   static get tableName() {
     return "votes";

@@ -1,5 +1,5 @@
 import { Session } from "./Session";
-import { Model } from "objection";
+import { Model, snakeCaseMappers } from "objection";
 import { Game } from "./Game";
 import path from "path";
 
@@ -9,6 +9,10 @@ export class User extends Model {
   done_voting?: boolean;
   steam_id?: string;
   steam_username?: string;
+
+  static get columnNameMappers() {
+    return snakeCaseMappers();
+  }
 
   static get tableName() {
     return "users";

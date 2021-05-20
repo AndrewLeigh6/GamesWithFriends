@@ -1,4 +1,4 @@
-import { Model } from "objection";
+import { Model, snakeCaseMappers } from "objection";
 import { User } from "./User";
 import path from "path";
 
@@ -9,6 +9,10 @@ export class Session extends Model {
   done_voting?: boolean;
 
   users?: User[];
+
+  static get columnNameMappers() {
+    return snakeCaseMappers();
+  }
 
   static get tableName() {
     return "sessions";

@@ -1,5 +1,5 @@
 import { Category } from "./Category";
-import { Model } from "objection";
+import { Model, snakeCaseMappers } from "objection";
 import { User } from "./User";
 import path from "path";
 
@@ -9,6 +9,10 @@ export class Game extends Model {
   name?: string;
   image_vertical_url?: string;
   image_horizontal_url?: string;
+
+  static get columnNameMappers() {
+    return snakeCaseMappers();
+  }
 
   static get tableName() {
     return "games";

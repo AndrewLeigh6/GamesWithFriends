@@ -89,7 +89,7 @@ sessionsRouter.get(
 
     const users = await Session.relatedQuery("users")
       .for(sessionId)
-      .distinct("steam_id", "steam_username", "url");
+      .distinct("steam_id", "steam_username", "url", "done_voting");
 
     res.json(users);
   }
@@ -108,10 +108,10 @@ sessionsRouter.get(
   }
 );
 
+// in the current session, get the user details
 sessionsRouter.get(
   "/:sessionId/users/:userId",
   async (req: Request, res: Response) => {
-    // in the current session, get the user details
     const sessionId = req.params.sessionId;
     const userId = req.params.userId;
 
