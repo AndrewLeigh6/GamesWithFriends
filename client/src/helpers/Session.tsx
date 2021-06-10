@@ -13,6 +13,7 @@ interface CreateSessionResponse extends AxiosResponse {
 export interface User {
   id?: number;
   username: string;
+  steamUsername?: string;
   url: string;
   steamId?: string;
   isHost?: boolean;
@@ -20,6 +21,7 @@ export interface User {
     appId: number;
   }[];
   games?: UserGame[];
+  doneVoting?: boolean;
 }
 
 export interface UserGame {

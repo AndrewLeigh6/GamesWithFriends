@@ -20,8 +20,10 @@ interface Winner {
 }
 
 /* This all looks a bit mental, but we're just counting votes and transforming this:
-  [{username: "someone", gameIds: [266, 225, 268]}
-  {username: "someone else", gameIds: [266, 259, 214]}]
+  [
+    {username: "someone", gameIds: [266, 225, 268]}
+    {username: "someone else", gameIds: [266, 259, 214]}
+  ]
   into this:
   {266: 2, 225: 1, 268: 1, 259: 1, 214: 1} */
 const getResultTotals = (votes: Vote[]): ResultTotals => {
