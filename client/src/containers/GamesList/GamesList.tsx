@@ -73,7 +73,6 @@ const GamesList = (props: GamesListProps) => {
           await newSession.createFromUrl(url);
           setSession(newSession);
           setGamesLoaded(true);
-          console.log("loaded games");
         }
       }
     };

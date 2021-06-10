@@ -149,6 +149,17 @@ const Waiting = (props: WaitingProps) => {
 
   const getUsersWithoutVotes = () => {
     // If we have a user in the session who hasn't voted yet, just show them as 0/3 rather than displaying nothing.
+    // let usersStillVoting: string[] = [];
+    // if (session) {
+    //   if (session.users) {
+    //     session.users.forEach((user) => {
+    //       if (!user.doneVoting && user.steamUsername) {
+    //         usersStillVoting.push(user.steamUsername);
+    //       }
+    //     });
+    //     console.log(usersStillVoting);
+    //   }
+    // }
   };
 
   const renderWaitingBubbles = (usersStillVoting: Vote[]): JSX.Element[] => {
