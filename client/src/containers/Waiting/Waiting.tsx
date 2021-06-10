@@ -14,23 +14,41 @@ interface WaitingProps {
 
 interface VotesResponse {
   id: number;
-  session_id: string;
-  games_id: string;
-  users_id: string;
+  sessionId: string;
+  gamesId: string;
+  usersId: string;
   users: {
     id: number;
-    steam_id: string;
-    steam_username: string;
+    steamId: string;
+    steamUsername: string;
   };
+}
+
+interface UsersVotingResponse {
+  steamId: string;
+  steamUsername: string;
+  doneVoting: boolean;
 }
 
 const Waiting = (props: WaitingProps) => {
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
+  const [usersDoneVoting, setUsersDoneVoting] =
+    useState<UsersVotingResponse[]>();
   const history = useHistory();
-  const MAX_VOTES = 3;
   const { session, setVotes, votes } = props;
 
   useEffect(() => {
+    const getUsersDoneVoting = async (
+      sessionId: number
+    ): Promise<UsersVotingResponse[]> => {
+      const url = window.location.origin + `/api/sessions/${sessionId}/users`;
+      const result = await axios.get<UsersVotingResponse[]>(url);
+      const usersDoneVoting = result.data.filter(
+        (user) => user.doneVoting === true
+      );
+      return usersDoneVoting;
+    };
+
     const getAllVotes = async (
       sessionId: number
     ): Promise<VotesResponse[] | null> => {
@@ -68,10 +86,11 @@ const Waiting = (props: WaitingProps) => {
       const sortedVotes: Vote[] = userIds.map((_, index) => {
         return {
           // We grab the first one here because the username in all of them is the same, so it doesn't matter which index we use
-          username: userVotes[index][0].users.steam_username,
+          username: userVotes[index][0].users.steamUsername,
+          steamId: userVotes[index][0].users.steamId,
           // Extract the gameIds
           gameIds: userVotes[index].map((vote) => {
-            return Number(vote.games_id);
+            return Number(vote.gamesId);
           }),
         };
       });
@@ -82,6 +101,8 @@ const Waiting = (props: WaitingProps) => {
     const init = async (): Promise<void> => {
       if (session && session.sessionId) {
         const rawVotes = await getAllVotes(session.sessionId);
+        setUsersDoneVoting(await getUsersDoneVoting(session.sessionId));
+
         if (rawVotes) {
           const sortedVotes = sortVotes(rawVotes);
           setVotes(sortedVotes);
@@ -92,34 +113,51 @@ const Waiting = (props: WaitingProps) => {
     // Check initially, and then keep checking every few seconds
     const INTERVAL_TIMER = 5000;
     init();
-    setIntervalId(setInterval(init, INTERVAL_TIMER));
+    const intervalId = setInterval(init, INTERVAL_TIMER);
+    setIntervalId(intervalId);
+
+    return function cleanup() {
+      clearInterval(intervalId);
+    };
   }, [session, setVotes]);
 
   useEffect(() => {
     // If everyone has 3/3 votes, we can stop polling and move to the results page
     if (session) {
-      if (session.users) {
-        if (votes.length > 0 && votes.length === session.users.length) {
-          const usersFinishedVoting = votes.every((vote) => {
-            return vote.gameIds.length === MAX_VOTES;
-          });
+      if (session.users && usersDoneVoting) {
+        if (session.users.length === usersDoneVoting.length && intervalId) {
+          console.log(session.users.length);
+          console.log(usersDoneVoting.length);
 
-          if (usersFinishedVoting && intervalId) {
-            clearInterval(intervalId);
-            history.push("/results");
-          }
+          clearInterval(intervalId);
+          history.push("/results");
         }
       }
     }
-  }, [votes, intervalId, history, session]);
+  }, [votes, intervalId, history, session, usersDoneVoting]);
 
-  const renderWaitingBubbles = (): JSX.Element[] => {
-    const result = votes.map((vote) => {
+  const getUsersStillVoting = (): Vote[] => {
+    if (usersDoneVoting) {
+      const usersStillVoting = votes.filter((vote) =>
+        usersDoneVoting.find((user) => user.steamUsername !== vote.username)
+      );
+      return usersStillVoting;
+    } else {
+      return votes;
+    }
+  };
+
+  const getUsersWithoutVotes = () => {
+    // If we have a user in the session who hasn't voted yet, just show them as 0/3 rather than displaying nothing.
+  };
+
+  const renderWaitingBubbles = (usersStillVoting: Vote[]): JSX.Element[] => {
+    const result = usersStillVoting.map((user) => {
       return (
         <WaitingBubble
-          key={vote.username}
-          name={vote.username}
-          selected={vote.gameIds.length}
+          key={user.username}
+          name={user.username}
+          selected={user.gameIds.length}
         />
       );
     });
@@ -127,11 +165,15 @@ const Waiting = (props: WaitingProps) => {
     return result;
   };
 
+  getUsersWithoutVotes();
+
   return (
     <div className={classes.Waiting}>
       <p>Still waiting for the following players:</p>
 
-      <div className={classes.WaitingBubbles}>{renderWaitingBubbles()}</div>
+      <div className={classes.WaitingBubbles}>
+        {renderWaitingBubbles(getUsersStillVoting())}
+      </div>
     </div>
   );
 };

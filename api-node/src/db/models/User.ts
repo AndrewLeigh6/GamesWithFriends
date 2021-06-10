@@ -1,13 +1,18 @@
 import { Session } from "./Session";
-import { Model } from "objection";
+import { Model, snakeCaseMappers } from "objection";
 import { Game } from "./Game";
 import path from "path";
 
 export class User extends Model {
   id?: number;
   url?: string;
+  done_voting?: boolean;
   steam_id?: string;
   steam_username?: string;
+
+  static get columnNameMappers() {
+    return snakeCaseMappers();
+  }
 
   static get tableName() {
     return "users";
@@ -34,7 +39,7 @@ export class User extends Model {
         through: {
           from: "sessions_users.user_id",
           to: "sessions_users.session_id",
-          extra: ["url"],
+          extra: ["url", "done_voting"],
         },
         to: "sessions.id",
       },

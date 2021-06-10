@@ -1,10 +1,14 @@
-import { Model } from "objection";
+import { Model, snakeCaseMappers } from "objection";
 import { Game } from "./Game";
 import path from "path";
 
 export class Category extends Model {
   id?: number;
   name?: string;
+
+  static get columnNameMappers() {
+    return snakeCaseMappers();
+  }
 
   static get tableName() {
     return "categories";

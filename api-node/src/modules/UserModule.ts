@@ -14,12 +14,12 @@ export class UserModule {
   steamId: string = "";
   username: string = "";
   isHost: boolean = false;
-  randomUrl: string | null = null;
+  url: string | null = null;
   ownedGameAppIds: OwnedGame[] = [];
   games: GameModule[] = [];
 
   public setRandomUrl = (url: string): void => {
-    this.randomUrl = url;
+    this.url = url;
   };
 
   private setUsername = (url: string): void => {
@@ -103,14 +103,12 @@ export class UserModule {
     };
 
     await Promise.all(
-      ownedGames.map(
-        async (ownedGame: OwnedGame): Promise<void> => {
-          let game: GameModule;
-          game = await createGame(ownedGame.appid);
+      ownedGames.map(async (ownedGame: OwnedGame): Promise<void> => {
+        let game: GameModule;
+        game = await createGame(ownedGame.appid);
 
-          this.games.push(game);
-        }
-      )
+        this.games.push(game);
+      })
     );
   };
 

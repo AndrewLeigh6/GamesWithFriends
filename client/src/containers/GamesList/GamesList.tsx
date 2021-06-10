@@ -22,6 +22,7 @@ const GamesList = (props: GamesListProps) => {
   const params = useQuery();
   const [votes, setVotes] = useState<number[]>([]);
   const [votesDeleted, setVotesDeleted] = useState<boolean>(false);
+  const [gamesLoaded, setGamesLoaded] = useState<boolean>(false);
   const MAX_VOTES = 3;
   const MIN_VOTES = 0;
 
@@ -29,7 +30,7 @@ const GamesList = (props: GamesListProps) => {
     const url = params.get("url");
     if (session && session.users) {
       const user = session.users.find((user) => {
-        if (user.randomUrl === url || user.url === url) {
+        if (user.url === url) {
           return true;
         }
 
@@ -43,11 +44,9 @@ const GamesList = (props: GamesListProps) => {
     return null;
   }, [params, session]);
 
-  /* This looks weird due to the repeated session check, but they
-   had to be split in two to avoid the infinite loop of death. */
   useEffect(() => {
     const getGamesFromSession = async () => {
-      if (session !== undefined) {
+      if (gamesLoaded && session) {
         if (session.sessionId) {
           const games = await session.getSharedGames();
 
@@ -58,22 +57,28 @@ const GamesList = (props: GamesListProps) => {
       }
     };
     getGamesFromSession();
-  }, [session, setGames]);
+  }, [session, setGames, gamesLoaded]);
 
+  /* Originally this was just for new users loading in from a URL, but I decided it was worth
+  using this for the host too and taking the slight hit in performance in exchange for
+  streamlining all the state data due to a couple of inconsistencies. We just use setGamesLoaded
+  to ensure it only fires once. */
   useEffect(() => {
     const getGamesFromUrl = async () => {
-      if (session === undefined) {
+      if (!gamesLoaded) {
         const newSession = new Session();
         const url = params.get("url");
 
         if (url) {
           await newSession.createFromUrl(url);
           setSession(newSession);
+          setGamesLoaded(true);
+          console.log("loaded games");
         }
       }
     };
     getGamesFromUrl();
-  }, [session, setSession, params]);
+  }, [setSession, gamesLoaded, setGamesLoaded, params]);
 
   /* Clear existing votes from this session if any exist. This is 
   to stop users refreshing the page and submitting 3 more votes */
@@ -144,6 +149,17 @@ const GamesList = (props: GamesListProps) => {
     }
   };
 
+  const setDoneVoting = async (
+    sessionId: number,
+    userId: number
+  ): Promise<void> => {
+    const url =
+      window.location.origin + `/api/sessions/${sessionId}/users/${userId}`;
+    axios.post(url).catch((error) => {
+      throw new Error(error);
+    });
+  };
+
   const buildGames = (): JSX.Element[] | null => {
     if (props.games && props.games.length > 0 && props.session) {
       const userId = getUserId();
@@ -159,9 +175,9 @@ const GamesList = (props: GamesListProps) => {
           return (
             <FoundGame
               title={game.name}
-              image={game.image_vertical_url}
+              image={game.imageVerticalUrl}
               selected={selected}
-              key={game.app_id}
+              key={game.appId}
               features={game.categories}
               selectedHandler={() => submitVote(sessionId, game.id, userId)}
               deselectedHandler={() => cancelVote(sessionId, game.id, userId)}
@@ -176,17 +192,29 @@ const GamesList = (props: GamesListProps) => {
     return null;
   };
 
-  const gamesSelected = votes.length;
+  if (props.session) {
+    const gamesSelected = votes.length;
 
-  return (
-    <React.Fragment>
-      <div className={classes.GamesList}>{buildGames()}</div>
-      <GamesSelected
-        gamesSelected={gamesSelected}
-        maxVotesAllowed={MAX_VOTES}
-      />
-    </React.Fragment>
-  );
+    const userId = getUserId();
+    const sessionId = props.session.sessionId;
+
+    if (sessionId && userId) {
+      return (
+        <React.Fragment>
+          <div className={classes.GamesList}>{buildGames()}</div>
+          <GamesSelected
+            gamesSelected={gamesSelected}
+            maxVotesAllowed={MAX_VOTES}
+            setDoneVoting={() => setDoneVoting(sessionId, userId)}
+          />
+        </React.Fragment>
+      );
+    }
+
+    return null;
+  }
+
+  return null;
 };
 
 export default GamesList;

@@ -10,19 +10,10 @@ interface CreateSessionResponse extends AxiosResponse {
   };
 }
 
-export interface UserGame {
-  appId: number;
-  categories: {
-    id: number;
-    name: string;
-  }[];
-}
-
 export interface User {
   id?: number;
   username: string;
-  randomUrl: string;
-  url?: string;
+  url: string;
   steamId?: string;
   isHost?: boolean;
   ownedGameAppIds?: {
@@ -31,12 +22,20 @@ export interface User {
   games?: UserGame[];
 }
 
+export interface UserGame {
+  appId: number;
+  categories: {
+    id: number;
+    name: string;
+  }[];
+}
+
 export interface SharedGame {
   id: number;
-  app_id: string;
+  appId: string;
   name: string;
-  image_vertical_url: string;
-  image_horizontal_url: string;
+  imageVerticalUrl: string;
+  imageHorizontalUrl: string;
   categories: {
     id: number;
     name: string;
@@ -121,12 +120,12 @@ export class Session {
       gameData.forEach((game, index) => {
         if (isUserGame(userGames)) {
           const foundGame = userGames.findIndex(
-            (userGame) => userGame.appId.toString() === game.app_id
+            (userGame) => userGame.appId.toString() === game.appId
           );
           gameData[index].categories = userGames[foundGame].categories;
         } else {
           const foundGame = userGames.findIndex(
-            (userGame) => userGame.app_id === game.app_id
+            (userGame) => userGame.appId === game.appId
           );
           gameData[index].categories = userGames[foundGame].categories;
         }

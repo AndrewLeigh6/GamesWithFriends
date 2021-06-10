@@ -60,7 +60,7 @@ const getWinningGames = (
       if (gameDetails) {
         const winningGame: Winner = {
           title: gameDetails.name,
-          image: gameDetails.image_horizontal_url,
+          image: gameDetails.imageHorizontalUrl,
           votes: voteTotals[id],
         };
 

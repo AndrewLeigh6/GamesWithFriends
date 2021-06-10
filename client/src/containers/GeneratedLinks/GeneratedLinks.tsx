@@ -34,9 +34,9 @@ const GeneratedLinks = () => {
     });
 
     const userInputs = sortedUsers.map((user, index) => {
-      const finalUrl = `${BASE_URL}${user.randomUrl}`;
+      const finalUrl = `${BASE_URL}${user.url}`;
       if (index === 0) {
-        hostUrl = "/session?url=" + user.randomUrl;
+        hostUrl = "/session?url=" + user.url;
       }
       return (
         <Input

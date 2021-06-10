@@ -7,6 +7,7 @@ import classes from "./GamesSelected.module.scss";
 interface GamesSelectedProps {
   gamesSelected: number;
   maxVotesAllowed: number;
+  setDoneVoting: () => void;
 }
 
 const GamesSelected = (props: GamesSelectedProps) => {
@@ -15,7 +16,9 @@ const GamesSelected = (props: GamesSelectedProps) => {
       <GamesSelectedText gamesSelected={props.gamesSelected} />
       <Link to="/waiting" className={classes.DoneLink}>
         {props.gamesSelected === props.maxVotesAllowed ? (
-          <Button color="Primary">Done</Button>
+          <Button color="Primary" clicked={props.setDoneVoting}>
+            Done
+          </Button>
         ) : null}
       </Link>
     </div>

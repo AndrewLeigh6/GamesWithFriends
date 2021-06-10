@@ -16,6 +16,7 @@ export interface iUserContext {
 export interface Vote {
   username: string;
   gameIds: number[];
+  steamId: string;
 }
 
 // set defaults
